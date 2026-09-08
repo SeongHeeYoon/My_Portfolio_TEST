@@ -1096,9 +1096,15 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
      ========================================================================= */
   function renderMain() {
     var m = D.main || {};
-    var target = (m.button && m.button.target) || "resume";
-    var label  = (m.button && m.button.label)  || "시작하기";
     var html = "";
+
+    /* 버튼은 data.js 의 main.button 이 있을 때만 만듭니다. (없으면 버튼이 사라집니다) */
+    var btn = "";
+    if (m.button && m.button.label) {
+      btn = '<a class="btn btn--fill stage__cta" href="#' +
+        esc(m.button.target || "resume") + '"' + E("main.button.label") + '>' +
+        esc(m.button.label) + '</a>';
+    }
 
     /* 가운데 소개 */
     html +=
@@ -1109,8 +1115,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
                      esc(m.caption) + '</p>' : '') +
         '<h1 class="stage__title"' + EL("main.headline") + '>' +
           lines(m.headline || "") + '</h1>' +
-        '<a class="btn btn--fill stage__cta" href="#' + esc(target) + '"' +
-          E("main.button.label") + '>' + esc(label) + '</a>' +
+        btn +
       '</div>';
 
     /* Work Step */
