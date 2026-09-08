@@ -31,32 +31,32 @@
    =========================================================================== */
 :root{
   /* --- 동물의 숲 느낌의 따뜻한 마을 팔레트 --- */
-  --abyssal:#5b4632;   /* 본문 글자 — 따뜻한 갈색 */
-  --obsidian:#4a3826;  /* 제목 */
-  --slate:#7d6a4e;     /* 보조 글자 */
-  --graphite:#9c855f;  /* 라벨 */
-  --fog:#b09a76;
-  --pebble:#c9b189;
+  --abyssal:#61574a;   /* 본문 글자 — 따뜻한 갈색 */
+  --obsidian:#524839;  /* 제목 */
+  --slate:#8b8171;     /* 보조 글자 */
+  --graphite:#a29887;  /* 라벨 */
+  --fog:#b8b0a2;
+  --pebble:#cdc5b8;
 
-  --bone:#fffaf0;      /* 패널(카드) 바탕 — 크림색 */
-  --ash:#fdf3e0;       /* 한 단계 진한 크림 */
-  --mist:#e7d3ae;      /* 테두리 */
-  --vapor:#dcc49b;     /* 옅은 테두리 */
+  --bone:#fffdfa;      /* 패널(카드) 바탕 — 크림색 */
+  --ash:#faf7f1;       /* 한 단계 진한 크림 */
+  --mist:#e8e2d7;      /* 테두리 */
+  --vapor:#ded8cd;     /* 옅은 테두리 */
 
-  --canvas:#f7ecd5;    /* 페이지 바탕 — 모래빛 */
-  --leaf:#7fae4e;      /* 나뭇잎 초록 (주요 버튼) */
-  --leaf-dark:#5f8a37; /* 초록 그림자 */
-  --wood:#8a6242;      /* 나무 안내판 */
-  --wood-dark:#6b482f;
-  --peach:#e08a3c;     /* 강조 주황 */
-  --shadow:rgba(176,144,96,.30);   /* 스티커 그림자 */
+  --canvas:#f6f2ea;    /* 페이지 바탕 — 모래빛 */
+  --leaf:#9bbb82;      /* 나뭇잎 초록 (주요 버튼) */
+  --leaf-dark:#82a469; /* 초록 그림자 */
+  --wood:#9c8a79;      /* 나무 안내판 */
+  --wood-dark:#877565;
+  --peach:#d5a684;     /* 강조 주황 */
+  --shadow:rgba(160,150,135,.20);   /* 스티커 그림자 */
 
-  --espresso:#7fae4e;  /* (기존 이름 유지) 채움 버튼 = 나뭇잎 초록 */
-  --coffee:#8a6242;    /* (기존 이름 유지) 나무색 */
+  --espresso:#9bbb82;  /* (기존 이름 유지) 채움 버튼 = 나뭇잎 초록 */
+  --coffee:#9c8a79;    /* (기존 이름 유지) 나무색 */
   --carbon:#000000;
 
   --dusk:#efdcb6;     --ember:#eba370; --twilight:#7d7a8f;
-  --gradient-warm:linear-gradient(150deg, #efdcb6 0%, #eba370 48%, #b98db0 100%);
+  --gradient-warm:linear-gradient(150deg, #f2ead9 0%, #e6cdba 48%, #cdc6cf 100%);
 
   --font:'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
          'Malgun Gothic', system-ui, sans-serif;
@@ -101,7 +101,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer;}
 input{font:inherit;}
 ul,ol{margin:0; padding:0; list-style:none;}
 h1,h2,h3,h4,p{margin:0;}
-::selection{background:var(--dusk); color:var(--obsidian);}
+::selection{background:#eae4d4; color:var(--obsidian);}
 /* 키보드로 이동할 때만 보이는 초점 표시 */
 :focus{outline:none;}
 :focus-visible{outline:2px solid var(--abyssal); outline-offset:3px; border-radius:4px;}
@@ -171,36 +171,23 @@ h1,h2,h3,h4,p{margin:0;}
   position:relative;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   text-align:center;
-  min-height:74vh;            /* 구형 브라우저용 */
-  min-height:74dvh;           /* iOS 주소창 높이 변화 대응 */
+  min-height:52vh;            /* 구형 브라우저용 */
+  min-height:52dvh;           /* iOS 주소창 높이 변화 대응 */
   padding:var(--sp-64) 0;
 }
 
-/* 뒤에서 자라나는 잡초 그림 */
-.stage__art{
-  position:absolute; left:50%; top:50%;
-  /* 화면 높이에 맞춰 크기를 정합니다 (위아래로 잘리지 않도록) */
-  height:94%; max-height:600px; width:auto;
-  transform:translate(-50%,-50%);
-  z-index:0; pointer-events:none;
-  opacity:.55;
-}
-.stage__art svg{height:100%; width:auto; display:block; overflow:visible;}
-
-/* 글자는 항상 그림 위에 */
+/* 글자 요소 */
 .stage__caption, .stage__title, .stage__cta{position:relative; z-index:1;}
 
 .stage__caption{
   font-size:13px; letter-spacing:.22em; color:var(--graphite);
   text-transform:uppercase; margin-bottom:var(--sp-24);
-  text-shadow:0 0 16px rgba(250,249,248,.95), 0 0 6px rgba(250,249,248,.95);
 }
 .stage__title{
   font-size:56px;                                   /* clamp 미지원 브라우저용 */
   font-size:clamp(30px, 6.4vw, 60px);
   font-weight:500; line-height:1.28; letter-spacing:-.03em;
   color:var(--obsidian);
-  text-shadow:0 0 26px rgba(250,249,248,.92);       /* 그림 위에서도 또렷하게 */
 }
 .stage__cta{margin-top:var(--sp-48); padding:15px 32px; font-size:16px;}
 
@@ -241,49 +228,14 @@ h1,h2,h3,h4,p{margin:0;}
 .mproj__title{font-size:28px; font-weight:500; letter-spacing:-.02em;}
 .mproj__desc{margin-top:12px; font-size:16px; line-height:1.6; color:var(--slate);}
 
-/* ---------- 잡초 애니메이션 ---------- *
- * 기본 상태 = 다 자란 모습. 애니메이션은 '작은 상태'에서 시작해 기본 상태로 옵니다.
- * 그래서 동작 최소화 설정(prefers-reduced-motion)에서도 그림이 정상으로 보입니다.
- */
-.stage__art{animation:seedGrow 2.2s cubic-bezier(.22,.9,.24,1) both;}
-.stage__art svg{
-  transform-origin:50% 100%;
-  animation:sway 8s ease-in-out 2.4s infinite;
-}
-.sprout__stem{
-  stroke-dasharray:var(--len,600);
-  stroke-dashoffset:0;
-  animation:draw 1.7s cubic-bezier(.4,0,.2,1) .15s both;
-}
-.leaf, .blade{
-  transform-origin:0 0;
-  animation:leafIn .8s cubic-bezier(.2,1.1,.3,1) both;
-  animation-delay:var(--d, .6s);
-}
-.stage__caption{animation:rise .9s ease-out .9s both;}
-.stage__title{animation:rise 1s ease-out 1.1s both;}
-.stage__cta{animation:rise .9s ease-out 1.6s both;}
+/* ---------- 메인 글자 등장 ---------- */
+.stage__caption{animation:rise .8s ease-out .05s both;}
+.stage__title{animation:rise .9s ease-out .18s both;}
+.stage__cta{animation:rise .8s ease-out .38s both;}
 
-@keyframes seedGrow{
-  0%  {transform:translate(-50%,-50%) scale(.14); opacity:0;}
-  30% {opacity:.55;}
-  100%{transform:translate(-50%,-50%) scale(1);   opacity:.55;}
-}
-@keyframes draw{
-  from{stroke-dashoffset:var(--len,600);}
-  to  {stroke-dashoffset:0;}
-}
-@keyframes leafIn{
-  from{opacity:0; transform:scale(.05);}
-  to  {opacity:1; transform:scale(1);}
-}
 @keyframes rise{
-  from{opacity:0; transform:translateY(18px);}
+  from{opacity:0; transform:translateY(16px);}
   to  {opacity:1; transform:translateY(0);}
-}
-@keyframes sway{
-  0%,100%{transform:rotate(-1.1deg);}
-  50%    {transform:rotate(1.1deg);}
 }
 
 /* ---------- BADGE ---------- */
@@ -469,7 +421,6 @@ body.editing [data-edit]:focus{
   outline:2px solid var(--ember); background:rgba(235,163,112,.12);
 }
 body.editing{padding-bottom:96px;}
-body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 */
 
 /* 하단 도구막대 */
 .editbar{
@@ -501,7 +452,7 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
 /* 바탕: 모래빛 + 아주 옅은 점무늬 */
 body{
   background-color:var(--canvas);
-  background-image:radial-gradient(circle at 10px 10px, rgba(150,118,74,.09) 2px, transparent 2px);
+  background-image:radial-gradient(circle at 10px 10px, rgba(150,138,118,.06) 2px, transparent 2px);
   background-size:22px 22px;
 }
 
@@ -521,7 +472,7 @@ body{
   box-shadow:0 3px 0 var(--shadow);
 }
 .editBtn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--shadow);}
-.editBtn.is-on{background:var(--peach); color:#fffdf5; border-color:#c26f24;}
+.editBtn.is-on{background:var(--peach); color:#fffdfa; border-color:#c1906d;}
 
 /* ---------- 섹션 = 게시판 카드 ---------- */
 .section{
@@ -561,6 +512,22 @@ body{
   background:var(--leaf); border-radius:11px 1px 11px 1px; transform:rotate(-8deg);
 }
 
+/* ---------- 이력서: 좌우 2단 배치 ----------
+ * 좌측 = 개인 신상정보 / 학력·경력 / 자격증
+ * 우측 = 프로젝트 / 기술 스택 / 기타사항
+ * 화면이 좁아지면(900px 이하) 자동으로 한 줄로 쌓입니다.
+ */
+.rescols{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:var(--sp-24); align-items:start; margin-top:var(--sp-32);
+}
+.rescol{display:flex; flex-direction:column; gap:var(--sp-24);}
+.rescol .section{margin-top:0; padding-top:var(--sp-40); border-top-width:2px;}
+/* 반쪽 폭이라 안쪽 카드들은 한 줄로 */
+.rescol .cards, .rescol .extras{grid-template-columns:1fr;}
+.rescol .card, .rescol .extra{padding:var(--sp-32) var(--sp-24);}
+.rescol .cert{grid-template-columns:110px 1fr auto;}
+
 /* ---------- 구분선은 점선으로 (게시판 느낌) ---------- */
 .rows, .tl, .tour{border-top:2px dashed var(--mist);}
 .row, .tl__item, .cert, .tour__row{border-bottom:2px dashed var(--mist);}
@@ -579,8 +546,8 @@ body{
 
 /* ---------- 배지 = 동글동글한 알약 ---------- */
 .badge{
-  background:#eef6e2; color:#4f7a2e;
-  border:2px solid #d5e8c2; border-radius:var(--r-pill);
+  background:#f0f4ea; color:#6f8560;
+  border:2px solid #e0e8d6; border-radius:var(--r-pill);
   padding:5px 13px;
 }
 .badge--line{background:var(--bone); border-color:var(--mist); color:var(--slate);}
@@ -597,8 +564,6 @@ body{
 .btn:active{transform:translateY(3px); box-shadow:none; opacity:1;}
 
 /* ---------- 메인 큰 글자 ---------- */
-.stage__title{text-shadow:0 0 26px rgba(255,250,240,.94), 0 2px 0 rgba(255,250,240,.9);}
-.stage__caption{text-shadow:0 0 16px rgba(255,250,240,.96), 0 0 6px rgba(255,250,240,.96);}
 .stage__cta{box-shadow:0 5px 0 var(--leaf-dark);}
 
 /* ---------- 프로필 사진 액자 ---------- */
@@ -606,22 +571,22 @@ body{
 
 /* ---------- 하단 배너 = 나무 게시판 ---------- */
 .cta{
-  background:var(--wood); color:#fff7e8;
+  background:var(--wood); color:#fffcf7;
   border:3px solid var(--wood-dark);
   border-radius:36px;
-  box-shadow:0 6px 0 rgba(107,72,47,.45);
+  box-shadow:0 6px 0 rgba(135,117,101,.35);
   position:relative;
 }
 .cta::after{                       /* 안쪽 점선 = 공지 종이 느낌 */
   content:""; position:absolute; top:14px; right:14px; bottom:14px; left:14px;
-  border:2px dashed rgba(255,247,232,.32); border-radius:26px; pointer-events:none;
+  border:2px dashed rgba(255,252,247,.30); border-radius:26px; pointer-events:none;
 }
-.cta .btn--fill{background:#fff7e8; color:var(--wood); box-shadow:0 4px 0 rgba(107,72,47,.5);}
+.cta .btn--fill{background:#fffcf7; color:var(--wood); box-shadow:0 4px 0 rgba(135,117,101,.4);}
 
 /* ---------- 편집 도구막대 ---------- */
 .editbar{background:var(--wood); border-top:3px solid var(--wood-dark);}
-.editbar .btn--fill{background:#fff7e8; color:var(--wood); box-shadow:0 3px 0 rgba(107,72,47,.5);}
-.override{background:#ffe9a8; color:var(--wood-dark); border-bottom:2px solid var(--mist);}
+.editbar .btn--fill{background:#fffcf7; color:var(--wood); box-shadow:0 3px 0 rgba(135,117,101,.4);}
+.override{background:#f3ecd8; color:var(--wood-dark); border-bottom:2px solid var(--mist);}
 
 /* ---------- 로그인 창 ---------- */
 .modal__box{border:3px solid var(--mist); box-shadow:0 6px 0 var(--shadow); border-radius:32px;}
@@ -641,6 +606,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   .photo{max-width:260px; aspect-ratio:1/1;}
   .hero__tagline{font-size:30px;}
   .cards,.extras,.pf,.mproj{grid-template-columns:1fr;}
+  .rescols{grid-template-columns:1fr;}
   .steps{grid-template-columns:repeat(2,1fr);}
   .essay__item{grid-template-columns:1fr; gap:var(--sp-24); padding:var(--sp-48) 0;}
   .essay__title{position:static;}
@@ -660,8 +626,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   .tab{flex:1 1 0; text-align:center; padding:10px 4px; font-size:13.5px; letter-spacing:-.03em;}
   .editBtn{padding:8px 14px; font-size:13.5px;}
   .page{padding-top:var(--sp-40); padding-bottom:var(--sp-64);}
-  .stage{min-height:70vh; min-height:70dvh; padding:var(--sp-48) 0;}
-  .stage__art{height:88%; max-height:none; opacity:.5;}
+  .stage{min-height:44vh; min-height:44dvh; padding:var(--sp-48) 0;}
   .stage__cta{margin-top:var(--sp-40); padding:14px 28px;}
   .steps{grid-template-columns:1fr;}
   .step{padding:var(--sp-24);}
@@ -929,88 +894,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   }
 
   /* =========================================================================
-     메인 화면 — 잡초 그림(SVG)
-     그림은 외부 이미지 파일 없이 코드로 그려집니다. (어떤 화면에서도 선명)
-     ========================================================================= */
-  function sproutSVG() {
-    /* 줄기를 따라 잎이 붙는 위치: [x, y, 회전각, 크기, 등장순서(초)] */
-    var leaves = [
-      [197, 336,  -18, 1.00, 0.75],
-      [193, 286, -168, 0.92, 0.95],
-      [199, 240,  -26, 0.86, 1.15],
-      [196, 194, -160, 0.78, 1.35],
-      [201, 152,  -34, 0.68, 1.55],
-      [199, 116, -152, 0.58, 1.75]
-    ];
-    /* 바닥의 잔풀 */
-    var blades = [
-      [200, 442, -128, 0.62, 0.25],
-      [200, 442,  -52, 0.58, 0.35],
-      [200, 442, -150, 0.42, 0.45],
-      [200, 442,  -30, 0.40, 0.55]
-    ];
-
-    var leafPath  = "M0,0 C22,-30 66,-36 108,-4 C72,28 26,28 0,0 Z";
-    var veinPath  = "M4,0 C34,-6 68,-10 100,-5";
-    var bladePath = "M0,0 C32,-10 62,-6 90,8 C58,12 26,10 0,0 Z";
-
-    /* --- 색 램프: 아래는 따뜻한 금빛 → 위로 갈수록 코랄 → 꼭대기만 보랏빛 ---
-     * 회전·이동된 그룹 안에서는 SVG 그라데이션 좌표가 뒤틀리므로,
-     * 잎마다 높이에 맞는 색을 직접 계산해서 칠합니다.
-     */
-    var STOPS = [[0, [214,214,140]], [0.45, [141,192,90]], [1, [94,148,64]]];
-    function ramp(t) {
-      t = Math.max(0, Math.min(1, t));
-      var i = (t <= STOPS[1][0]) ? 0 : 1;
-      var a = STOPS[i], b = STOPS[i + 1];
-      var k = (t - a[0]) / (b[0] - a[0]);
-      var c = [0, 1, 2].map(function (n) {
-        return Math.round(a[1][n] + (b[1][n] - a[1][n]) * k);
-      });
-      return "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")";
-    }
-    /* y 좌표(448=뿌리, 92=꼭대기)를 0~1 로. 지수는 따뜻한 색을 넓게 쓰기 위한 보정 */
-    function tone(y, shift) {
-      var t = (448 - y) / 356;
-      return ramp(Math.pow(Math.max(0, t), 1.6) + (shift || 0));
-    }
-
-    function shape(list, cls, d, vein) {
-      return list.map(function (v) {
-        var id = cls + "_" + Math.round(v[1]) + "_" + Math.round(v[2] + 200);
-        return '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="0.6">' +
-                 '<stop offset="0" stop-color="' + tone(v[1], -0.10) + '"/>' +
-                 '<stop offset="1" stop-color="' + tone(v[1],  0.06) + '"/>' +
-               '</linearGradient></defs>' +
-               '<g transform="translate(' + v[0] + ',' + v[1] + ') rotate(' + v[2] +
-               ') scale(' + v[3] + ')">' +
-               '<g class="' + cls + '" style="--d:' + v[4] + 's">' +
-               '<path d="' + d + '" fill="url(#' + id + ')"/>' +
-               (vein ? '<path d="' + vein + '" stroke="#f4fbe6" stroke-width="2.4" ' +
-                       'stroke-linecap="round" fill="none" opacity=".5"/>' : '') +
-               '</g></g>';
-      }).join("");
-    }
-
-    return '<svg viewBox="80 60 240 408" fill="none" aria-hidden="true" focusable="false">' +
-      /* 줄기는 회전 그룹 밖이라 좌표 기반 그라데이션이 그대로 통합니다 */
-      '<defs><linearGradient id="sproutStem" x1="200" y1="448" x2="200" y2="92" ' +
-      'gradientUnits="userSpaceOnUse">' +
-        '<stop offset="0" stop-color="#c9a86a"/>' +
-        '<stop offset="0.5" stop-color="#9cb85a"/>' +
-        '<stop offset="1" stop-color="#6ba33f"/>' +
-      '</linearGradient></defs>' +
-      shape(blades, "blade", bladePath) +
-      '<path class="sprout__stem" d="M200,448 C200,388 188,344 197,296 ' +
-        'C206,246 194,206 200,166 C205,132 200,116 200,98" ' +
-        'stroke="url(#sproutStem)" stroke-width="8" stroke-linecap="round"/>' +
-      shape(leaves, "leaf", leafPath, veinPath) +
-      '<g transform="translate(200,92)"><g class="leaf" style="--d:1.95s">' +
-        '<circle cx="0" cy="0" r="11" fill="' + tone(92) + '"/></g></g>' +
-    '</svg>';
-  }
-
-  /* =========================================================================
      메인 화면
      ========================================================================= */
   function renderMain() {
@@ -1022,7 +905,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     /* 가운데 소개 */
     html +=
       '<div class="stage">' +
-        '<div class="stage__art">' + sproutSVG() + '</div>' +
         (m.caption ? '<p class="stage__caption"' + E("main.caption") + '>' +
                      esc(m.caption) + '</p>' : '') +
         '<h1 class="stage__title"' + EL("main.headline") + '>' +
@@ -1033,7 +915,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
 
     /* Work Step */
     if (has(D.workSteps)) {
-      html += section("Work Step", "일하는 순서",
+      html += section("Work Step", "나의 게임 개발 단계",
         '<div class="steps">' + D.workSteps.map(function (s, i) {
           return '<article class="step">' +
             '<p class="step__no"' + E("workSteps." + i + ".no") + '>' + esc(s.no) + '</p>' +
@@ -1075,12 +957,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     html += cta();
     el("page-main").innerHTML = html;
 
-    /* 줄기를 실제 길이만큼 정확히 그리도록 계산 */
-    var stem = el("page-main").querySelector(".sprout__stem");
-    if (stem && stem.getTotalLength) {
-      stem.style.setProperty("--len", Math.ceil(stem.getTotalLength()));
-    }
-
     /* 아이콘 PNG 가 있으면 그걸 쓰고, 없으면 코드로 그린 그림을 씁니다 */
     var imgs = el("page-main").querySelectorAll(".sec-ico img");
     Array.prototype.forEach.call(imgs, function (im) {
@@ -1100,7 +976,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     var stage = el("page-main").querySelector(".stage");
     if (!stage) { return; }
     var nodes = stage.querySelectorAll(
-      ".stage__art, .stage__art svg, .sprout__stem, .leaf, .blade, " +
       ".stage__caption, .stage__title, .stage__cta");
     Array.prototype.forEach.call(nodes, function (n) {
       n.style.animation = "none";
@@ -1115,6 +990,10 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   function renderResume() {
     var p = D.profile || {};
     var html = "";
+    /* 좌측 칸: 개인 신상정보 → 학력·경력 → 자격증
+       우측 칸: 프로젝트 → 기술 스택 → 기타사항
+       (화면이 좁아지면 자동으로 한 줄로 쌓입니다) */
+    var left = "", right = "";
 
     /* 프로필 사진 + 한 줄 소개 */
     var initial = (p.name || "").slice(-2);
@@ -1138,9 +1017,9 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         '</div>' +
       '</div>';
 
-    /* 개인 신상정보 */
+    /* 개인 신상정보 — 좌측 */
     if (has(D.personal)) {
-      html += section("Personal", "개인 신상정보",
+      left += section("Personal", "개인 신상정보",
         '<dl class="rows">' + D.personal.map(function (r, i) {
           var v = r.link
             ? '<a href="' + esc(r.link) + '"' + E("personal." + i + ".value") + '>' +
@@ -1151,9 +1030,9 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         }).join("") + '</dl>');
     }
 
-    /* 학력 · 경력 */
+    /* 학력 · 경력 — 좌측 */
     if (has(D.history)) {
-      html += section("History", "학력 · 경력",
+      left += section("History", "학력 · 경력",
         '<div style="margin-top:32px">' + D.history.map(function (g, gi) {
           return '<div class="group">' +
             '<p class="group__title"' + E("history." + gi + ".group") + '>' + esc(g.group) + '</p>' +
@@ -1169,17 +1048,9 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         }).join("") + '</div>');
     }
 
-    /* 기술 스택 */
-    if (has(D.skills)) {
-      html += section("Skills", "기술 스택",
-        '<div class="keys" style="margin-top:32px">' + D.skills.map(function (s, i) {
-          return '<span class="badge badge--line"' + E("skills." + i) + '>' +
-                 esc(s) + '</span>'; }).join("") + '</div>');
-    }
-
-    /* 프로젝트 */
+    /* 프로젝트 — 우측 */
     if (has(D.projects)) {
-      html += section("Projects", "프로젝트",
+      right += section("Projects", "프로젝트",
         '<div class="cards">' + D.projects.map(function (pr, i) {
           return '<article class="card">' +
             '<p class="card__no"' + E("projects." + i + ".no") + '>' + esc(pr.no) + '</p>' +
@@ -1196,9 +1067,17 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         }).join("") + '</div>');
     }
 
-    /* 자격증 */
+    /* 기술 스택 — 우측 */
+    if (has(D.skills)) {
+      right += section("Skills", "기술 스택",
+        '<div class="keys" style="margin-top:32px">' + D.skills.map(function (s, i) {
+          return '<span class="badge badge--line"' + E("skills." + i) + '>' +
+                 esc(s) + '</span>'; }).join("") + '</div>');
+    }
+
+    /* 자격증 — 좌측 */
     if (has(D.certificates)) {
-      html += section("Certificates", "자격증",
+      left += section("Certificates", "자격증",
         '<div style="margin-top:32px; border-top:1px solid var(--mist)">' +
         D.certificates.map(function (c, i) {
           return '<div class="cert">' +
@@ -1209,9 +1088,9 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         }).join("") + '</div>');
     }
 
-    /* 기타사항 */
+    /* 기타사항 — 우측 */
     if (has(D.extras)) {
-      html += section("Etc.", "기타사항",
+      right += section("Etc.", "기타사항",
         '<div class="extras">' + D.extras.map(function (g, gi) {
           return '<div class="extra">' +
             '<h3 class="extra__title"' + E("extras." + gi + ".group") + '>' + esc(g.group) + '</h3>' +
@@ -1222,6 +1101,10 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         }).join("") + '</div>');
     }
 
+    html += '<div class="rescols">' +
+              '<div class="rescol">' + left  + '</div>' +
+              '<div class="rescol">' + right + '</div>' +
+            '</div>';
     html += cta();
     el("page-resume").innerHTML = html;
   }
