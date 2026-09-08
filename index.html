@@ -464,15 +464,6 @@ body.editing{padding-bottom:96px;}
 /* 어두운 막대 위에서는 채움 버튼의 색을 뒤집습니다 */
 .editbar .btn--fill{background:var(--bone); color:var(--espresso);}
 
-/* 저장된 수정본 안내 띠 */
-.override{
-  background:var(--dusk); color:var(--obsidian);
-  font-size:14px; text-align:center; padding:10px 20px;
-  display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
-}
-.override[hidden]{display:none !important;}
-.override button{text-decoration:underline; font-size:14px;}
-
 /* ===========================================================================
    ANIMAL CROSSING LAYER — 마을 게시판 느낌
    둥근 모서리 + 두꺼운 테두리 + 아래로 떨어지는 '스티커 그림자' 가 핵심입니다.
@@ -780,7 +771,6 @@ body.editing .pjpage__body p:only-child:empty::before{
 /* ---------- 편집 도구막대 ---------- */
 .editbar{background:var(--wood); border-top:3px solid var(--wood-dark);}
 .editbar .btn--fill{background:#fffcf7; color:var(--wood); box-shadow:0 3px 0 rgba(135,117,101,.4);}
-.override{background:#f3ecd8; color:var(--wood-dark); border-bottom:2px solid var(--mist);}
 
 /* ---------- 로그인 창 ---------- */
 .modal__box{border:3px solid var(--mist); box-shadow:0 6px 0 var(--shadow); border-radius:32px;}
@@ -878,7 +868,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
    인쇄 / PDF 저장  (Safari: 공유 → 프린트 → PDF로 저장)
    =========================================================================== */
 @media print{
-  .topbar,.cta,.editbar,.modal,.pjmodal,.override{display:none !important;}
+  .topbar,.cta,.editbar,.modal,.pjmodal{display:none !important;}
   body{background:#fff; padding-bottom:0;}
   .page--main{display:none !important;}
   .page[hidden]:not(.page--main){display:block !important;}  /* 나머지 페이지 모두 출력 */
@@ -895,12 +885,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
 </head>
 
 <body>
-
-<!-- 이 브라우저에 저장된 수정본을 보고 있을 때만 뜨는 안내 -->
-<div class="override" id="overrideBar" hidden>
-  <span>이 브라우저에 저장한 수정본을 보고 있습니다.</span>
-  <button type="button" id="revertBtn">원래 파일로 되돌리기</button>
-</div>
 
 <!-- ======================= 상단 네비게이션 ======================= -->
 <header class="topbar">
@@ -977,6 +961,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   <span class="editbar__msg" id="editMsg">점선으로 표시된 글자를 눌러 바로 고치세요.</span>
   <button class="btn btn--onDark" type="button" id="saveBtn">이 브라우저에 저장</button>
   <button class="btn btn--fill"   type="button" id="exportBtn">data.js 내려받기</button>
+  <button class="btn btn--onDark" type="button" id="resetBtn" hidden>저장 초기화</button>
   <button class="btn btn--onDark" type="button" id="exitBtn">편집 종료</button>
 </div>
 
@@ -1099,7 +1084,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
      ========================================================================= */
   var STORE_KEY = "yhs_portfolio_data_v1";
   var D = DATA;
-  var usingOverride = false;
+  var usingOverride = false;  /* 저장본을 불러왔는지 여부 (내부 표시용) */
 
   try {
     var saved = window.localStorage.getItem(STORE_KEY);
@@ -1110,9 +1095,16 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     }
   } catch (e) { /* 시크릿 모드 등에서는 그냥 원래 파일을 씁니다 */ }
 
-  if (usingOverride) { el("overrideBar").hidden = false; }
+  /* '저장 초기화' 버튼은 이 브라우저에 저장된 수정본이 있을 때만 편집 도구막대에 보입니다.
+     (평소에는 아무 안내도 뜨지 않습니다) */
+  function refreshResetBtn() {
+    var has = false;
+    try { has = !!window.localStorage.getItem(STORE_KEY); } catch (e) {}
+    var b = el("resetBtn");
+    if (b) { b.hidden = !has; }
+  }
 
-  el("revertBtn").addEventListener("click", function () {
+  el("resetBtn").addEventListener("click", function () {
     if (!window.confirm("이 브라우저에 저장한 수정본을 지우고 원래 data.js 내용으로 되돌립니다.")) { return; }
     try { window.localStorage.removeItem(STORE_KEY); } catch (e) {}
     window.location.reload();
@@ -1843,6 +1835,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     el("editBtn").textContent = "편집 종료";
     el("editBar").hidden = false;
     markEditable(true);
+    refreshResetBtn();
     setMsg("점선으로 표시된 글자를 눌러 바로 고치세요.");
   }
 
@@ -1863,7 +1856,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   el("saveBtn").addEventListener("click", function () {
     try {
       window.localStorage.setItem(STORE_KEY, JSON.stringify(D));
-      el("overrideBar").hidden = false;
+      refreshResetBtn();
       setMsg("이 브라우저에 저장했습니다. 다른 기기·다른 사람에게도 보이게 하려면 data.js 를 내려받아 저장소에 올려주세요.");
     } catch (err) {
       setMsg("저장하지 못했습니다. (시크릿 모드이거나 저장 공간이 가득 찼을 수 있습니다)");
