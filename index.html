@@ -643,7 +643,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   .card{padding:var(--sp-32) var(--sp-24);}
   .card__title{font-size:21px;}
   .extra{padding:var(--sp-32) var(--sp-24);}
-  .cert{grid-template-columns:1fr; gap:4px;}
+  .cert, .rescol .cert{grid-template-columns:1fr; gap:4px;}   /* 2단용 규칙보다 뒤에 와야 이깁니다 */
   .cert__issuer{text-align:left;}
   .essay__title{font-size:22px;}
   .essay__body p{line-height:1.85;}
@@ -990,8 +990,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   function renderResume() {
     var p = D.profile || {};
     var html = "";
-    /* 좌측 칸: 개인 신상정보 → 학력·경력 → 자격증
-       우측 칸: 프로젝트 → 기술 스택 → 기타사항
+    /* 좌측 칸: 개인 신상정보 → 학력·경력 → 자격증 → 기술 스택 → 기타사항
+       우측 칸: 프로젝트
        (화면이 좁아지면 자동으로 한 줄로 쌓입니다) */
     var left = "", right = "";
 
@@ -1048,6 +1048,40 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         }).join("") + '</div>');
     }
 
+    /* 자격증 — 좌측 */
+    if (has(D.certificates)) {
+      left += section("Certificates", "자격증",
+        '<div style="margin-top:32px; border-top:1px solid var(--mist)">' +
+        D.certificates.map(function (c, i) {
+          return '<div class="cert">' +
+            '<div class="cert__date"' + E("certificates." + i + ".date") + '>' + esc(c.date) + '</div>' +
+            '<div class="cert__name"' + E("certificates." + i + ".name") + '>' + esc(c.name) + '</div>' +
+            '<div class="cert__issuer"' + E("certificates." + i + ".issuer") + '>' + esc(c.issuer) + '</div>' +
+          '</div>';
+        }).join("") + '</div>');
+    }
+
+    /* 기술 스택 — 좌측 */
+    if (has(D.skills)) {
+      left  += section("Skills", "기술 스택",
+        '<div class="keys" style="margin-top:32px">' + D.skills.map(function (s, i) {
+          return '<span class="badge badge--line"' + E("skills." + i) + '>' +
+                 esc(s) + '</span>'; }).join("") + '</div>');
+    }
+
+    /* 기타사항 — 좌측 */
+    if (has(D.extras)) {
+      left  += section("Etc.", "기타사항",
+        '<div class="extras">' + D.extras.map(function (g, gi) {
+          return '<div class="extra">' +
+            '<h3 class="extra__title"' + E("extras." + gi + ".group") + '>' + esc(g.group) + '</h3>' +
+            '<ul>' + (g.items || []).map(function (i, ii) {
+              return '<li' + E("extras." + gi + ".items." + ii) + '>' + esc(i) + '</li>';
+            }).join("") + '</ul>' +
+          '</div>';
+        }).join("") + '</div>');
+    }
+
     /* 프로젝트 — 우측 */
     if (has(D.projects)) {
       right += section("Projects", "프로젝트",
@@ -1064,40 +1098,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
               return '<li' + E("projects." + i + ".points." + j) + '>' + esc(t) + '</li>';
             }).join("") + '</ul>' : '') +
           '</article>';
-        }).join("") + '</div>');
-    }
-
-    /* 기술 스택 — 우측 */
-    if (has(D.skills)) {
-      right += section("Skills", "기술 스택",
-        '<div class="keys" style="margin-top:32px">' + D.skills.map(function (s, i) {
-          return '<span class="badge badge--line"' + E("skills." + i) + '>' +
-                 esc(s) + '</span>'; }).join("") + '</div>');
-    }
-
-    /* 자격증 — 좌측 */
-    if (has(D.certificates)) {
-      left += section("Certificates", "자격증",
-        '<div style="margin-top:32px; border-top:1px solid var(--mist)">' +
-        D.certificates.map(function (c, i) {
-          return '<div class="cert">' +
-            '<div class="cert__date"' + E("certificates." + i + ".date") + '>' + esc(c.date) + '</div>' +
-            '<div class="cert__name"' + E("certificates." + i + ".name") + '>' + esc(c.name) + '</div>' +
-            '<div class="cert__issuer"' + E("certificates." + i + ".issuer") + '>' + esc(c.issuer) + '</div>' +
-          '</div>';
-        }).join("") + '</div>');
-    }
-
-    /* 기타사항 — 우측 */
-    if (has(D.extras)) {
-      right += section("Etc.", "기타사항",
-        '<div class="extras">' + D.extras.map(function (g, gi) {
-          return '<div class="extra">' +
-            '<h3 class="extra__title"' + E("extras." + gi + ".group") + '>' + esc(g.group) + '</h3>' +
-            '<ul>' + (g.items || []).map(function (i, ii) {
-              return '<li' + E("extras." + gi + ".items." + ii) + '>' + esc(i) + '</li>';
-            }).join("") + '</ul>' +
-          '</div>';
         }).join("") + '</div>');
     }
 
