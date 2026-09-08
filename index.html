@@ -176,6 +176,16 @@ h1,h2,h3,h4,p{margin:0;}
   padding:var(--sp-64) 0;
 }
 
+/* 캐릭터 그림 — 픽셀이 뭉개지지 않도록 정수배(60px x 4 = 240px)로 표시 */
+.stage__hero{
+  position:relative; z-index:1;
+  width:240px; height:auto;
+  margin:0 auto var(--sp-32);
+  image-rendering:pixelated;
+  image-rendering:-moz-crisp-edges;
+  image-rendering:crisp-edges;
+}
+
 /* 글자 요소 */
 .stage__caption, .stage__title, .stage__cta{position:relative; z-index:1;}
 
@@ -228,10 +238,11 @@ h1,h2,h3,h4,p{margin:0;}
 .mproj__title{font-size:28px; font-weight:500; letter-spacing:-.02em;}
 .mproj__desc{margin-top:12px; font-size:16px; line-height:1.6; color:var(--slate);}
 
-/* ---------- 메인 글자 등장 ---------- */
-.stage__caption{animation:rise .8s ease-out .05s both;}
-.stage__title{animation:rise .9s ease-out .18s both;}
-.stage__cta{animation:rise .8s ease-out .38s both;}
+/* ---------- 메인 등장 순서 ---------- */
+.stage__hero{animation:rise .9s ease-out .05s both;}
+.stage__caption{animation:rise .8s ease-out .22s both;}
+.stage__title{animation:rise .9s ease-out .34s both;}
+.stage__cta{animation:rise .8s ease-out .52s both;}
 
 @keyframes rise{
   from{opacity:0; transform:translateY(16px);}
@@ -508,8 +519,11 @@ body{
 /* 라벨 앞의 작은 나뭇잎 */
 .eyebrow{display:inline-flex; align-items:center; gap:8px;}
 .eyebrow::before{
-  content:""; width:11px; height:11px; flex:none;
-  background:var(--leaf); border-radius:11px 1px 11px 1px; transform:rotate(-8deg);
+  content:""; width:20px; height:20px; flex:none;
+  background:url("images/leaf-icon.png") center / contain no-repeat;
+  image-rendering:pixelated;
+  image-rendering:-moz-crisp-edges;
+  image-rendering:crisp-edges;
 }
 
 /* ---------- 이력서: 좌우 2단 배치 ----------
@@ -627,6 +641,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   .editBtn{padding:8px 14px; font-size:13.5px;}
   .page{padding-top:var(--sp-40); padding-bottom:var(--sp-64);}
   .stage{min-height:44vh; min-height:44dvh; padding:var(--sp-48) 0;}
+  .stage__hero{width:180px; margin-bottom:var(--sp-24);}
   .stage__cta{margin-top:var(--sp-40); padding:14px 28px;}
   .steps{grid-template-columns:1fr;}
   .step{padding:var(--sp-24);}
@@ -905,6 +920,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     /* 가운데 소개 */
     html +=
       '<div class="stage">' +
+        '<img class="stage__hero" src="images/hero-character.png" alt="' +
+          esc((D.site && D.site.name) || "") + ' 캐릭터">' +
         (m.caption ? '<p class="stage__caption"' + E("main.caption") + '>' +
                      esc(m.caption) + '</p>' : '') +
         '<h1 class="stage__title"' + EL("main.headline") + '>' +
@@ -957,6 +974,15 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     html += cta();
     el("page-main").innerHTML = html;
 
+    /* 캐릭터 그림이 없으면 조용히 빼둡니다 */
+    var heroImg = el("page-main").querySelector(".stage__hero");
+    if (heroImg) {
+      heroImg.onerror = function () {
+        if (heroImg.parentNode) { heroImg.parentNode.removeChild(heroImg); }
+      };
+      if (heroImg.complete && !heroImg.naturalWidth) { heroImg.onerror(); }
+    }
+
     /* 아이콘 PNG 가 있으면 그걸 쓰고, 없으면 코드로 그린 그림을 씁니다 */
     var imgs = el("page-main").querySelectorAll(".sec-ico img");
     Array.prototype.forEach.call(imgs, function (im) {
@@ -976,7 +1002,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     var stage = el("page-main").querySelector(".stage");
     if (!stage) { return; }
     var nodes = stage.querySelectorAll(
-      ".stage__caption, .stage__title, .stage__cta");
+      ".stage__hero, .stage__caption, .stage__title, .stage__cta");
     Array.prototype.forEach.call(nodes, function (n) {
       n.style.animation = "none";
       void n.offsetWidth;          /* 강제로 리플로우를 일으켜 애니메이션을 리셋 */
