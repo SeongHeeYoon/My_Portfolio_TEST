@@ -542,7 +542,7 @@ body{
 .h-section{display:flex; align-items:center; gap:12px;}
 .sec-ico{
   position:relative; flex:none;
-  width:42px; height:42px; line-height:0;
+  width:44px; height:44px; line-height:0;
 }
 .sec-ico img, .sec-ico svg{
   position:absolute; top:0; left:0; width:100%; height:100%;
@@ -552,6 +552,7 @@ body{
 }
 .sec-ico img{z-index:2;}                     /* 실제 PNG 가 있으면 그게 위로 */
 .sec-ico svg{z-index:1;}
+.sec-ico.has-img svg{display:none;}          /* PNG 가 떴으면 대체 그림은 숨김 */
 
 /* 라벨 앞의 작은 나뭇잎 */
 .eyebrow{display:inline-flex; align-items:center; gap:8px;}
@@ -671,6 +672,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   .photo{max-width:100%;}
   .hero__tagline{font-size:26px; letter-spacing:-.02em;}
   .h-section{font-size:26px;}
+  .sec-ico{width:33px; height:33px;}
   .row{grid-template-columns:1fr; gap:4px; padding:14px 0;}
   .row dt{font-size:13px;}
   .card{padding:var(--sp-32) var(--sp-24);}
@@ -905,7 +907,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     }
     iconSVGCache =
       '<span class="sec-ico" aria-hidden="true">' +
-        '<img src="images/section-icon.png" alt="" onerror="this.remove()">' +
+        '<img src="images/section-icon.png" alt="">' +
         '<svg viewBox="0 0 18 18" shape-rendering="crispEdges" focusable="false">' +
           rects +
         '</svg>' +
@@ -1078,6 +1080,19 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     if (stem && stem.getTotalLength) {
       stem.style.setProperty("--len", Math.ceil(stem.getTotalLength()));
     }
+
+    /* 아이콘 PNG 가 있으면 그걸 쓰고, 없으면 코드로 그린 그림을 씁니다 */
+    var imgs = el("page-main").querySelectorAll(".sec-ico img");
+    Array.prototype.forEach.call(imgs, function (im) {
+      function ok() { im.parentNode.className = "sec-ico has-img"; }
+      function fail() { if (im.parentNode) { im.parentNode.removeChild(im); } }
+      if (im.complete) {
+        if (im.naturalWidth) { ok(); } else { fail(); }
+      } else {
+        im.onload = ok;
+        im.onerror = fail;
+      }
+    });
   }
 
   /* 메인으로 돌아왔을 때 애니메이션을 처음부터 다시 재생 */
