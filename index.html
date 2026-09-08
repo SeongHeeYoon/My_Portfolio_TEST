@@ -623,8 +623,41 @@ body{
   overflow-y:auto; -webkit-overflow-scrolling:touch;
 }
 .pjpage__title{font-size:26px; font-weight:700; letter-spacing:-.02em; margin-bottom:var(--sp-24);}
+.pjpage__body > *{margin-bottom:var(--sp-24);}
+.pjpage__body > *:last-child{margin-bottom:0;}
 .pjpage__body p{font-size:16px; line-height:1.9; color:var(--abyssal); max-width:64ch;}
-.pjpage__body p + p{margin-top:var(--sp-24);}
+
+/* 영상 (유튜브) */
+.pjvideo{
+  position:relative; width:100%; aspect-ratio:16/9;
+  border-radius:16px; overflow:hidden; background:#000; border:2px solid var(--mist);
+}
+@supports not (aspect-ratio:1/1){ .pjvideo{height:0; padding-bottom:56.25%;} }
+.pjvideo iframe{position:absolute; top:0; left:0; width:100%; height:100%; border:0;}
+
+/* 그림 */
+.pjfig{margin:0;}
+.pjfig img{
+  width:100%; height:auto; display:block;
+  border:2px solid var(--mist); border-radius:14px; background:#fff;
+}
+.pjfig figcaption{display:none; margin-top:8px; font-size:13px; color:var(--graphite);}
+.pjfig.is-missing{
+  border:2px dashed var(--vapor); border-radius:14px; padding:24px; text-align:center; background:var(--ash);
+}
+.pjfig.is-missing figcaption{display:block; margin:0;}
+
+/* 링크 버튼 */
+.pjlinks{display:flex; flex-wrap:wrap; gap:10px;}
+.pjlink{
+  display:inline-flex; align-items:center; gap:7px;
+  padding:12px 20px; border-radius:var(--r-pill);
+  background:var(--leaf); color:#fffdfa; font-size:15px; font-weight:700;
+  box-shadow:0 4px 0 var(--leaf-dark);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.pjlink:hover{transform:translateY(-2px); box-shadow:0 6px 0 var(--leaf-dark);}
+.pjlink:active{transform:translateY(3px); box-shadow:none;}
 .pjpage__body .hl{
   font-weight:700; color:var(--obsidian);
   background:linear-gradient(transparent 58%, rgba(230,164,110,.42) 58%);
@@ -946,6 +979,67 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   var mark = function (s) {
     return br(s).replace(HL_RE, '<strong class="hl">$1</strong>');
   };
+
+  /* =========================================================================
+     프로젝트 소개 창의 본문 렌더러 — 글 + 영상 + 이미지 + 링크
+     본문 한 줄(문단)이 아래 표시로 시작하면 특별 블록이 됩니다.
+       @video <유튜브 주소>          → 영상 재생 창
+       @image <이미지 경로>          → 그림
+       @link  <주소> | <버튼 글자>   → 눌러서 이동하는 버튼 (여러 줄 나열 가능)
+     나머지는 일반 문단이며 **문장** 으로 감싸면 강조됩니다.
+     ========================================================================= */
+  function ytId(u) {
+    var m = String(u).match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
+    if (m) { return m[1]; }
+    return /^[\w-]{11}$/.test(String(u).trim()) ? String(u).trim() : "";
+  }
+  function videoBlock(u) {
+    var id = ytId(u);
+    if (!id) { return '<p>' + esc(u) + '</p>'; }
+    return '<div class="pjvideo"><iframe src="https://www.youtube.com/embed/' + id +
+      '" title="소개 영상" frameborder="0" loading="lazy" allowfullscreen ' +
+      'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">' +
+      '</iframe></div>';
+  }
+  function imageBlock(path) {
+    return '<figure class="pjfig"><img src="' + esc(path) + '" alt="" loading="lazy" ' +
+      'onerror="this.style.display=\'none\'; this.parentNode.classList.add(\'is-missing\');">' +
+      '<figcaption>이미지를 불러오지 못했습니다 — ' + esc(path) + '</figcaption></figure>';
+  }
+  function linkBlock(lines) {
+    var html = lines.map(function (line) {
+      var m = line.match(/^@link\s+(\S+)\s*(?:\|\s*(.+))?$/i);
+      if (!m) { return ""; }
+      return '<a class="pjlink" href="' + esc(m[1]) + '" target="_blank" rel="noopener">' +
+        esc((m[2] || m[1]).trim()) + '<span aria-hidden="true">↗</span></a>';
+    }).join("");
+    return '<div class="pjlinks">' + html + '</div>';
+  }
+  function renderBody(text) {
+    var blocks = String(text == null ? "" : text)
+      .replace(/\r\n?/g, "\n").split(/\n{2,}/);
+    return blocks.map(function (blk) {
+      var t = blk.replace(/^\n+|\n+$/g, "");
+      if (!t.trim()) { return ""; }
+      var head = t.trim();
+      if (/^@video\s+/i.test(head)) { return videoBlock(head.replace(/^@video\s+/i, "").trim()); }
+      if (/^@image\s+/i.test(head)) { return imageBlock(head.replace(/^@image\s+/i, "").trim()); }
+      if (/^@link\s+/i.test(head)) {
+        return linkBlock(t.split(/\n/).filter(function (l) { return /^@link\s+/i.test(l.trim()); })
+          .map(function (l) { return l.trim(); }));
+      }
+      return '<p>' + mark(t) + '</p>';
+    }).join("");
+  }
+  /* 편집 모드에서는 위 표시들을 '글자 그대로' 고칠 수 있게 원본을 문단별로 보여줍니다 */
+  function rawBody(text) {
+    var t = String(text == null ? "" : text).trim();
+    if (!t) { return '<p></p>'; }
+    return t.replace(/\r\n?/g, "\n").split(/\n{2,}/).map(function (b) {
+      return '<p>' + br(b.replace(/^\n+|\n+$/g, "")) + '</p>';
+    }).join("");
+  }
+
   /* 큰 제목용: 넓은 화면에서는 줄바꿈, 모바일에서는 이어 붙임 */
   var lines = function (s) {
     return String(s == null ? "" : s).split(/\n/).map(function (t) {
@@ -1431,18 +1525,23 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     /* 우측 내용 */
     var base = pjBase + ".detail." + pjTab;
     var body = String(page.body || "").trim();
-    /* 내용이 비어 있어도 편집할 수 있도록 본문 칸은 항상 만들어 둡니다.
-       비어 있을 때는 그 아래에 안내 상자를 함께 보여줍니다. (편집 중에는 숨김) */
-    var paras = body
-      ? body.split(SPLIT_RE).map(function (t) { return '<p>' + mark(t) + '</p>'; }).join("")
-      : '<p></p>';
-    var inner = '<div class="pjpage__body"' + EM(base + ".body") + '>' + paras + '</div>' +
-      (body ? '' :
-        '<div class="pjpage__empty"><b>내용 준비 중입니다</b>' +
-        'data.js 의 <code>mainProjects</code> 안 <code>detail</code> 에서 ' +
-        '이 항목의 <code>body</code> 에 내용을 적어주세요. ' +
-        '문단은 빈 줄로 나누고, <code>**문장**</code> 으로 감싸면 강조됩니다.<br>' +
-        '우측 상단 <code>수정</code> 으로 로그인하면 이 창에서 바로 입력할 수도 있습니다.</div>');
+    var inner;
+    if (editing) {
+      /* 편집 중: 영상·이미지·링크 표시를 '글자 그대로' 고칠 수 있게 원본을 보여줍니다 */
+      inner = '<div class="pjpage__body"' + EM(base + ".body") + '>' + rawBody(body) + '</div>' +
+        (body ? '' :
+          '<div class="pjpage__empty"><b>내용 준비 중입니다</b>' +
+          '점선 칸에 내용을 입력하세요. 문단은 빈 줄로 나누고, ' +
+          '<code>**문장**</code> 강조 / <code>@video 주소</code> / ' +
+          '<code>@image 경로</code> / <code>@link 주소 | 글자</code> 를 쓸 수 있습니다.</div>');
+    } else {
+      /* 보기 모드: 영상·이미지·링크를 실제로 렌더링합니다 */
+      inner = '<div class="pjpage__body">' + (body ? renderBody(body) : "") + '</div>' +
+        (body ? '' :
+          '<div class="pjpage__empty"><b>내용 준비 중입니다</b>' +
+          'data.js 의 <code>detail</code> 에서 이 항목의 <code>body</code> 에 내용을 적어주세요. ' +
+          '우측 상단 <code>수정</code> 으로 로그인하면 이 창에서 바로 입력할 수도 있습니다.</div>');
+    }
     el("pjContent").innerHTML =
       '<h3 class="pjpage__title"' + E(base + ".title") + '>' + esc(page.title || "") + '</h3>' +
       inner;

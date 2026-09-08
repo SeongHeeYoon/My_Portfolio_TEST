@@ -9,6 +9,17 @@
  *    - 줄바꿈이 필요하면 글자 사이에 \n 을 넣으세요.
  *  ========================================================================== */
 
+/* ==========================================================================
+ *  HighNum 소개 창 내용 — 대표 프로젝트(메인)와 포트폴리오의 HighNum 박스가
+ *  이 내용을 함께 사용합니다. 여기 한 곳만 고치면 두 곳에 모두 반영됩니다.
+ *  body 표시법:  **문장** 강조 /  @video 주소  /  @image 경로  /  @link 주소 | 글자
+ * ========================================================================== */
+const HIGHNUM_DETAIL = [
+  { title: "프로젝트 소개", body: "@video https://www.youtube.com/watch?v=mYlwMKpCUC0\n\n**주사위를 장전하고 적을 향해 쏘아라!**\n\n주사위를 활용한 도파민 로그라이크 액션 게임" },
+  { title: "담당 작업",     body: "**Project HighNum**\n\nProject HighNum 에서 전투 시스템과 스테이지 구성을 담당하였습니다.\n\n@image images/highnum-battle.png\n\nHighNum 전투 시스템은 시간 제한 없이 깊이 있는 전략과 전술을 세울 수 있으며 여유롭게 플레이가 가능한 턴제 전투 시스템을 채용하였습니다.\n\n@image images/highnum-stage.png\n\n스테이지 구성에 있어 초반에는 난이도별로 쉬움 / 보통 / 어려움으로 나누어 플레이어가 선택할 수 있도록 하였으며 각각의 난이도별로 이벤트 칸들을 구성하여 난이도가 체감되도록 유도하였습니다.\n\n해당 기획에 있어 HighNum 게임의 컨셉 중 하나인 전략과 전술을 강화하기 위해 노력을 하였습니다." },
+  { title: "게임 출시",     body: "**HighNum 을 직접 플레이해보세요**\n\nitch.io 에서 플레이할 수 있으며, 개발 스튜디오 유튜브에서 더 많은 영상을 볼 수 있습니다.\n\n@link https://panasaga.itch.io/highnum | itch.io 에서 플레이하기\n@link https://www.youtube.com/@HIGHNUMstudio | HIGHNUM Studio 유튜브" },
+];
+
 const DATA = {
 
   /* ==========================================================================
@@ -69,11 +80,7 @@ const DATA = {
       title: "HighNum",
       desc:  "주사위를 장전하고 적을 향해 쏘아라!",
       cover: "images/highnum-cover.png",
-      detail: [
-        { title: "프로젝트 소개", body: "" },
-        { title: "담당 작업",     body: "" },
-        { title: "게임 출시",     body: "" },
-      ],
+      detail: HIGHNUM_DETAIL,   // 내용은 위쪽 HIGHNUM_DETAIL 에서 함께 관리됩니다
     },
     { title: "City Rush", desc: "3D 레이싱 탈출 게임" },
   ],
@@ -316,11 +323,7 @@ const DATA = {
       title:   "HighNum",
       summary: "주사위를 장전하고 적을 향해 쏘아라!",
       cover:   "images/highnum-cover.png",
-      detail: [
-        { title: "작품 소개",   body: "" },
-        { title: "담당 작업",   body: "" },
-        { title: "게임 출시",   body: "" },
-      ],
+      detail: HIGHNUM_DETAIL,   // 대표 프로젝트의 HighNum 과 같은 내용을 함께 사용
     },
     {
       title:   "CityRush",
