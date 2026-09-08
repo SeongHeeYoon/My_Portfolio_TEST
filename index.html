@@ -541,6 +541,105 @@ body{
   background:url("images/leaf-icon.png") center / contain no-repeat;
 }
 
+/* ---------- 대표 프로젝트: 그림이 들어간 블럭형 박스 ---------- */
+.pjbox{
+  display:block; width:100%; text-align:left;
+  background:var(--bone); border:2px solid var(--mist);
+  border-radius:var(--r-card); overflow:hidden;
+  box-shadow:0 5px 0 var(--shadow);
+  transition:transform .16s ease, box-shadow .16s ease;
+  cursor:pointer;
+}
+.pjbox:hover{transform:translateY(-3px); box-shadow:0 8px 0 var(--shadow);}
+.pjbox:active{transform:translateY(2px); box-shadow:0 2px 0 var(--shadow);}
+.pjbox__img{display:block; width:100%; height:auto; background:var(--ash);}
+.pjbox__foot{padding:var(--sp-24) var(--sp-32) var(--sp-32);}
+.pjbox__desc{
+  font-size:20px; font-weight:700; line-height:1.4; letter-spacing:-.02em;
+  color:var(--obsidian);
+}
+.pjbox__more{
+  display:inline-flex; align-items:center; gap:6px;
+  margin-top:14px; font-size:14px; color:var(--slate);
+}
+.pjbox__more::after{content:"→";}
+
+/* ---------- 프로젝트 소개 창 ---------- */
+.pjmodal{
+  position:fixed; top:0; left:0; right:0; bottom:0; z-index:110;
+  display:flex; align-items:center; justify-content:center; padding:24px;
+  background:rgba(60,50,40,.42);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.pjmodal[hidden]{display:none !important;}
+.pjmodal__box{
+  width:100%; max-width:920px; max-height:86vh; max-height:86dvh;
+  display:flex; flex-direction:column;
+  background:var(--bone); border:3px solid var(--mist); border-radius:32px;
+  box-shadow:0 8px 0 var(--shadow); overflow:hidden;
+}
+.pjmodal__bar{
+  display:flex; align-items:center; gap:var(--sp-16);
+  padding:20px var(--sp-32); border-bottom:2px solid var(--mist);
+  background:var(--ash);
+}
+.pjmodal__title{font-size:22px; font-weight:700; letter-spacing:-.02em; margin-right:auto;}
+.pjmodal__close{
+  width:38px; height:38px; flex:none; border-radius:var(--r-pill);
+  border:2px solid var(--mist); background:var(--bone); color:var(--slate);
+  font-size:16px; line-height:1;
+}
+.pjmodal__close:hover{background:var(--ash);}
+
+.pjmodal__main{display:flex; min-height:0; flex:1;}
+
+/* 좌측 목차 */
+.pjmodal__toc{
+  flex:none; width:210px; padding:var(--sp-24) var(--sp-16);
+  border-right:2px dashed var(--mist); overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.pjtoc{
+  display:block; width:100%; text-align:left;
+  padding:12px 16px; margin-bottom:6px; border-radius:16px;
+  font-size:15px; color:var(--slate); line-height:1.4;
+  transition:background .16s ease, color .16s ease;
+}
+.pjtoc:hover{background:var(--ash);}
+.pjtoc[aria-selected="true"]{background:var(--leaf); color:#fffdfa; font-weight:700;}
+
+/* 우측 내용 */
+.pjmodal__content{
+  flex:1; min-width:0; padding:var(--sp-32) var(--sp-40);
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+}
+.pjpage__title{font-size:26px; font-weight:700; letter-spacing:-.02em; margin-bottom:var(--sp-24);}
+.pjpage__body p{font-size:16px; line-height:1.9; color:var(--abyssal); max-width:64ch;}
+.pjpage__body p + p{margin-top:var(--sp-24);}
+.pjpage__body .hl{
+  font-weight:700; color:var(--obsidian);
+  background:linear-gradient(transparent 58%, rgba(155,187,130,.38) 58%);
+  padding:0 2px; border-radius:2px;
+}
+.pjpage__empty{
+  border:2px dashed var(--vapor); border-radius:var(--r-card);
+  padding:var(--sp-48) var(--sp-32); color:var(--graphite); font-size:15px; line-height:1.7;
+}
+.pjpage__empty b{display:block; font-size:17px; color:var(--abyssal); margin-bottom:8px; font-weight:700;}
+.pjpage__empty code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13px;
+  background:var(--ash); padding:2px 6px; border-radius:6px; color:var(--abyssal);
+}
+
+body.pj-open{overflow:hidden;}
+
+/* 편집 중: 안내 상자는 숨기고, 빈 본문도 눌러서 입력할 수 있게 */
+body.editing .pjpage__empty{display:none;}
+body.editing .pjpage__body{min-height:150px;}
+body.editing .pjpage__body p:only-child:empty::before{
+  content:"여기에 내용을 입력하세요"; color:var(--fog);
+}
+
 /* ---------- 이력서: 좌우 2단 배치 ----------
  * 좌측 = 개인 신상정보 / 학력·경력 / 자격증
  * 우측 = 프로젝트 / 기술 스택 / 기타사항
@@ -663,6 +762,22 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   .tour__row{grid-template-columns:1fr auto; gap:4px 12px; padding:16px 0;}
   .tour__period{grid-column:1 / -1; font-size:13px;}
   .mproj__card{padding:var(--sp-32) var(--sp-24);}
+  .pjbox__foot{padding:var(--sp-16) var(--sp-24) var(--sp-24);}
+  .pjbox__desc{font-size:17px;}
+  .pjmodal{padding:12px;}
+  .pjmodal__box{max-height:92vh; max-height:92dvh; border-radius:24px;}
+  .pjmodal__bar{padding:16px var(--sp-24);}
+  .pjmodal__title{font-size:19px;}
+  .pjmodal__main{flex-direction:column;}
+  .pjmodal__toc{
+    width:100%; display:flex; gap:6px; padding:12px var(--sp-16);
+    border-right:0; border-bottom:2px dashed var(--mist);
+    overflow-x:auto; overflow-y:visible;
+  }
+  /* 가로 탭이므로 글자 길이만큼만 차지하게 (기본값 width:100% 를 되돌립니다) */
+  .pjtoc{width:auto; flex:0 0 auto; margin-bottom:0; padding:10px 14px; font-size:14px; white-space:nowrap;}
+  .pjmodal__content{padding:var(--sp-24);}
+  .pjpage__title{font-size:22px;}
   .mproj__title{font-size:24px;}
   .photo{max-width:100%;}
   .hero__tagline{font-size:26px; letter-spacing:-.02em;}
@@ -697,7 +812,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
    인쇄 / PDF 저장  (Safari: 공유 → 프린트 → PDF로 저장)
    =========================================================================== */
 @media print{
-  .topbar,.cta,.editbar,.modal,.override{display:none !important;}
+  .topbar,.cta,.editbar,.modal,.pjmodal,.override{display:none !important;}
   body{background:#fff; padding-bottom:0;}
   .page--main{display:none !important;}
   .page[hidden]:not(.page--main){display:block !important;}  /* 나머지 페이지 모두 출력 */
@@ -777,6 +892,20 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   </form>
 </div>
 
+<!-- ======================= 프로젝트 소개 창 ======================= -->
+<div class="pjmodal" id="pjModal" hidden role="dialog" aria-modal="true" aria-labelledby="pjTitle">
+  <div class="pjmodal__box">
+    <div class="pjmodal__bar">
+      <h2 class="pjmodal__title" id="pjTitle"></h2>
+      <button class="pjmodal__close" id="pjClose" type="button" aria-label="닫기">✕</button>
+    </div>
+    <div class="pjmodal__main">
+      <nav class="pjmodal__toc" id="pjToc" aria-label="프로젝트 목차"></nav>
+      <div class="pjmodal__content" id="pjContent"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ======================= 편집 도구막대 ======================= -->
 <div class="editbar" id="editBar" hidden>
   <span class="editbar__msg" id="editMsg">점선으로 표시된 글자를 눌러 바로 고치세요.</span>
@@ -795,6 +924,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
      도우미
      ========================================================================= */
   var STAR = String.fromCharCode(42);   /* 별표 문자 */
+  /* 빈 줄로 문단을 나누는 규칙 */
+  var SPLIT_RE = new RegExp(String.fromCharCode(92) + "n{2,}");
   var esc = function (s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -979,10 +1110,23 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         }).join("") + '</div>', null, true);
     }
 
-    /* Project */
+    /* Project — cover 가 있으면 그림 블럭, detail 이 있으면 눌러서 소개 창 */
     if (has(D.mainProjects)) {
       html += section("Project", "대표 프로젝트",
         '<div class="mproj">' + D.mainProjects.map(function (p, i) {
+          var clickable = has(p.detail);
+          if (p.cover) {
+            return '<' + (clickable ? 'button' : 'div') + ' class="pjbox"' +
+              (clickable ? ' type="button" data-project="' + i + '"' +
+                           ' aria-label="' + esc(p.title) + ' 자세히 보기"' : '') + '>' +
+              '<img class="pjbox__img" src="' + esc(p.cover) + '" alt="' + esc(p.title) + '">' +
+              '<div class="pjbox__foot">' +
+                '<p class="pjbox__desc"' + E("mainProjects." + i + ".desc") + '>' +
+                  esc(p.desc) + '</p>' +
+                (clickable ? '<span class="pjbox__more">자세히 보기</span>' : '') +
+              '</div>' +
+            '</' + (clickable ? 'button' : 'div') + '>';
+          }
           return '<article class="mproj__card">' +
             '<h3 class="mproj__title"' + E("mainProjects." + i + ".title") + '>' +
               esc(p.title) + '</h3>' +
@@ -1252,6 +1396,95 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     renderPortfolio();
     if (editing) { markEditable(true); }
   }
+
+  /* =========================================================================
+     프로젝트 소개 창
+     좌측 목차를 누르면 오른쪽 내용이 바뀝니다. 내용은 data.js 의
+     mainProjects[i].detail 에서 가져옵니다.
+     ========================================================================= */
+  var pjIndex = -1;   /* 지금 열려 있는 프로젝트 */
+  var pjTab   = 0;    /* 지금 보고 있는 목차 번호 */
+  var pjLastFocus = null;
+
+  function pjRender() {
+    var proj = D.mainProjects[pjIndex];
+    var pages = proj.detail || [];
+    var page = pages[pjTab] || {};
+
+    /* 좌측 목차 */
+    el("pjToc").innerHTML = pages.map(function (pg, i) {
+      return '<button class="pjtoc" type="button" role="tab" data-tab="' + i + '"' +
+             ' aria-selected="' + (i === pjTab ? "true" : "false") + '">' +
+             esc(pg.title) + '</button>';
+    }).join("");
+
+    /* 우측 내용 */
+    var base = "mainProjects." + pjIndex + ".detail." + pjTab;
+    var body = String(page.body || "").trim();
+    /* 내용이 비어 있어도 편집할 수 있도록 본문 칸은 항상 만들어 둡니다.
+       비어 있을 때는 그 아래에 안내 상자를 함께 보여줍니다. (편집 중에는 숨김) */
+    var paras = body
+      ? body.split(SPLIT_RE).map(function (t) { return '<p>' + mark(t) + '</p>'; }).join("")
+      : '<p></p>';
+    var inner = '<div class="pjpage__body"' + EM(base + ".body") + '>' + paras + '</div>' +
+      (body ? '' :
+        '<div class="pjpage__empty"><b>내용 준비 중입니다</b>' +
+        'data.js 의 <code>mainProjects</code> 안 <code>detail</code> 에서 ' +
+        '이 항목의 <code>body</code> 에 내용을 적어주세요. ' +
+        '문단은 빈 줄로 나누고, <code>**문장**</code> 으로 감싸면 강조됩니다.<br>' +
+        '우측 상단 <code>수정</code> 으로 로그인하면 이 창에서 바로 입력할 수도 있습니다.</div>');
+    el("pjContent").innerHTML =
+      '<h3 class="pjpage__title"' + E(base + ".title") + '>' + esc(page.title || "") + '</h3>' +
+      inner;
+    el("pjContent").scrollTop = 0;
+
+    if (editing) { markEditable(true); }
+  }
+
+  function pjOpen(i) {
+    if (!D.mainProjects || !D.mainProjects[i] || !has(D.mainProjects[i].detail)) { return; }
+    pjIndex = i; pjTab = 0;
+    pjLastFocus = document.activeElement;
+    el("pjTitle").textContent = D.mainProjects[i].title || "";
+    pjRender();
+    el("pjModal").hidden = false;
+    document.body.classList.add("pj-open");
+    setTimeout(function () {
+      var first = el("pjToc").querySelector(".pjtoc");
+      if (first) { first.focus(); }
+    }, 30);
+  }
+
+  function pjClose() {
+    el("pjModal").hidden = true;
+    document.body.classList.remove("pj-open");
+    pjIndex = -1;
+    if (pjLastFocus && pjLastFocus.focus) { pjLastFocus.focus(); }
+  }
+
+  /* 박스를 누르면 열기 (화면을 다시 그려도 계속 동작하도록 document 에 붙입니다) */
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest) { return; }
+    var box = e.target.closest("[data-project]");
+    /* 편집 중에도 열 수 있게 하되, 글자를 고치려고 누른 것은 그대로 둡니다 */
+    if (box && !(editing && e.target.closest("[data-edit]"))) {
+      pjOpen(parseInt(box.getAttribute("data-project"), 10));
+      return;
+    }
+    var tab = e.target.closest(".pjtoc");
+    if (tab && pjIndex > -1) {
+      pjTab = parseInt(tab.getAttribute("data-tab"), 10) || 0;
+      pjRender();
+    }
+  });
+
+  el("pjClose").addEventListener("click", pjClose);
+  el("pjModal").addEventListener("click", function (e) {
+    if (e.target === el("pjModal")) { pjClose(); }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !el("pjModal").hidden) { pjClose(); }
+  });
 
   /* =========================================================================
      페이지 전환 (주소창 #main / #resume / #cover / #portfolio 로 바로 링크 가능)
