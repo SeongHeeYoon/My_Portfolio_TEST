@@ -30,11 +30,33 @@
    DESIGN TOKENS — Sprig (warm editorial, near-monochrome)
    =========================================================================== */
 :root{
-  --abyssal:#0b2330;  --bone:#faf9f8;  --obsidian:#141312; --espresso:#272420;
-  --ash:#f3f3f3;      --mist:#e8e7e6;  --vapor:#dddcd9;    --pebble:#c4c4bc;
-  --fog:#9a9a91;      --graphite:#6e6d6a; --slate:#575653; --coffee:#322e2a;
+  /* --- 동물의 숲 느낌의 따뜻한 마을 팔레트 --- */
+  --abyssal:#5b4632;   /* 본문 글자 — 따뜻한 갈색 */
+  --obsidian:#4a3826;  /* 제목 */
+  --slate:#7d6a4e;     /* 보조 글자 */
+  --graphite:#9c855f;  /* 라벨 */
+  --fog:#b09a76;
+  --pebble:#c9b189;
+
+  --bone:#fffaf0;      /* 패널(카드) 바탕 — 크림색 */
+  --ash:#fdf3e0;       /* 한 단계 진한 크림 */
+  --mist:#e7d3ae;      /* 테두리 */
+  --vapor:#dcc49b;     /* 옅은 테두리 */
+
+  --canvas:#f7ecd5;    /* 페이지 바탕 — 모래빛 */
+  --leaf:#7fae4e;      /* 나뭇잎 초록 (주요 버튼) */
+  --leaf-dark:#5f8a37; /* 초록 그림자 */
+  --wood:#8a6242;      /* 나무 안내판 */
+  --wood-dark:#6b482f;
+  --peach:#e08a3c;     /* 강조 주황 */
+  --shadow:rgba(176,144,96,.30);   /* 스티커 그림자 */
+
+  --espresso:#7fae4e;  /* (기존 이름 유지) 채움 버튼 = 나뭇잎 초록 */
+  --coffee:#8a6242;    /* (기존 이름 유지) 나무색 */
+  --carbon:#000000;
+
   --dusk:#efdcb6;     --ember:#eba370; --twilight:#7d7a8f;
-  --gradient-warm:linear-gradient(150deg, #efdcb6 0%, #eba370 48%, #7d7a8f 100%);
+  --gradient-warm:linear-gradient(150deg, #efdcb6 0%, #eba370 48%, #b98db0 100%);
 
   --font:'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
          'Malgun Gothic', system-ui, sans-serif;
@@ -43,10 +65,10 @@
   --sp-48:48px; --sp-64:64px; --sp-80:80px; --sp-96:96px;
 
   --max:1080px;
-  --r-pill:999px; --r-card:40px; --r-badge:4px; --r-hero:100px;
+  --r-pill:999px; --r-card:28px; --r-badge:999px; --r-hero:40px;
 
   --pad-x:32px;             /* 좌우 여백 (모바일에서 줄어듭니다) */
-  --section-gap:80px;
+  --section-gap:32px;
 }
 
 /* ===========================================================================
@@ -161,7 +183,7 @@ h1,h2,h3,h4,p{margin:0;}
   height:94%; max-height:600px; width:auto;
   transform:translate(-50%,-50%);
   z-index:0; pointer-events:none;
-  opacity:.62;
+  opacity:.55;
 }
 .stage__art svg{height:100%; width:auto; display:block; overflow:visible;}
 
@@ -244,8 +266,8 @@ h1,h2,h3,h4,p{margin:0;}
 
 @keyframes seedGrow{
   0%  {transform:translate(-50%,-50%) scale(.14); opacity:0;}
-  30% {opacity:.62;}
-  100%{transform:translate(-50%,-50%) scale(1);   opacity:.62;}
+  30% {opacity:.55;}
+  100%{transform:translate(-50%,-50%) scale(1);   opacity:.55;}
 }
 @keyframes draw{
   from{stroke-dashoffset:var(--len,600);}
@@ -472,6 +494,144 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
 .override button{text-decoration:underline; font-size:14px;}
 
 /* ===========================================================================
+   ANIMAL CROSSING LAYER — 마을 게시판 느낌
+   둥근 모서리 + 두꺼운 테두리 + 아래로 떨어지는 '스티커 그림자' 가 핵심입니다.
+   =========================================================================== */
+
+/* 바탕: 모래빛 + 아주 옅은 점무늬 */
+body{
+  background-color:var(--canvas);
+  background-image:radial-gradient(circle at 10px 10px, rgba(150,118,74,.09) 2px, transparent 2px);
+  background-size:22px 22px;
+}
+
+/* ---------- 상단 안내판 ---------- */
+.topbar{
+  background:rgba(255,250,240,.94);
+  border-bottom:3px solid var(--mist);
+}
+.tabs{
+  border:2px solid var(--mist); background:var(--bone);
+  box-shadow:0 3px 0 var(--shadow);
+}
+.tab{border-radius:var(--r-pill);}
+.tab[aria-selected="true"]{background:var(--leaf); color:#fffdf5;}
+.editBtn{
+  border:2px solid var(--mist); background:var(--bone);
+  box-shadow:0 3px 0 var(--shadow);
+}
+.editBtn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--shadow);}
+.editBtn.is-on{background:var(--peach); color:#fffdf5; border-color:#c26f24;}
+
+/* ---------- 섹션 = 게시판 카드 ---------- */
+.section{
+  background:var(--bone);
+  border:2px solid var(--mist);
+  border-radius:32px;
+  padding:var(--sp-40);
+  margin-top:var(--sp-32);
+  box-shadow:0 5px 0 var(--shadow);
+}
+.section + .section{
+  border-top:2px solid var(--mist);   /* 헤어라인 대신 카드 테두리로 */
+  margin-top:var(--sp-32);
+  padding-top:var(--sp-40);
+}
+
+/* 소제목 + 두루마리 아이콘 */
+.h-section{display:flex; align-items:center; gap:12px;}
+.sec-ico{
+  position:relative; flex:none;
+  width:42px; height:42px; line-height:0;
+}
+.sec-ico img, .sec-ico svg{
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  image-rendering:pixelated;                 /* 픽셀 그림이 뭉개지지 않도록 */
+  image-rendering:-moz-crisp-edges;
+  image-rendering:crisp-edges;
+}
+.sec-ico img{z-index:2;}                     /* 실제 PNG 가 있으면 그게 위로 */
+.sec-ico svg{z-index:1;}
+
+/* 라벨 앞의 작은 나뭇잎 */
+.eyebrow{display:inline-flex; align-items:center; gap:8px;}
+.eyebrow::before{
+  content:""; width:11px; height:11px; flex:none;
+  background:var(--leaf); border-radius:11px 1px 11px 1px; transform:rotate(-8deg);
+}
+
+/* ---------- 구분선은 점선으로 (게시판 느낌) ---------- */
+.rows, .tl, .tour{border-top:2px dashed var(--mist);}
+.row, .tl__item, .cert, .tour__row{border-bottom:2px dashed var(--mist);}
+.essay{border-top:2px dashed var(--mist);}
+.essay__item{border-bottom:2px dashed var(--mist);}
+.card__points{border-top:2px dashed var(--vapor);}
+
+/* ---------- 카드류: 둥글게 + 스티커 그림자 ---------- */
+.card, .step, .extra, .mproj__card, .pf__card{
+  background:var(--ash);
+  border:2px solid var(--mist);
+  border-radius:var(--r-card);
+  box-shadow:0 4px 0 var(--shadow);
+}
+.empty{border:2px dashed var(--vapor); background:var(--ash);}
+
+/* ---------- 배지 = 동글동글한 알약 ---------- */
+.badge{
+  background:#eef6e2; color:#4f7a2e;
+  border:2px solid #d5e8c2; border-radius:var(--r-pill);
+  padding:5px 13px;
+}
+.badge--line{background:var(--bone); border-color:var(--mist); color:var(--slate);}
+.card__tags .badge, .pf__tags .badge{background:var(--bone); border-color:var(--mist); color:var(--slate);}
+
+/* ---------- 버튼 ---------- */
+.btn{border-radius:var(--r-pill);}
+.btn--fill{background:var(--leaf); color:#fffdf5; box-shadow:0 4px 0 var(--leaf-dark);}
+.btn--ghost{
+  background:var(--bone); border:2px solid var(--mist); color:var(--abyssal);
+  box-shadow:0 4px 0 var(--shadow);
+}
+.btn--onDark{border:2px solid rgba(255,250,240,.55); color:#fffdf5;}
+.btn:active{transform:translateY(3px); box-shadow:none; opacity:1;}
+
+/* ---------- 메인 큰 글자 ---------- */
+.stage__title{text-shadow:0 0 26px rgba(255,250,240,.94), 0 2px 0 rgba(255,250,240,.9);}
+.stage__caption{text-shadow:0 0 16px rgba(255,250,240,.96), 0 0 6px rgba(255,250,240,.96);}
+.stage__cta{box-shadow:0 5px 0 var(--leaf-dark);}
+
+/* ---------- 프로필 사진 액자 ---------- */
+.photo{border:3px solid var(--mist); box-shadow:0 5px 0 var(--shadow);}
+
+/* ---------- 하단 배너 = 나무 게시판 ---------- */
+.cta{
+  background:var(--wood); color:#fff7e8;
+  border:3px solid var(--wood-dark);
+  border-radius:36px;
+  box-shadow:0 6px 0 rgba(107,72,47,.45);
+  position:relative;
+}
+.cta::after{                       /* 안쪽 점선 = 공지 종이 느낌 */
+  content:""; position:absolute; top:14px; right:14px; bottom:14px; left:14px;
+  border:2px dashed rgba(255,247,232,.32); border-radius:26px; pointer-events:none;
+}
+.cta .btn--fill{background:#fff7e8; color:var(--wood); box-shadow:0 4px 0 rgba(107,72,47,.5);}
+
+/* ---------- 편집 도구막대 ---------- */
+.editbar{background:var(--wood); border-top:3px solid var(--wood-dark);}
+.editbar .btn--fill{background:#fff7e8; color:var(--wood); box-shadow:0 3px 0 rgba(107,72,47,.5);}
+.override{background:#ffe9a8; color:var(--wood-dark); border-bottom:2px solid var(--mist);}
+
+/* ---------- 로그인 창 ---------- */
+.modal__box{border:3px solid var(--mist); box-shadow:0 6px 0 var(--shadow); border-radius:32px;}
+.field input{border:2px solid var(--mist); border-radius:18px; background:var(--ash);}
+.field input:focus{border-color:var(--leaf); background:var(--bone);}
+
+/* 편집 중 표시도 따뜻하게 */
+body.editing [data-edit]{outline:2px dashed var(--pebble);}
+body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(127,174,78,.12);}
+
+/* ===========================================================================
    반응형 — 태블릿
    =========================================================================== */
 @media (max-width:900px){
@@ -500,7 +660,7 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
   .editBtn{padding:8px 14px; font-size:13.5px;}
   .page{padding-top:var(--sp-40); padding-bottom:var(--sp-64);}
   .stage{min-height:70vh; min-height:70dvh; padding:var(--sp-48) 0;}
-  .stage__art{height:88%; max-height:none; opacity:.55;}
+  .stage__art{height:88%; max-height:none; opacity:.5;}
   .stage__cta{margin-top:var(--sp-40); padding:14px 28px;}
   .steps{grid-template-columns:1fr;}
   .step{padding:var(--sp-24);}
@@ -696,11 +856,71 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
   el("brandName").textContent = D.site.name || "";
   el("brandRole").textContent = D.site.role || "";
 
-  /* 섹션 껍데기 */
-  function section(eyebrow, title, inner, lede) {
+  /* =========================================================================
+     소제목 왼쪽에 붙는 픽셀 두루마리 아이콘
+     ---------------------------------------------------------------------
+     한 칸이 곧 한 픽셀입니다. 아래 GRID 의 글자를 바꾸면 그림이 바뀝니다.
+       .=투명  o=테두리  b/h=나무 롤  p/w=종이  y/G=금색  r/R=리본  s/S=반짝임
+     images/section-icon.png 파일을 넣어두면 그 그림이 대신 쓰입니다.
+     ========================================================================= */
+  var ICON_COLORS = {
+    o: "#6b4526", b: "#a9724a", h: "#c99468",
+    p: "#f7efdc", w: "#fffdf5",
+    y: "#ffe08a", G: "#f0b429",
+    r: "#e03a3a", R: "#a82424",
+    s: "#ffd75e", S: "#fff4c2"
+  };
+  var ICON_GRID = [
+    "..................",
+    ".s................",
+    "sSs...............",
+    ".s................",
+    "....oooooooooo....",
+    "....obbbbbbbho....",
+    "....ohhhhhhhbo....",
+    "....oppppppppo....",
+    "....owpyGGpppo....",
+    "....owpyGGpppo....",
+    "....owpyGGpppo....",
+    "....owpyGGppporR..",
+    "....owppppppporrR.",
+    "....owppyGppporrR.",
+    "....owppppppporR..",
+    "....obbbbbbbhoR...",
+    "....ohhhhhhhbo....",
+    "....oooooooooo...."
+  ];
+
+  var iconSVGCache = null;
+  function scrollIcon() {
+    if (iconSVGCache) { return iconSVGCache; }
+    var rects = "";
+    for (var y = 0; y < ICON_GRID.length; y++) {
+      var row = ICON_GRID[y];
+      for (var x = 0; x < row.length; x++) {
+        var c = ICON_COLORS[row.charAt(x)];
+        if (!c) { continue; }
+        rects += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="' + c + '"/>';
+      }
+    }
+    iconSVGCache =
+      '<span class="sec-ico" aria-hidden="true">' +
+        '<img src="images/section-icon.png" alt="" onerror="this.remove()">' +
+        '<svg viewBox="0 0 18 18" shape-rendering="crispEdges" focusable="false">' +
+          rects +
+        '</svg>' +
+      '</span>';
+    return iconSVGCache;
+  }
+
+  /* 섹션 껍데기 (icon 을 true 로 주면 소제목 왼쪽에 두루마리가 붙습니다) */
+  function section(eyebrow, title, inner, lede, icon) {
     return '<section class="section">' +
       '<p class="eyebrow">' + esc(eyebrow) + '</p>' +
-      '<h2 class="h-section">' + esc(title) + '</h2>' +
+      '<h2 class="h-section">' +
+        (icon ? scrollIcon() : '') +
+        '<span>' + esc(title) + '</span>' +
+      '</h2>' +
       (lede ? '<p class="lede">' + br(lede) + '</p>' : '') +
       inner +
     '</section>';
@@ -736,7 +956,7 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
      * 회전·이동된 그룹 안에서는 SVG 그라데이션 좌표가 뒤틀리므로,
      * 잎마다 높이에 맞는 색을 직접 계산해서 칠합니다.
      */
-    var STOPS = [[0, [239,220,182]], [0.45, [235,163,112]], [1, [125,122,143]]];
+    var STOPS = [[0, [214,214,140]], [0.45, [141,192,90]], [1, [94,148,64]]];
     function ramp(t) {
       t = Math.max(0, Math.min(1, t));
       var i = (t <= STOPS[1][0]) ? 0 : 1;
@@ -764,7 +984,7 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
                ') scale(' + v[3] + ')">' +
                '<g class="' + cls + '" style="--d:' + v[4] + 's">' +
                '<path d="' + d + '" fill="url(#' + id + ')"/>' +
-               (vein ? '<path d="' + vein + '" stroke="#faf9f8" stroke-width="2.4" ' +
+               (vein ? '<path d="' + vein + '" stroke="#f4fbe6" stroke-width="2.4" ' +
                        'stroke-linecap="round" fill="none" opacity=".5"/>' : '') +
                '</g></g>';
       }).join("");
@@ -774,9 +994,9 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
       /* 줄기는 회전 그룹 밖이라 좌표 기반 그라데이션이 그대로 통합니다 */
       '<defs><linearGradient id="sproutStem" x1="200" y1="448" x2="200" y2="92" ' +
       'gradientUnits="userSpaceOnUse">' +
-        '<stop offset="0" stop-color="#efdcb6"/>' +
-        '<stop offset="0.55" stop-color="#eba370"/>' +
-        '<stop offset="1" stop-color="#9a8f96"/>' +
+        '<stop offset="0" stop-color="#c9a86a"/>' +
+        '<stop offset="0.5" stop-color="#9cb85a"/>' +
+        '<stop offset="1" stop-color="#6ba33f"/>' +
       '</linearGradient></defs>' +
       shape(blades, "blade", bladePath) +
       '<path class="sprout__stem" d="M200,448 C200,388 188,344 197,296 ' +
@@ -819,7 +1039,7 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
             (s.desc ? '<p class="step__desc"' + E("workSteps." + i + ".desc") + '>' +
                       esc(s.desc) + '</p>' : '') +
           '</article>';
-        }).join("") + '</div>');
+        }).join("") + '</div>', null, true);
     }
 
     /* Game Tournament */
@@ -834,7 +1054,7 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
             '<div class="tour__result"' + E("tournaments." + i + ".result") + '>' +
               esc(t.result) + '</div>' +
           '</div>';
-        }).join("") + '</div>');
+        }).join("") + '</div>', null, true);
     }
 
     /* Project */
@@ -847,7 +1067,7 @@ body.editing .stage__art{display:none;}   /* 편집 중에는 글자에 집중 *
             '<p class="mproj__desc"' + E("mainProjects." + i + ".desc") + '>' +
               esc(p.desc) + '</p>' +
           '</article>';
-        }).join("") + '</div>');
+        }).join("") + '</div>', null, true);
     }
 
     html += cta();
