@@ -205,10 +205,23 @@ ID 와 비밀번호는 `data.js` 의 `auth` 에서 바꿀 수 있습니다.
 
 ## 폰트
 
-Pretendard-Regular 를 사용합니다.
-빠른 로딩을 위해 CDN 을 먼저 쓰고, 인터넷이 없거나 CDN 이 막힌 환경에서는
-같은 폴더의 `fonts/Pretendard-Regular.otf` 로 자동 대체됩니다.
-그래서 `fonts` 폴더도 함께 올려주는 편이 좋습니다.
+Pretendard 를 Regular(400) · Medium(500) · Bold(700) 세 굵기로 씁니다.
+
+불러오는 순서는 이렇습니다.
+
+1. CDN (가장 빠르고 다른 사이트와 캐시를 공유)
+2. `fonts/*.woff2` — CDN 이 막힌 환경용 (원본 OTF 를 절반 크기로 변환한 파일)
+3. `fonts/*.otf` — 아주 오래된 브라우저용
+
+그래서 `fonts` 폴더도 함께 올려야 합니다.
+
+> ⚠️ **굵은 글씨가 안 나올 때**
+> `@font-face` 의 `font-weight:700` 블록이 **Bold 파일**을 가리키는지 확인하세요.
+> 여기를 Regular 파일로 두면 브라우저가 "이게 볼드다" 라고 믿어버려서
+> 보통 굵기 그대로 표시됩니다. (실제로 한 번 겪은 문제입니다)
+>
+> 중간 굵기(500)는 로컬에 Medium 파일이 없어, CDN 이 막히면 Regular 로 보입니다.
+> 필요하면 `Pretendard-Medium.woff2` 를 `fonts` 에 넣고 해당 블록에 경로를 추가하세요.
 
 ## iOS · 모바일 대응
 
