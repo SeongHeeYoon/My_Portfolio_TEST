@@ -309,10 +309,22 @@ const DATA = {
      *  cover  : 박스 그림 (images 폴더에 넣고 경로 지정). 없으면 제목이 그라데이션 위에 표시됩니다.
      *  summary: 그림 아래 문구
      *  detail : 있으면 박스를 눌렀을 때 소개 창이 열립니다 (좌측 목차 = 각 title, 오른쪽 = body)
+     *           body 는 아직 비어 있습니다. 채우면 소개 창에 바로 나옵니다.
+     *  ↓ { } 블록을 복사해 붙여넣으면 박스가 늘어납니다.
      */
     {
-      title:   "작품 이름을 입력하세요",
-      summary: "이 작품을 한 줄로 소개하는 문구입니다.",
+      title:   "HighNum",
+      summary: "주사위를 장전하고 적을 향해 쏘아라!",
+      cover:   "images/highnum-cover.png",
+      detail: [
+        { title: "작품 소개",   body: "" },
+        { title: "담당 작업",   body: "" },
+        { title: "게임 출시",   body: "" },
+      ],
+    },
+    {
+      title:   "CityRush",
+      summary: "AI를 활용한 3D 자동차 추적 · 도망 레이싱 게임",
       cover:   "",
       detail: [
         { title: "작품 소개",   body: "" },
@@ -320,7 +332,36 @@ const DATA = {
         { title: "결과 · 회고", body: "" },
       ],
     },
-    // ↑ { } 블록을 복사해 붙여넣으면 박스가 늘어납니다.
+    {
+      title:   "BladeSteal",
+      summary: "AI를 활용한 2D 도트 액션 플랫포머",
+      cover:   "",
+      detail: [
+        { title: "작품 소개",   body: "" },
+        { title: "담당 작업",   body: "" },
+        { title: "결과 · 회고", body: "" },
+      ],
+    },
+    {
+      title:   "MapleFly",
+      summary: "Vers8 MSU Space 공모전 출품 — 비행 슈팅 게임",
+      cover:   "",
+      detail: [
+        { title: "작품 소개",   body: "" },
+        { title: "담당 작업",   body: "" },
+        { title: "결과 · 회고", body: "" },
+      ],
+    },
+    {
+      title:   "메이플피아 아카데미",
+      summary: "메이플월드 공모전 출품 — AI를 활용한 JRPG 턴제 게임",
+      cover:   "",
+      detail: [
+        { title: "작품 소개",   body: "" },
+        { title: "담당 작업",   body: "" },
+        { title: "결과 · 회고", body: "" },
+      ],
+    },
   ],
 
   /* ==========================================================================
