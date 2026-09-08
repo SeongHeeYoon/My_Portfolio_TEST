@@ -170,7 +170,7 @@ const DATA = {
     {
       no: "Project 01",
       title: "Helmet-On",
-      tags: ["인원 5명", "AI"],
+      tags: ["2023/02 ~ 2023/03", "인원 5명", "AI"],
       summary: "전동킥보드 헬멧 착용 여부에 따른 결제 시스템 개발",
       points: [
         "모델 학습 및 Custom Data 학습을 위한 튜닝 담당",
@@ -180,7 +180,7 @@ const DATA = {
     {
       no: "Project 02",
       title: "지하철 인파관리 시스템",
-      tags: ["인원 6명", "AI"],
+      tags: ["2023/03 ~ 2023/04", "인원 6명", "AI"],
       summary: "Object Detection 을 이용한 지하철 인파관리 시스템 개발",
       points: [
         "PyTorch 라이브러리 활용 및 Custom Data 학습을 위한 튜닝 담당",
@@ -191,7 +191,7 @@ const DATA = {
     {
       no: "Project 03",
       title: "CityRush",
-      tags: ["인원 3명", "Unity", "기획 · 개발"],
+      tags: ["2026/06 ~ 2026/07", "인원 3명", "Unity", "기획 · 개발"],
       summary: "AI를 활용한 3D 자동차 추적 / 도망 레이싱 게임",
       points: [
         "Real Car Controller (실제 차량 휠) 구현",
@@ -205,7 +205,7 @@ const DATA = {
     {
       no: "Project 04",
       title: "BladeSteal",
-      tags: ["인원 1명", "Unity", "기획 · 개발"],
+      tags: ["2026/08 ~ 2026/09", "인원 1명", "Unity", "기획 · 개발"],
       summary: "AI를 활용한 2D 도트 액션 플랫포머",
       points: [
         "2D 도트 액션 플랫포머 게임 기획",
@@ -217,7 +217,7 @@ const DATA = {
     {
       no: "Project 05",
       title: "MapleFly",
-      tags: ["인원 4명", "공모전", "기획 · 개발"],
+      tags: ["2026/06 ~ 2026/06", "인원 4명", "공모전", "기획 · 개발"],
       summary: "Vers8 MSU Space 공모전 출품 — 비행 슈팅 게임",
       points: [
         "메이플스토리 리소스를 활용한 비행 슈팅 게임 기획",
@@ -227,7 +227,7 @@ const DATA = {
     {
       no: "Project 06",
       title: "메이플피아 아카데미",
-      tags: ["인원 5명", "공모전", "기획 · 개발"],
+      tags: ["2026/07 ~ 2026/09", "인원 5명", "공모전", "기획 · 개발"],
       summary: "메이플월드 공모전 출품 — AI를 활용한 JRPG 턴제 게임",
       points: [
         "메이플피아 아카데미 JRPG 턴제 게임 기획",
@@ -238,7 +238,7 @@ const DATA = {
     {
       no: "Project 07",
       title: "HighNum",
-      tags: ["인원 5명", "기획 · 개발"],
+      tags: ["2026/08 ~ 2026/09", "인원 5명", "기획 · 개발"],
       summary: "AI를 활용한 1인칭 슈팅 · 갬블 · 카드 전략 게임",
       points: [
         "전투 시스템 기획",
