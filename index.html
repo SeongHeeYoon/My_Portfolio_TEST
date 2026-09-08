@@ -21,6 +21,11 @@
       url('./fonts/Pretendard-Regular.otf') format('opentype');
 }
 @font-face{
+  font-family:'Pretendard'; font-style:normal; font-weight:700; font-display:swap;
+  src:url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Bold.woff2') format('woff2'),
+      url('./fonts/Pretendard-Regular.otf') format('opentype');
+}
+@font-face{
   font-family:'Pretendard'; font-style:normal; font-weight:500; font-display:swap;
   src:url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/woff2/Pretendard-Medium.woff2') format('woff2'),
       url('./fonts/Pretendard-Regular.otf') format('opentype');
@@ -181,9 +186,6 @@ h1,h2,h3,h4,p{margin:0;}
   position:relative; z-index:1;
   width:240px; height:auto;
   margin:0 auto var(--sp-32);
-  image-rendering:pixelated;
-  image-rendering:-moz-crisp-edges;
-  image-rendering:crisp-edges;
 }
 
 /* 글자 요소 */
@@ -345,11 +347,20 @@ h1,h2,h3,h4,p{margin:0;}
 
 /* ---------- 자기소개서 ---------- */
 .essay{border-top:1px solid var(--mist);}
-.essay__item{display:grid; grid-template-columns:300px 1fr; gap:var(--sp-48); padding:var(--sp-64) 0; border-bottom:1px solid var(--mist);}
-.essay__no{font-size:13px; color:var(--graphite); letter-spacing:.08em; margin-bottom:12px;}
-.essay__title{font-size:26px; font-weight:500; line-height:1.3; letter-spacing:-.02em; position:sticky; top:104px;}
-.essay__body p{font-size:16px; line-height:1.9; color:var(--abyssal); max-width:64ch;}
+/* 소제목이 위, 내용이 아래로 오는 세로 구성 */
+.essay__item{display:block; padding:var(--sp-48) 0; border-bottom:1px solid var(--mist);}
+.essay__head{margin-bottom:var(--sp-24);}
+.essay__no{font-size:13px; color:var(--graphite); letter-spacing:.08em; margin-bottom:10px;}
+.essay__title{font-size:26px; font-weight:700; line-height:1.3; letter-spacing:-.02em;}
+.essay__body p{font-size:16px; line-height:1.9; color:var(--abyssal); max-width:70ch;}
 .essay__body p + p{margin-top:var(--sp-24);}
+
+/* 꼭 읽었으면 하는 문장 — 굵게 + 연한 형광펜 */
+.essay__body .hl{
+  font-weight:700; color:var(--obsidian);
+  background:linear-gradient(transparent 58%, rgba(155,187,130,.38) 58%);
+  padding:0 2px; border-radius:2px;
+}
 
 /* ---------- 포트폴리오 ---------- */
 .pf{display:grid; grid-template-columns:repeat(2,1fr); gap:var(--sp-24); margin-top:var(--sp-40);}
@@ -521,9 +532,6 @@ body{
 .eyebrow::before{
   content:""; width:20px; height:20px; flex:none;
   background:url("images/leaf-icon.png") center / contain no-repeat;
-  image-rendering:pixelated;
-  image-rendering:-moz-crisp-edges;
-  image-rendering:crisp-edges;
 }
 
 /* ---------- 이력서: 좌우 2단 배치 ----------
@@ -622,8 +630,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   .cards,.extras,.pf,.mproj{grid-template-columns:1fr;}
   .rescols{grid-template-columns:1fr;}
   .steps{grid-template-columns:repeat(2,1fr);}
-  .essay__item{grid-template-columns:1fr; gap:var(--sp-24); padding:var(--sp-48) 0;}
-  .essay__title{position:static;}
+  .essay__item{padding:var(--sp-40) 0;}
   .tl__item{grid-template-columns:1fr; gap:6px;}
   .tl__period{font-size:14px;}
   .cta{padding:var(--sp-48) var(--sp-32);}
@@ -779,12 +786,18 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   /* =========================================================================
      도우미
      ========================================================================= */
+  var STAR = String.fromCharCode(42);   /* 별표 문자 */
   var esc = function (s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   };
   var br = function (s) { return esc(s).replace(/\n/g, "<br>"); };
+  /* data.js 에서 **문장** 으로 감싼 부분을 굵게 + 형광펜 처리합니다 */
+  var HL_RE = new RegExp("\\*\\*([^*]+)\\*\\*", "g");
+  var mark = function (s) {
+    return br(s).replace(HL_RE, '<strong class="hl">$1</strong>');
+  };
   /* 큰 제목용: 넓은 화면에서는 줄바꿈, 모바일에서는 이어 붙임 */
   var lines = function (s) {
     return String(s == null ? "" : s).split(/\n/).map(function (t) {
@@ -1148,10 +1161,12 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
           var no = String(idx + 1);
           if (no.length < 2) { no = "0" + no; }
           var paras = String(s.body || "").split(/\n{2,}/).map(function (t) {
-            return '<p>' + br(t) + '</p>'; }).join("");
+            return '<p>' + mark(t) + '</p>'; }).join("");
           return '<article class="essay__item">' +
-            '<div><p class="essay__no">' + no + '</p>' +
-            '<h3 class="essay__title"' + E("cover." + idx + ".title") + '>' + esc(s.title) + '</h3></div>' +
+            '<div class="essay__head">' +
+              '<p class="essay__no">' + no + '</p>' +
+              '<h3 class="essay__title"' + E("cover." + idx + ".title") + '>' + esc(s.title) + '</h3>' +
+            '</div>' +
             '<div class="essay__body"' + EM("cover." + idx + ".body") + '>' + paras + '</div>' +
           '</article>';
         }).join("") +
@@ -1282,6 +1297,10 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
         if (c.nodeType === 3) { s += c.nodeValue; }
         else if (c.nodeType === 1) {
           if (c.tagName === "BR") { s += NL; }
+          else if (c.className && String(c.className).indexOf("hl") > -1) {
+            /* 하이라이트는 **문장** 형태로 되돌려 저장합니다 */
+            s += STAR + STAR; rec(c); s += STAR + STAR;
+          }
           else { rec(c); }
         }
       }
