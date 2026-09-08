@@ -56,14 +56,14 @@
   --vapor:#ded8cd;     /* 옅은 테두리 */
 
   --canvas:#f6f2ea;    /* 페이지 바탕 — 모래빛 */
-  --leaf:#9bbb82;      /* 나뭇잎 초록 (주요 버튼) */
-  --leaf-dark:#82a469; /* 초록 그림자 */
+  --leaf:#d98b5f;      /* 주요 강조색 — 따뜻한 테라코타 (주요 버튼/활성 탭) */
+  --leaf-dark:#b56f42; /* 테라코타 그림자 */
   --wood:#9c8a79;      /* 나무 안내판 */
   --wood-dark:#877565;
   --peach:#d5a684;     /* 강조 주황 */
   --shadow:rgba(160,150,135,.20);   /* 스티커 그림자 */
 
-  --espresso:#9bbb82;  /* (기존 이름 유지) 채움 버튼 = 나뭇잎 초록 */
+  --espresso:#d98b5f;  /* (기존 이름 유지) 채움 버튼 = 테라코타 */
   --coffee:#9c8a79;    /* (기존 이름 유지) 나무색 */
   --carbon:#000000;
 
@@ -365,7 +365,7 @@ h1,h2,h3,h4,p{margin:0;}
 /* 꼭 읽었으면 하는 문장 — 굵게 + 연한 형광펜 */
 .essay__body .hl{
   font-weight:700; color:var(--obsidian);
-  background:linear-gradient(transparent 58%, rgba(155,187,130,.38) 58%);
+  background:linear-gradient(transparent 58%, rgba(230,164,110,.42) 58%);
   padding:0 2px; border-radius:2px;
 }
 
@@ -553,6 +553,15 @@ body{
 .pjbox:hover{transform:translateY(-3px); box-shadow:0 8px 0 var(--shadow);}
 .pjbox:active{transform:translateY(2px); box-shadow:0 2px 0 var(--shadow);}
 .pjbox__img{display:block; width:100%; height:auto; background:var(--ash);}
+/* 그림이 없을 때: 따뜻한 그라데이션 + 제목 (포트폴리오 준비 중 박스용) */
+.pjbox__ph{
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  aspect-ratio:5/3; padding:24px;
+  background:var(--gradient-warm);
+  font-size:26px; font-weight:700; letter-spacing:-.02em; color:#fffdfa;
+  text-shadow:0 1px 6px rgba(90,70,50,.35);
+}
+@supports not (aspect-ratio:1/1){ .pjbox__ph{height:0; padding-bottom:60%;} }
 .pjbox__foot{padding:var(--sp-24) var(--sp-32) var(--sp-32);}
 .pjbox__desc{
   font-size:20px; font-weight:700; line-height:1.4; letter-spacing:-.02em;
@@ -618,7 +627,7 @@ body{
 .pjpage__body p + p{margin-top:var(--sp-24);}
 .pjpage__body .hl{
   font-weight:700; color:var(--obsidian);
-  background:linear-gradient(transparent 58%, rgba(155,187,130,.38) 58%);
+  background:linear-gradient(transparent 58%, rgba(230,164,110,.42) 58%);
   padding:0 2px; border-radius:2px;
 }
 .pjpage__empty{
@@ -674,8 +683,8 @@ body.editing .pjpage__body p:only-child:empty::before{
 
 /* ---------- 배지 = 동글동글한 알약 ---------- */
 .badge{
-  background:#f0f4ea; color:#6f8560;
-  border:2px solid #e0e8d6; border-radius:var(--r-pill);
+  background:#f8efe6; color:#a9673d;
+  border:2px solid #eddccb; border-radius:var(--r-pill);
   padding:5px 13px;
 }
 .badge--line{background:var(--bone); border-color:var(--mist); color:var(--slate);}
@@ -723,7 +732,7 @@ body.editing .pjpage__body p:only-child:empty::before{
 
 /* 편집 중 표시도 따뜻하게 */
 body.editing [data-edit]{outline:2px dashed var(--pebble);}
-body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(127,174,78,.12);}
+body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(217,139,95,.13);}
 
 /* ===========================================================================
    반응형 — 태블릿
@@ -1060,6 +1069,28 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     '</section>';
   }
 
+  /* 그림이 들어간 '블럭형 박스' (대표 프로젝트 / 포트폴리오 공용)
+   * item : { title, desc/summary, cover, detail }
+   * base : "mainProjects.0" 또는 "portfolio.0" (편집·팝업 경로의 뿌리)
+   * descKey : 박스 아래 문구가 담긴 필드 이름 ("desc" 또는 "summary")
+   */
+  function blockBox(item, base, descKey) {
+    var clickable = has(item.detail);
+    var desc = item[descKey] || item.desc || item.summary || "";
+    var tag = clickable ? "button" : "div";
+    return '<' + tag + ' class="pjbox"' +
+      (clickable ? ' type="button" data-project="' + esc(base) + '"' +
+                   ' aria-label="' + esc(item.title) + ' 자세히 보기"' : '') + '>' +
+      (item.cover
+        ? '<img class="pjbox__img" src="' + esc(item.cover) + '" alt="' + esc(item.title) + '">'
+        : '<span class="pjbox__ph" aria-hidden="true">' + esc(item.title || "") + '</span>') +
+      '<div class="pjbox__foot">' +
+        '<p class="pjbox__desc"' + E(base + "." + descKey) + '>' + esc(desc) + '</p>' +
+        (clickable ? '<span class="pjbox__more">자세히 보기</span>' : '') +
+      '</div>' +
+    '</' + tag + '>';
+  }
+
   /* =========================================================================
      메인 화면
      ========================================================================= */
@@ -1114,18 +1145,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     if (has(D.mainProjects)) {
       html += section("Project", "대표 프로젝트",
         '<div class="mproj">' + D.mainProjects.map(function (p, i) {
-          var clickable = has(p.detail);
-          if (p.cover) {
-            return '<' + (clickable ? 'button' : 'div') + ' class="pjbox"' +
-              (clickable ? ' type="button" data-project="' + i + '"' +
-                           ' aria-label="' + esc(p.title) + ' 자세히 보기"' : '') + '>' +
-              '<img class="pjbox__img" src="' + esc(p.cover) + '" alt="' + esc(p.title) + '">' +
-              '<div class="pjbox__foot">' +
-                '<p class="pjbox__desc"' + E("mainProjects." + i + ".desc") + '>' +
-                  esc(p.desc) + '</p>' +
-                (clickable ? '<span class="pjbox__more">자세히 보기</span>' : '') +
-              '</div>' +
-            '</' + (clickable ? 'button' : 'div') + '>';
+          if (p.cover || has(p.detail)) {
+            return blockBox(p, "mainProjects." + i, "desc");
           }
           return '<article class="mproj__card">' +
             '<h3 class="mproj__title"' + E("mainProjects." + i + ".title") + '>' +
@@ -1342,24 +1363,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
                           br(D.portfolioIntro) + '</p>' : '');
 
     if (list.length) {
-      html += '<div class="pf">' + list.map(function (w, i) {
-        return '<article class="pf__card">' +
-          '<div class="pf__cover">' +
-            (w.cover ? '<img src="' + esc(w.cover) + '" alt="' + esc(w.title) +
-                       '" onerror="this.remove()">' : '') +
-          '</div>' +
-          '<div class="pf__body">' +
-            '<h3 class="pf__title"' + E("portfolio." + i + ".title") + '>' + esc(w.title) + '</h3>' +
-            (w.summary ? '<p class="pf__summary"' + EL("portfolio." + i + ".summary") + '>' +
-                         br(w.summary) + '</p>' : '') +
-            (has(w.tags) ? '<div class="pf__tags">' + w.tags.map(function (t, j) {
-              return '<span class="badge"' + E("portfolio." + i + ".tags." + j) + '>' +
-                     esc(t) + '</span>'; }).join("") + '</div>' : '') +
-            (w.link ? '<div class="pf__foot"><a class="btn btn--ghost" href="' + esc(w.link) +
-                      '" target="_blank" rel="noopener"' + E("portfolio." + i + ".linkLabel") + '>' +
-                      esc(w.linkLabel || "자세히 보기") + '</a></div>' : '') +
-          '</div>' +
-        '</article>';
+      html += '<div class="mproj">' + list.map(function (w, i) {
+        return blockBox(w, "portfolio." + i, "summary");
       }).join("") + '</div>';
     } else {
       html +=
@@ -1402,12 +1407,12 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
      좌측 목차를 누르면 오른쪽 내용이 바뀝니다. 내용은 data.js 의
      mainProjects[i].detail 에서 가져옵니다.
      ========================================================================= */
-  var pjIndex = -1;   /* 지금 열려 있는 프로젝트 */
+  var pjBase = null;  /* 지금 열려 있는 항목의 경로 (예: "mainProjects.0") */
   var pjTab   = 0;    /* 지금 보고 있는 목차 번호 */
   var pjLastFocus = null;
 
   function pjRender() {
-    var proj = D.mainProjects[pjIndex];
+    var proj = getByPath(D, pjBase) || {};
     var pages = proj.detail || [];
     var page = pages[pjTab] || {};
 
@@ -1419,7 +1424,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     }).join("");
 
     /* 우측 내용 */
-    var base = "mainProjects." + pjIndex + ".detail." + pjTab;
+    var base = pjBase + ".detail." + pjTab;
     var body = String(page.body || "").trim();
     /* 내용이 비어 있어도 편집할 수 있도록 본문 칸은 항상 만들어 둡니다.
        비어 있을 때는 그 아래에 안내 상자를 함께 보여줍니다. (편집 중에는 숨김) */
@@ -1441,11 +1446,12 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     if (editing) { markEditable(true); }
   }
 
-  function pjOpen(i) {
-    if (!D.mainProjects || !D.mainProjects[i] || !has(D.mainProjects[i].detail)) { return; }
-    pjIndex = i; pjTab = 0;
+  function pjOpen(base) {
+    var item = getByPath(D, base);
+    if (!item || !has(item.detail)) { return; }
+    pjBase = base; pjTab = 0;
     pjLastFocus = document.activeElement;
-    el("pjTitle").textContent = D.mainProjects[i].title || "";
+    el("pjTitle").textContent = item.title || "";
     pjRender();
     el("pjModal").hidden = false;
     document.body.classList.add("pj-open");
@@ -1458,7 +1464,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   function pjClose() {
     el("pjModal").hidden = true;
     document.body.classList.remove("pj-open");
-    pjIndex = -1;
+    pjBase = null;
     if (pjLastFocus && pjLastFocus.focus) { pjLastFocus.focus(); }
   }
 
@@ -1468,11 +1474,11 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
     var box = e.target.closest("[data-project]");
     /* 편집 중에도 열 수 있게 하되, 글자를 고치려고 누른 것은 그대로 둡니다 */
     if (box && !(editing && e.target.closest("[data-edit]"))) {
-      pjOpen(parseInt(box.getAttribute("data-project"), 10));
+      pjOpen(box.getAttribute("data-project"));
       return;
     }
     var tab = e.target.closest(".pjtoc");
-    if (tab && pjIndex > -1) {
+    if (tab && pjBase) {
       pjTab = parseInt(tab.getAttribute("data-tab"), 10) || 0;
       pjRender();
     }
@@ -1516,6 +1522,15 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(12
   var editing = false;
 
   /* "projects.0.points.1" 같은 경로에 값 쓰기 */
+  function getByPath(obj, path) {
+    var keys = path.split("."), cur = obj;
+    for (var i = 0; i < keys.length; i++) {
+      if (cur == null) { return null; }
+      cur = cur[keys[i]];
+    }
+    return cur;
+  }
+
   function setPath(obj, path, value) {
     var keys = path.split(".");
     var cur = obj;
