@@ -1334,8 +1334,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     html +=
       '<div class="hero">' +
         '<div class="photo">' +
-          '<div class="photo__ph"><b>' + esc(initial) + '</b>' +
-            '<span>images 폴더에 사진을 넣고<br>data.js 의 photo 경로를 적어주세요</span></div>' +
+          '<div class="photo__ph"><b>' + esc(initial) + '</b></div>' +
           (p.photo ? '<img src="' + esc(p.photo) + '" alt="' + esc(p.name) + ' 프로필 사진" ' +
                      'onerror="this.remove()">' : '') +
         '</div>' +
