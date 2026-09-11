@@ -1007,8 +1007,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     if (!id) { return '<p>' + esc(u) + '</p>'; }
     var watch = "https://www.youtube.com/watch?v=" + id;
     var thumb = "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
-    /* 처음에는 썸네일만 보여주고(=오류 안 남), 누르면 그때 영상을 불러옵니다.
-       파일을 직접 열었을 때(file://)는 유튜브가 재생을 막으므로 새 탭으로 엽니다. */
+    /* 처음에는 썸네일만 보여주고(=오류 안 남), 누르면 그 자리에서 바로 영상을 재생합니다. */
     return '<div class="pjvideo" data-yt="' + id + '">' +
         '<button class="pjvideo__play" type="button" aria-label="소개 영상 재생" ' +
         'style="background-image:url(\'' + thumb + '\')">' +
@@ -1618,11 +1617,9 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     if (!play) { return; }
     var wrap = play.parentNode;
     var id = wrap.getAttribute("data-yt");
-    /* 파일을 직접 열었을 때(file://)는 유튜브가 임베드 재생을 막으므로 새 탭으로 */
-    if (location.protocol === "file:") {
-      window.open("https://www.youtube.com/watch?v=" + id, "_blank", "noopener");
-      return;
-    }
+    /* 어디서 열든(파일·웹) 클릭하면 그 자리에서 바로 재생합니다.
+       ※ 파일을 직접 열었을 때(file://)는 유튜브 정책상 재생이 막힐 수 있는데,
+          그때는 아래 '유튜브에서 보기' 링크로 보시면 됩니다. 배포된 웹에서는 정상 재생됩니다. */
     wrap.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id +
       '?autoplay=1&rel=0&modestbranding=1&playsinline=1" title="소개 영상" ' +
       'frameborder="0" allowfullscreen ' +
