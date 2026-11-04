@@ -123,43 +123,6 @@ h1,h2,h3,h4,p{margin:0;}
    =========================================================================== */
 .wrap{max-width:var(--max); margin:0 auto; padding-left:var(--pad-x); padding-right:var(--pad-x);}
 
-/* ---------- 상단 네비게이션 ---------- */
-.topbar{
-  position:sticky; top:0; z-index:50;
-  background:rgba(250,249,248,.86);
-  -webkit-backdrop-filter:saturate(180%) blur(14px);   /* iOS 접두사 필수 */
-  backdrop-filter:saturate(180%) blur(14px);
-  border-bottom:1px solid var(--mist);
-  padding-top:env(safe-area-inset-top);
-}
-.topbar__inner{
-  display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-16);
-  min-height:64px; padding-top:12px; padding-bottom:12px;
-}
-.brand{display:flex; align-items:baseline; gap:8px; min-width:0; margin-right:auto;}
-.brand__name{font-size:18px; font-weight:500; letter-spacing:-.01em; white-space:nowrap;}
-.brand__role{font-size:14px; color:var(--graphite); white-space:nowrap;}
-
-.tabs{
-  display:flex; align-items:center; gap:4px;
-  padding:4px; border:1px solid var(--vapor); border-radius:var(--r-pill);
-  background:var(--bone);
-}
-.tab{
-  padding:8px 16px; border-radius:var(--r-pill);
-  font-size:15px; color:var(--slate); white-space:nowrap;
-  transition:background .18s ease, color .18s ease;
-}
-.tab[aria-selected="true"]{background:var(--espresso); color:var(--bone);}
-
-/* 우측 상단 수정 버튼 */
-.editBtn{
-  padding:9px 18px; border:1px solid var(--vapor); border-radius:var(--r-pill);
-  font-size:14px; color:var(--slate); white-space:nowrap;
-  transition:background .18s ease, color .18s ease, border-color .18s ease;
-}
-.editBtn.is-on{background:var(--espresso); color:var(--bone); border-color:var(--espresso);}
-
 /* ---------- 섹션 공통 ---------- */
 .page{padding-top:var(--sp-64); padding-bottom:var(--sp-96);}
 .page[hidden]{display:none !important;}
@@ -177,39 +140,6 @@ h1,h2,h3,h4,p{margin:0;}
 /* ===========================================================================
    MAIN — 메인 화면
    =========================================================================== */
-.page--main{padding-top:0;}
-
-.stage{
-  position:relative;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center;
-  min-height:52vh;            /* 구형 브라우저용 */
-  min-height:52dvh;           /* iOS 주소창 높이 변화 대응 */
-  padding:var(--sp-64) 0;
-}
-
-/* 캐릭터 그림 — 픽셀이 뭉개지지 않도록 정수배(60px x 4 = 240px)로 표시 */
-.stage__hero{
-  position:relative; z-index:1;
-  width:240px; height:auto;
-  margin:0 auto var(--sp-32);
-}
-
-/* 글자 요소 */
-.stage__caption, .stage__title, .stage__cta{position:relative; z-index:1;}
-
-.stage__caption{
-  font-size:13px; letter-spacing:.22em; color:var(--graphite);
-  text-transform:uppercase; margin-bottom:var(--sp-24);
-}
-.stage__title{
-  font-size:56px;                                   /* clamp 미지원 브라우저용 */
-  font-size:clamp(30px, 6.4vw, 60px);
-  font-weight:500; line-height:1.28; letter-spacing:-.03em;
-  color:var(--obsidian);
-}
-.stage__cta{margin-top:var(--sp-48); padding:15px 32px; font-size:16px;}
-
 /* data.js 의 줄바꿈은 넓은 화면에서만 쓰고, 좁은 화면에서는 자연스럽게 이어 붙입니다 */
 .ln{display:block;}
 @media (max-width:640px){
@@ -246,17 +176,6 @@ h1,h2,h3,h4,p{margin:0;}
 }
 .mproj__title{font-size:28px; font-weight:500; letter-spacing:-.02em;}
 .mproj__desc{margin-top:12px; font-size:16px; line-height:1.6; color:var(--slate);}
-
-/* ---------- 메인 등장 순서 ---------- */
-.stage__hero{animation:rise .9s ease-out .05s both;}
-.stage__caption{animation:rise .8s ease-out .22s both;}
-.stage__title{animation:rise .9s ease-out .34s both;}
-.stage__cta{animation:rise .8s ease-out .52s both;}
-
-@keyframes rise{
-  from{opacity:0; transform:translateY(16px);}
-  to  {opacity:1; transform:translateY(0);}
-}
 
 /* ---------- BADGE ---------- */
 .badge{
@@ -475,24 +394,6 @@ body{
   background-image:radial-gradient(circle at 10px 10px, rgba(150,138,118,.06) 2px, transparent 2px);
   background-size:22px 22px;
 }
-
-/* ---------- 상단 안내판 ---------- */
-.topbar{
-  background:rgba(255,250,240,.94);
-  border-bottom:3px solid var(--mist);
-}
-.tabs{
-  border:2px solid var(--mist); background:var(--bone);
-  box-shadow:0 3px 0 var(--shadow);
-}
-.tab{border-radius:var(--r-pill);}
-.tab[aria-selected="true"]{background:var(--leaf); color:#fffdf5;}
-.editBtn{
-  border:2px solid var(--mist); background:var(--bone);
-  box-shadow:0 3px 0 var(--shadow);
-}
-.editBtn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--shadow);}
-.editBtn.is-on{background:var(--peach); color:#fffdfa; border-color:#c1906d;}
 
 /* ---------- 섹션 = 게시판 카드 ---------- */
 .section{
@@ -748,9 +649,6 @@ body.editing .pjpage__body p:only-child:empty::before{
 .btn--onDark{border:2px solid rgba(255,250,240,.55); color:#fffdf5;}
 .btn:active{transform:translateY(3px); box-shadow:none; opacity:1;}
 
-/* ---------- 메인 큰 글자 ---------- */
-.stage__cta{box-shadow:0 5px 0 var(--leaf-dark);}
-
 /* ---------- 프로필 사진 액자 ---------- */
 .photo{border:3px solid var(--mist); box-shadow:0 5px 0 var(--shadow);}
 
@@ -805,14 +703,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
    =========================================================================== */
 @media (max-width:640px){
   :root{--pad-x:20px; --section-gap:48px; --r-card:28px; --r-hero:44px;}
-  .topbar__inner{gap:10px; padding-top:10px; padding-bottom:10px;}
-  .tabs{order:3; flex-basis:100%;}
-  .tab{flex:1 1 0; text-align:center; padding:10px 4px; font-size:13.5px; letter-spacing:-.03em;}
-  .editBtn{padding:8px 14px; font-size:13.5px;}
   .page{padding-top:var(--sp-40); padding-bottom:var(--sp-64);}
-  .stage{min-height:44vh; min-height:44dvh; padding:var(--sp-48) 0;}
-  .stage__hero{width:180px; margin-bottom:var(--sp-24);}
-  .stage__cta{margin-top:var(--sp-40); padding:14px 28px;}
   .steps{grid-template-columns:1fr;}
   .step{padding:var(--sp-24);}
   .tour__row{grid-template-columns:1fr auto; gap:4px 12px; padding:16px 0;}
@@ -860,20 +751,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
 
 /* 아주 좁은 화면 (iPhone SE 등) */
 @media (max-width:360px){
-  .tab{font-size:12.5px; padding:10px 2px;}
   .hero__tagline{font-size:23px;}
-}
-
-/* ===========================================================================
-   인쇄 / PDF 저장  (Safari: 공유 → 프린트 → PDF로 저장)
-   =========================================================================== */
-@media print{
-  .topbar,.cta,.editbar,.modal,.pjmodal{display:none !important;}
-  body{background:#fff; padding-bottom:0;}
-  .page--main{display:none !important;}
-  .page[hidden]:not(.page--main){display:block !important;}  /* 나머지 페이지 모두 출력 */
-  .card,.extra,.empty,.step{break-inside:avoid; page-break-inside:avoid;}
-  a{text-decoration:none;}
 }
 
 /* 모션 최소화 설정 존중 */
@@ -882,40 +760,129 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   *{transition:none !important; animation:none !important;}
 }
 </style>
+<!-- 포스트잇 · 안내 문구용 손글씨 글꼴 (불러오지 못하면 Pretendard 로 표시됩니다) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap">
+<link rel="stylesheet" href="interview.css">
 </head>
 
 <body>
 
-<!-- ======================= 상단 네비게이션 ======================= -->
-<header class="topbar">
-  <div class="wrap topbar__inner">
-    <div class="brand">
-      <span class="brand__name" id="brandName">윤희성</span>
-      <span class="brand__role" id="brandRole">게임 기획자</span>
+<div class="scene" id="iv-scene" data-state="door">
+
+  <!-- 뒤에서 흐려지는 층: 방 + 책상 -->
+  <div class="world" id="iv-world">
+    <div class="room" id="iv-room">
+      <div class="floor"></div>
+      <div class="door__light" id="iv-light"></div>
+
+      <!-- 문: 문 전체가 버튼입니다 -->
+      <button class="door" id="iv-door" type="button">
+        <span class="door__hole" id="iv-hole"></span>
+        <span class="door__panel" id="iv-panel">
+          <span class="door__face">
+            <span class="door__inset door__inset--top"></span>
+            <span class="door__inset door__inset--bot"></span>
+            <span class="door__knob"></span>
+          </span>
+          <span class="door__face door__face--back">
+            <span class="door__inset door__inset--top"></span>
+            <span class="door__inset door__inset--bot"></span>
+            <span class="door__knob"></span>
+          </span>
+        </span>
+      </button>
+      <p class="hint" id="iv-hint"><span class="hint__box" id="iv-hintText"></span></p>
+
+      <div class="chair" id="iv-chair"><svg viewBox="0 0 180 268" aria-hidden="true" focusable="false"><path d="M28,172 L18,266 L32,266 L46,176 Z" fill="#7d5c43"/><path d="M152,172 L162,266 L148,266 L134,176 Z" fill="#7d5c43"/><path d="M46,180 L42,246 L52,246 L58,180 Z" fill="#65493a"/><path d="M134,180 L138,246 L128,246 L122,180 Z" fill="#65493a"/><path d="M26,14 L38,190 L50,190 L40,14 Z M154,14 L142,190 L130,190 L140,14 Z" fill="#8c684c"/><rect x="22" y="4" width="136" height="118" rx="24" fill="#cf8259"/><rect x="33" y="15" width="114" height="96" rx="16" fill="#dc9770"/><path d="M90,20 L90,106" stroke="#cf8259" stroke-width="2" stroke-dasharray="5 6"/><rect x="12" y="166" width="156" height="24" rx="12" fill="#b96d48"/><rect x="12" y="160" width="156" height="20" rx="10" fill="#dc9770"/></svg><span class="chair__puff"></span></div>
+      <div class="char" id="iv-char"></div>
+
+      <div class="bubble greet" id="iv-greet" role="status" aria-live="polite"><span id="iv-greetText"></span></div>
     </div>
-    <nav class="tabs" role="tablist" aria-label="페이지 이동">
-      <button class="tab" role="tab" data-page="main"      aria-selected="true">메인</button>
-      <button class="tab" role="tab" data-page="resume"    aria-selected="false">이력서</button>
-      <button class="tab" role="tab" data-page="cover"     aria-selected="false">자기소개서</button>
-      <button class="tab" role="tab" data-page="portfolio" aria-selected="false">포트폴리오</button>
-    </nav>
-    <button class="editBtn" id="editBtn" type="button">수정</button>
+
+    <div class="desk" id="iv-desk">
+      <div class="desk__edge"></div>
+      <div class="desk__top"></div>
+      <div class="desk__pen"></div>
+    </div>
   </div>
-</header>
 
-<main>
-  <!-- ======================= 0. 메인 ======================= -->
-  <section class="page page--main wrap" id="page-main" role="tabpanel" aria-label="메인"></section>
+  <!-- 보는 사람 = 면접관 -->
+  <div class="bubble judge" id="iv-judge" role="status" aria-live="polite">
+    <span id="iv-judgeText"></span>
+  </div>
 
-  <!-- ======================= 1. 이력서 ======================= -->
-  <section class="page wrap" id="page-resume" role="tabpanel" aria-label="이력서" hidden></section>
+  <!-- 자기소개 장면: 화면을 누르면 진행합니다 -->
+  <button class="tap" id="iv-tap" type="button" aria-label="다음 문단 보기"></button>
+  <section class="bubble speech" id="iv-speech" aria-label="자기소개서">
+    <div class="speech__meta">
+      <span class="speech__no" id="iv-speechNo"></span>
+      <span class="speech__dots" id="iv-speechDots" aria-hidden="true"></span>
+    </div>
+    <h2 class="speech__title" id="iv-speechTitle"></h2>
+    <div class="speech__body" id="iv-speechBody" aria-live="polite"></div>
+    <div class="speech__foot">
+      <button class="speech__prev" id="iv-speechPrev" type="button">이전</button>
+      <span class="speech__hint" id="iv-speechHint"></span>
+    </div>
+  </section>
+  <nav class="scenebtns" id="iv-sceneBtns" aria-label="다른 문서 보기">
+    <button class="note note--resume" type="button" data-doc="resume">이력서</button>
+    <button class="note note--portfolio" type="button" data-doc="portfolio">포트폴리오</button>
+  </nav>
 
-  <!-- ======================= 2. 자기소개서 ======================= -->
-  <section class="page wrap" id="page-cover" role="tabpanel" aria-label="자기소개서" hidden></section>
+  <!-- 또렷하게 보이는 층: 이력서 / 자기소개서 / 포트폴리오 -->
+  <main class="viewer" id="iv-viewer" data-doc="resume">
+    <div class="deck">
+      <article class="tablet is-away" id="iv-tablet" aria-label="포트폴리오 태블릿">
+        <div class="tablet__screen">
+          <div class="tablet__status" aria-hidden="true">
+            <span id="iv-clock"></span><span class="tablet__battery"></span>
+          </div>
+          <div class="tablet__scroll" id="iv-tabletScroll" tabindex="-1">
+            <section class="page" id="page-portfolio" aria-label="포트폴리오" hidden></section>
+          </div>
 
-  <!-- ======================= 3. 포트폴리오 ======================= -->
-  <section class="page wrap" id="page-portfolio" role="tabpanel" aria-label="포트폴리오" hidden></section>
-</main>
+          <!-- ======================= 프로젝트 소개 창 (태블릿 화면 안에서 열립니다) ======================= -->
+          <div class="pjmodal" id="pjModal" hidden role="dialog" aria-modal="true" aria-labelledby="pjTitle">
+            <div class="pjmodal__box">
+              <div class="pjmodal__bar">
+                <h2 class="pjmodal__title" id="pjTitle"></h2>
+                <button class="pjmodal__close" id="pjClose" type="button" aria-label="닫기">✕</button>
+              </div>
+              <div class="pjmodal__main">
+                <nav class="pjmodal__toc" id="pjToc" aria-label="프로젝트 목차"></nav>
+                <div class="pjmodal__content" id="pjContent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="sheet" id="iv-sheet">
+        <div class="sheet__scroll" id="iv-sheetScroll" tabindex="-1">
+          <section class="page" id="page-resume" aria-label="이력서"></section>
+          <section class="page" id="page-cover" aria-label="자기소개서" hidden></section>
+        </div>
+      </article>
+    </div>
+
+    <!-- 포스트잇 버튼 -->
+    <nav class="notes" id="iv-notes" aria-label="문서 선택">
+      <button class="note note--resume" type="button" data-doc="resume">이력서</button>
+      <button class="note note--cover" type="button" data-doc="cover">자기소개서</button>
+      <button class="note note--portfolio" type="button" data-doc="portfolio">포트폴리오</button>
+    </nav>
+  </main>
+
+  <!-- 오른쪽 위 작은 버튼 -->
+  <div class="tools">
+    <button class="tool" id="iv-skip" type="button">건너뛰기</button>
+    <button class="tool" id="iv-again" type="button">처음<span class="tool__long">부터 보기</span></button>
+    <button class="tool editBtn" id="editBtn" type="button">수정</button>
+  </div>
+</div>
 
 <!-- ======================= 로그인 창 ======================= -->
 <div class="modal" id="loginModal" hidden role="dialog" aria-modal="true" aria-labelledby="loginTitle">
@@ -942,20 +909,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   </form>
 </div>
 
-<!-- ======================= 프로젝트 소개 창 ======================= -->
-<div class="pjmodal" id="pjModal" hidden role="dialog" aria-modal="true" aria-labelledby="pjTitle">
-  <div class="pjmodal__box">
-    <div class="pjmodal__bar">
-      <h2 class="pjmodal__title" id="pjTitle"></h2>
-      <button class="pjmodal__close" id="pjClose" type="button" aria-label="닫기">✕</button>
-    </div>
-    <div class="pjmodal__main">
-      <nav class="pjmodal__toc" id="pjToc" aria-label="프로젝트 목차"></nav>
-      <div class="pjmodal__content" id="pjContent"></div>
-    </div>
-  </div>
-</div>
-
 <!-- ======================= 편집 도구막대 ======================= -->
 <div class="editbar" id="editBar" hidden>
   <span class="editbar__msg" id="editMsg">점선으로 표시된 글자를 눌러 바로 고치세요.</span>
@@ -967,6 +920,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
 
 <!-- 내용은 전부 data.js 에 있습니다. -->
 <script src="data.js"></script>
+<script src="interview.js"></script>
 <script>
 (function () {
   "use strict";
@@ -1113,8 +1067,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
      문서 제목 / 브랜드
      ========================================================================= */
   document.title = (D.site.name || "") + (D.site.role ? " · " + D.site.role : "");
-  el("brandName").textContent = D.site.name || "";
-  el("brandRole").textContent = D.site.role || "";
 
   /* =========================================================================
      소제목 왼쪽에 붙는 픽셀 두루마리 아이콘
@@ -1206,116 +1158,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
         (clickable ? '<span class="pjbox__more">자세히 보기</span>' : '') +
       '</div>' +
     '</' + tag + '>';
-  }
-
-  /* =========================================================================
-     메인 화면
-     ========================================================================= */
-  function renderMain() {
-    var m = D.main || {};
-    var html = "";
-
-    /* 버튼은 data.js 의 main.button 이 있을 때만 만듭니다. (없으면 버튼이 사라집니다) */
-    var btn = "";
-    if (m.button && m.button.label) {
-      btn = '<a class="btn btn--fill stage__cta" href="#' +
-        esc(m.button.target || "resume") + '"' + E("main.button.label") + '>' +
-        esc(m.button.label) + '</a>';
-    }
-
-    /* 가운데 소개 */
-    html +=
-      '<div class="stage">' +
-        '<img class="stage__hero" src="images/hero-character.png" alt="' +
-          esc((D.site && D.site.name) || "") + ' 캐릭터">' +
-        (m.caption ? '<p class="stage__caption"' + E("main.caption") + '>' +
-                     esc(m.caption) + '</p>' : '') +
-        '<h1 class="stage__title"' + EL("main.headline") + '>' +
-          lines(m.headline || "") + '</h1>' +
-        btn +
-      '</div>';
-
-    /* Work Step */
-    if (has(D.workSteps)) {
-      html += section("Work Step", "나의 게임 개발 단계",
-        '<div class="steps">' + D.workSteps.map(function (s, i) {
-          return '<article class="step">' +
-            '<p class="step__no"' + E("workSteps." + i + ".no") + '>' + esc(s.no) + '</p>' +
-            '<h3 class="step__title"' + E("workSteps." + i + ".title") + '>' + esc(s.title) + '</h3>' +
-            (s.desc ? '<p class="step__desc"' + E("workSteps." + i + ".desc") + '>' +
-                      esc(s.desc) + '</p>' : '') +
-          '</article>';
-        }).join("") + '</div>', null, true);
-    }
-
-    /* Game Tournament */
-    if (has(D.tournaments)) {
-      html += section("Game Tournament", "게임 대회 이력",
-        '<div class="tour">' + D.tournaments.map(function (t, i) {
-          return '<div class="tour__row">' +
-            '<div class="tour__period"' + E("tournaments." + i + ".period") + '>' +
-              esc(t.period) + '</div>' +
-            '<div class="tour__title"' + E("tournaments." + i + ".title") + '>' +
-              esc(t.title) + '</div>' +
-            '<div class="tour__result"' + E("tournaments." + i + ".result") + '>' +
-              esc(t.result) + '</div>' +
-          '</div>';
-        }).join("") + '</div>', null, true);
-    }
-
-    /* Project — cover 가 있으면 그림 블럭, detail 이 있으면 눌러서 소개 창 */
-    if (has(D.mainProjects)) {
-      html += section("Project", "대표 프로젝트",
-        '<div class="mproj">' + D.mainProjects.map(function (p, i) {
-          if (p.cover || has(p.detail)) {
-            return blockBox(p, "mainProjects." + i, "desc");
-          }
-          return '<article class="mproj__card">' +
-            '<h3 class="mproj__title"' + E("mainProjects." + i + ".title") + '>' +
-              esc(p.title) + '</h3>' +
-            '<p class="mproj__desc"' + E("mainProjects." + i + ".desc") + '>' +
-              esc(p.desc) + '</p>' +
-          '</article>';
-        }).join("") + '</div>', null, true);
-    }
-
-    html += cta();
-    el("page-main").innerHTML = html;
-
-    /* 캐릭터 그림이 없으면 조용히 빼둡니다 */
-    var heroImg = el("page-main").querySelector(".stage__hero");
-    if (heroImg) {
-      heroImg.onerror = function () {
-        if (heroImg.parentNode) { heroImg.parentNode.removeChild(heroImg); }
-      };
-      if (heroImg.complete && !heroImg.naturalWidth) { heroImg.onerror(); }
-    }
-
-    /* 아이콘 PNG 가 있으면 그걸 쓰고, 없으면 코드로 그린 그림을 씁니다 */
-    var imgs = el("page-main").querySelectorAll(".sec-ico img");
-    Array.prototype.forEach.call(imgs, function (im) {
-      function ok() { im.parentNode.className = "sec-ico has-img"; }
-      function fail() { if (im.parentNode) { im.parentNode.removeChild(im); } }
-      if (im.complete) {
-        if (im.naturalWidth) { ok(); } else { fail(); }
-      } else {
-        im.onload = ok;
-        im.onerror = fail;
-      }
-    });
-  }
-
-  /* 메인으로 돌아왔을 때 애니메이션을 처음부터 다시 재생 */
-  function replayMain() {
-    var stage = el("page-main").querySelector(".stage");
-    if (!stage) { return; }
-    var nodes = stage.querySelectorAll(
-      ".stage__hero, .stage__caption, .stage__title, .stage__cta");
-    Array.prototype.forEach.call(nodes, function (n) {
-      n.style.animation = "none";
-      void n.offsetWidth;          /* 강제로 리플로우를 일으켜 애니메이션을 리셋 */
-      n.style.animation = "";
-    });
   }
 
   /* =========================================================================
@@ -1495,8 +1337,52 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
         '복사해 붙여넣으세요.</div>';
     }
 
+    /* Work Step — 예전 메인 화면에 있던 내용 */
+    if (has(D.workSteps)) {
+      html += section("Work Step", "나의 게임 개발 단계",
+        '<div class="steps">' + D.workSteps.map(function (s, i) {
+          return '<article class="step">' +
+            '<p class="step__no"' + E("workSteps." + i + ".no") + '>' + esc(s.no) + '</p>' +
+            '<h3 class="step__title"' + E("workSteps." + i + ".title") + '>' + esc(s.title) + '</h3>' +
+            (s.desc ? '<p class="step__desc"' + E("workSteps." + i + ".desc") + '>' +
+                      esc(s.desc) + '</p>' : '') +
+          '</article>';
+        }).join("") + '</div>', null, true);
+    }
+
+    /* Game Tournament — 예전 메인 화면에 있던 내용 (제목이 빈 칸은 건너뜁니다) */
+    var tours = (D.tournaments || []).map(function (t, i) { return { t: t, i: i }; })
+      .filter(function (o) { return editing || o.t.title; });
+    if (tours.length) {
+      html += section("Game Tournament", "게임 대회 이력",
+        '<div class="tour">' + tours.map(function (o) {
+          var t = o.t, i = o.i;
+          return '<div class="tour__row">' +
+            '<div class="tour__period"' + E("tournaments." + i + ".period") + '>' +
+              esc(t.period) + '</div>' +
+            '<div class="tour__title"' + E("tournaments." + i + ".title") + '>' +
+              esc(t.title) + '</div>' +
+            '<div class="tour__result"' + E("tournaments." + i + ".result") + '>' +
+              esc(t.result) + '</div>' +
+          '</div>';
+        }).join("") + '</div>', null, true);
+    }
+
     html += cta();
     el("page-portfolio").innerHTML = html;
+
+    /* 아이콘 PNG 가 있으면 그걸 쓰고, 없으면 코드로 그린 그림을 씁니다 */
+    var imgs = el("page-portfolio").querySelectorAll(".sec-ico img");
+    Array.prototype.forEach.call(imgs, function (im) {
+      function ok() { im.parentNode.className = "sec-ico has-img"; }
+      function fail() { if (im.parentNode) { im.parentNode.removeChild(im); } }
+      if (im.complete) {
+        if (im.naturalWidth) { ok(); } else { fail(); }
+      } else {
+        im.onload = ok;
+        im.onerror = fail;
+      }
+    });
   }
 
   /* =========================================================================
@@ -1516,7 +1402,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   }
 
   function renderAll() {
-    renderMain();
     renderResume();
     renderCover();
     renderPortfolio();
@@ -1634,25 +1519,26 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   });
 
   /* =========================================================================
-     페이지 전환 (주소창 #main / #resume / #cover / #portfolio 로 바로 링크 가능)
+     페이지 전환
+     주소에 아무것도 없으면 문부터 시작하고,
+     #resume / #cover / #portfolio 로 들어오면 곧바로 그 문서를 보여줍니다.
      ========================================================================= */
-  var PAGES = ["main", "resume", "cover", "portfolio"];
-  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  var DOCS = ["resume", "cover", "portfolio"];
+  var currentDoc = "";
 
   function show(name, push) {
-    if (PAGES.indexOf(name) === -1) { name = "main"; }
-    PAGES.forEach(function (n) { el("page-" + n).hidden = (n !== name); });
-    tabs.forEach(function (t) {
-      t.setAttribute("aria-selected", t.dataset.page === name ? "true" : "false");
-    });
+    if (pjBase) { pjClose(); }
+    if (DOCS.indexOf(name) === -1) {
+      currentDoc = "";
+      Interview.toDoor();
+      if (push && location.hash) { history.replaceState(null, "", location.pathname + location.search); }
+      return;
+    }
+    currentDoc = name;
+    Interview.toDoc(name);
     if (push && location.hash !== "#" + name) { history.replaceState(null, "", "#" + name); }
-    if (name === "main" && !editing) { replayMain(); }
-    window.scrollTo(0, 0);
   }
 
-  tabs.forEach(function (t) {
-    t.addEventListener("click", function () { show(t.dataset.page, true); });
-  });
   window.addEventListener("hashchange", function () {
     show(location.hash.replace("#", ""), false);
   });
@@ -1833,6 +1719,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     markEditable(true);
     refreshResetBtn();
     setMsg("점선으로 표시된 글자를 눌러 바로 고치세요.");
+    Interview.editingChanged();
   }
 
   function exitEditing() {
@@ -1843,7 +1730,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     el("editBar").hidden = true;
     markEditable(false);
     renderAll();                      /* 고친 내용으로 화면을 다시 그립니다 */
-    show(location.hash.replace("#", "") || "main", false);
+    Interview.editingChanged();
   }
 
   el("exitBtn").addEventListener("click", exitEditing);
@@ -1862,6 +1749,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   /* ---------- data.js 파일로 내려받기 ---------- */
   var COMMENTS = {
     site:           "0. 사이트 공통",
+    intro:          "0-0. 첫 화면 연출 문구 (문 · 인사 · 면접관)",
     main:           "0-1. 메인 화면",
     workSteps:      "0-2. 메인 화면 — Work Step (일하는 순서)",
     tournaments:    "0-3. 메인 화면 — Game Tournament (게임 대회 이력)",
@@ -1941,7 +1829,34 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
      실행
      ========================================================================= */
   renderAll();
-  show(location.hash.replace("#", "") || "main", false);
+
+  /* 태블릿 상단 시계 */
+  (function tick() {
+    var now = new Date();
+    var mm = String(now.getMinutes());
+    el("iv-clock").textContent = now.getHours() + ":" + (mm.length < 2 ? "0" + mm : mm);
+    setTimeout(tick, 20000);
+  })();
+
+  Interview.init({
+    intro: D.intro,
+    isEditing: function () { return editing; },
+    /* 자기소개 말풍선에 들어갈 내용: 소제목 + 문단(빈 줄로 나뉜 단위) */
+    getCover: function () {
+      return (has(D.cover) ? D.cover : []).map(function (c) {
+        return {
+          title: c.title,
+          paras: String(c.body || "").split(/\n{2,}/)
+            .filter(function (t) { return t.trim(); })
+            .map(function (t) { return mark(t); })
+        };
+      }).filter(function (c) { return c.paras.length; });
+    },
+    onDoc: function (name) { show(name, true); },
+    onDoor: function () { show("", true); },
+    onReady: function () { if (editing) { markEditable(true); } }
+  });
+  show(location.hash.replace("#", ""), false);
 })();
 </script>
 </body>
