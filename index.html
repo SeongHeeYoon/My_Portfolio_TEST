@@ -168,15 +168,6 @@ h1,h2,h3,h4,p{margin:0;}
 .tour__title{font-size:17px; font-weight:500; letter-spacing:-.01em;}
 .tour__result{font-size:15px; color:var(--abyssal); text-align:right; white-space:nowrap;}
 
-/* ---------- Project (메인) ---------- */
-.mproj{display:grid; grid-template-columns:repeat(2,1fr); gap:var(--sp-24); margin-top:var(--sp-40);}
-.mproj__card{
-  border:1px solid var(--mist); border-radius:var(--r-card);
-  padding:var(--sp-48) var(--sp-40);
-}
-.mproj__title{font-size:28px; font-weight:500; letter-spacing:-.02em;}
-.mproj__desc{margin-top:12px; font-size:16px; line-height:1.6; color:var(--slate);}
-
 /* ---------- BADGE ---------- */
 .badge{
   display:inline-block; padding:6px 12px; border-radius:var(--r-badge);
@@ -410,21 +401,7 @@ body{
   padding-top:var(--sp-40);
 }
 
-/* 소제목 + 두루마리 아이콘 */
 .h-section{display:flex; align-items:center; gap:12px;}
-.sec-ico{
-  position:relative; flex:none;
-  width:44px; height:44px; line-height:0;
-}
-.sec-ico img, .sec-ico svg{
-  position:absolute; top:0; left:0; width:100%; height:100%;
-  image-rendering:pixelated;                 /* 픽셀 그림이 뭉개지지 않도록 */
-  image-rendering:-moz-crisp-edges;
-  image-rendering:crisp-edges;
-}
-.sec-ico img{z-index:2;}                     /* 실제 PNG 가 있으면 그게 위로 */
-.sec-ico svg{z-index:1;}
-.sec-ico.has-img svg{display:none;}          /* PNG 가 떴으면 대체 그림은 숨김 */
 
 /* 라벨 앞의 작은 나뭇잎 */
 .eyebrow{display:inline-flex; align-items:center; gap:8px;}
@@ -432,38 +409,6 @@ body{
   content:""; width:20px; height:20px; flex:none;
   background:url("images/leaf-icon.png") center / contain no-repeat;
 }
-
-/* ---------- 대표 프로젝트: 그림이 들어간 블럭형 박스 ---------- */
-.pjbox{
-  display:block; width:100%; text-align:left;
-  background:var(--bone); border:2px solid var(--mist);
-  border-radius:var(--r-card); overflow:hidden;
-  box-shadow:0 5px 0 var(--shadow);
-  transition:transform .16s ease, box-shadow .16s ease;
-  cursor:pointer;
-}
-.pjbox:hover{transform:translateY(-3px); box-shadow:0 8px 0 var(--shadow);}
-.pjbox:active{transform:translateY(2px); box-shadow:0 2px 0 var(--shadow);}
-.pjbox__img{display:block; width:100%; height:auto; background:var(--ash);}
-/* 그림이 없을 때: 따뜻한 그라데이션 + 제목 (포트폴리오 준비 중 박스용) */
-.pjbox__ph{
-  display:flex; align-items:center; justify-content:center; text-align:center;
-  aspect-ratio:5/3; padding:24px;
-  background:var(--gradient-warm);
-  font-size:26px; font-weight:700; letter-spacing:-.02em; color:#fffdfa;
-  text-shadow:0 1px 6px rgba(90,70,50,.35);
-}
-@supports not (aspect-ratio:1/1){ .pjbox__ph{height:0; padding-bottom:60%;} }
-.pjbox__foot{padding:var(--sp-24) var(--sp-32) var(--sp-32);}
-.pjbox__desc{
-  font-size:20px; font-weight:700; line-height:1.4; letter-spacing:-.02em;
-  color:var(--obsidian);
-}
-.pjbox__more{
-  display:inline-flex; align-items:center; gap:6px;
-  margin-top:14px; font-size:14px; color:var(--slate);
-}
-.pjbox__more::after{content:"→";}
 
 /* ---------- 프로젝트 소개 창 ---------- */
 .pjmodal{
@@ -622,7 +567,7 @@ body.editing .pjpage__body p:only-child:empty::before{
 .card__points{border-top:2px dashed var(--vapor);}
 
 /* ---------- 카드류: 둥글게 + 스티커 그림자 ---------- */
-.card, .step, .extra, .mproj__card, .pf__card{
+.card, .step, .extra, .pf__card{
   background:var(--ash);
   border:2px solid var(--mist);
   border-radius:var(--r-card);
@@ -687,7 +632,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   .hero{grid-template-columns:1fr; gap:var(--sp-32);}
   .photo{max-width:260px; aspect-ratio:1/1;}
   .hero__tagline{font-size:30px;}
-  .cards,.extras,.pf,.mproj{grid-template-columns:1fr;}
+  .cards,.extras,.pf{grid-template-columns:1fr;}
   .rescols{grid-template-columns:1fr;}
   .steps{grid-template-columns:repeat(2,1fr);}
   .essay__item{padding:var(--sp-40) 0;}
@@ -708,9 +653,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   .step{padding:var(--sp-24);}
   .tour__row{grid-template-columns:1fr auto; gap:4px 12px; padding:16px 0;}
   .tour__period{grid-column:1 / -1; font-size:13px;}
-  .mproj__card{padding:var(--sp-32) var(--sp-24);}
-  .pjbox__foot{padding:var(--sp-16) var(--sp-24) var(--sp-24);}
-  .pjbox__desc{font-size:17px;}
   .pjmodal{padding:12px;}
   .pjmodal__box{max-height:92vh; max-height:92dvh; border-radius:24px;}
   .pjmodal__bar{padding:16px var(--sp-24);}
@@ -725,11 +667,9 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   .pjtoc{width:auto; flex:0 0 auto; margin-bottom:0; padding:10px 14px; font-size:14px; white-space:nowrap;}
   .pjmodal__content{padding:var(--sp-24);}
   .pjpage__title{font-size:22px;}
-  .mproj__title{font-size:24px;}
   .photo{max-width:100%;}
   .hero__tagline{font-size:26px; letter-spacing:-.02em;}
   .h-section{font-size:26px;}
-  .sec-ico{width:33px; height:33px;}
   .row{grid-template-columns:1fr; gap:4px; padding:14px 0;}
   .row dt{font-size:13px;}
   .card{padding:var(--sp-32) var(--sp-24);}
@@ -782,20 +722,15 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
         <span class="door__hole" id="iv-hole"></span>
         <span class="door__panel" id="iv-panel">
           <span class="door__face">
-            <span class="door__inset door__inset--top"></span>
-            <span class="door__inset door__inset--bot"></span>
             <span class="door__knob"></span>
           </span>
           <span class="door__face door__face--back">
-            <span class="door__inset door__inset--top"></span>
-            <span class="door__inset door__inset--bot"></span>
-            <span class="door__knob"></span>
           </span>
         </span>
       </button>
       <p class="hint" id="iv-hint"><span class="hint__box" id="iv-hintText"></span></p>
 
-      <div class="chair" id="iv-chair"><svg viewBox="0 0 180 268" aria-hidden="true" focusable="false"><path d="M28,172 L18,266 L32,266 L46,176 Z" fill="#7d5c43"/><path d="M152,172 L162,266 L148,266 L134,176 Z" fill="#7d5c43"/><path d="M46,180 L42,246 L52,246 L58,180 Z" fill="#65493a"/><path d="M134,180 L138,246 L128,246 L122,180 Z" fill="#65493a"/><path d="M26,14 L38,190 L50,190 L40,14 Z M154,14 L142,190 L130,190 L140,14 Z" fill="#8c684c"/><rect x="22" y="4" width="136" height="118" rx="24" fill="#cf8259"/><rect x="33" y="15" width="114" height="96" rx="16" fill="#dc9770"/><path d="M90,20 L90,106" stroke="#cf8259" stroke-width="2" stroke-dasharray="5 6"/><rect x="12" y="166" width="156" height="24" rx="12" fill="#b96d48"/><rect x="12" y="160" width="156" height="20" rx="10" fill="#dc9770"/></svg><span class="chair__puff"></span></div>
+      <div class="chair" id="iv-chair"><img src="images/char/chair.webp" alt=""><span class="chair__puff"></span></div>
       <div class="char" id="iv-char"></div>
 
       <div class="bubble greet" id="iv-greet" role="status" aria-live="polite"><span id="iv-greetText"></span></div>
@@ -805,6 +740,16 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
       <div class="desk__edge"></div>
       <div class="desk__top"></div>
       <div class="desk__pen"></div>
+    </div>
+  </div>
+
+  <!-- 눈을 마주치는 클로즈업 -->
+  <div class="bust" id="iv-bust" aria-hidden="true">
+    <div class="bust__inner">
+      <img class="bust__away" src="images/char/bust_away.webp" alt="">
+      <img class="bust__contact" src="images/char/bust_contact.webp" alt="">
+      <i class="bust__spark bust__spark--l">✦</i>
+      <i class="bust__spark bust__spark--r">✦</i>
     </div>
   </div>
 
@@ -876,9 +821,11 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     </nav>
   </main>
 
+  <!-- 연출 건너뛰기: 화면 아래 가운데 (바닥 공간이라 캐릭터와 문을 가리지 않습니다) -->
+  <button class="skipcta" id="iv-skip" type="button">연출 건너뛰기<span aria-hidden="true"> ▶▶</span></button>
+
   <!-- 오른쪽 위 작은 버튼 -->
   <div class="tools">
-    <button class="tool" id="iv-skip" type="button">건너뛰기</button>
     <button class="tool" id="iv-again" type="button">처음<span class="tool__long">부터 보기</span></button>
     <button class="tool editBtn" id="editBtn" type="button">수정</button>
   </div>
@@ -1068,96 +1015,16 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
      ========================================================================= */
   document.title = (D.site.name || "") + (D.site.role ? " · " + D.site.role : "");
 
-  /* =========================================================================
-     소제목 왼쪽에 붙는 픽셀 두루마리 아이콘
-     ---------------------------------------------------------------------
-     한 칸이 곧 한 픽셀입니다. 아래 GRID 의 글자를 바꾸면 그림이 바뀝니다.
-       .=투명  o=테두리  b/h=나무 롤  p/w=종이  y/G=금색  r/R=리본  s/S=반짝임
-     images/section-icon.png 파일을 넣어두면 그 그림이 대신 쓰입니다.
-     ========================================================================= */
-  var ICON_COLORS = {
-    o: "#6b4526", b: "#a9724a", h: "#c99468",
-    p: "#f7efdc", w: "#fffdf5",
-    y: "#ffe08a", G: "#f0b429",
-    r: "#e03a3a", R: "#a82424",
-    s: "#ffd75e", S: "#fff4c2"
-  };
-  var ICON_GRID = [
-    "..................",
-    ".s................",
-    "sSs...............",
-    ".s................",
-    "....oooooooooo....",
-    "....obbbbbbbho....",
-    "....ohhhhhhhbo....",
-    "....oppppppppo....",
-    "....owpyGGpppo....",
-    "....owpyGGpppo....",
-    "....owpyGGpppo....",
-    "....owpyGGppporR..",
-    "....owppppppporrR.",
-    "....owppyGppporrR.",
-    "....owppppppporR..",
-    "....obbbbbbbhoR...",
-    "....ohhhhhhhbo....",
-    "....oooooooooo...."
-  ];
-
-  var iconSVGCache = null;
-  function scrollIcon() {
-    if (iconSVGCache) { return iconSVGCache; }
-    var rects = "";
-    for (var y = 0; y < ICON_GRID.length; y++) {
-      var row = ICON_GRID[y];
-      for (var x = 0; x < row.length; x++) {
-        var c = ICON_COLORS[row.charAt(x)];
-        if (!c) { continue; }
-        rects += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="' + c + '"/>';
-      }
-    }
-    iconSVGCache =
-      '<span class="sec-ico" aria-hidden="true">' +
-        '<img src="images/section-icon.png" alt="">' +
-        '<svg viewBox="0 0 18 18" shape-rendering="crispEdges" focusable="false">' +
-          rects +
-        '</svg>' +
-      '</span>';
-    return iconSVGCache;
-  }
-
-  /* 섹션 껍데기 (icon 을 true 로 주면 소제목 왼쪽에 두루마리가 붙습니다) */
-  function section(eyebrow, title, inner, lede, icon) {
+  /* 섹션 껍데기 */
+  function section(eyebrow, title, inner, lede) {
     return '<section class="section">' +
       '<p class="eyebrow">' + esc(eyebrow) + '</p>' +
       '<h2 class="h-section">' +
-        (icon ? scrollIcon() : '') +
         '<span>' + esc(title) + '</span>' +
       '</h2>' +
       (lede ? '<p class="lede">' + br(lede) + '</p>' : '') +
       inner +
     '</section>';
-  }
-
-  /* 그림이 들어간 '블럭형 박스' (대표 프로젝트 / 포트폴리오 공용)
-   * item : { title, desc/summary, cover, detail }
-   * base : "mainProjects.0" 또는 "portfolio.0" (편집·팝업 경로의 뿌리)
-   * descKey : 박스 아래 문구가 담긴 필드 이름 ("desc" 또는 "summary")
-   */
-  function blockBox(item, base, descKey) {
-    var clickable = has(item.detail);
-    var desc = item[descKey] || item.desc || item.summary || "";
-    var tag = clickable ? "button" : "div";
-    return '<' + tag + ' class="pjbox"' +
-      (clickable ? ' type="button" data-project="' + esc(base) + '"' +
-                   ' aria-label="' + esc(item.title) + ' 자세히 보기"' : '') + '>' +
-      (item.cover
-        ? '<img class="pjbox__img" src="' + esc(item.cover) + '" alt="' + esc(item.title) + '">'
-        : '<span class="pjbox__ph" aria-hidden="true">' + esc(item.title || "") + '</span>') +
-      '<div class="pjbox__foot">' +
-        '<p class="pjbox__desc"' + E(base + "." + descKey) + '>' + esc(desc) + '</p>' +
-        (clickable ? '<span class="pjbox__more">자세히 보기</span>' : '') +
-      '</div>' +
-    '</' + tag + '>';
   }
 
   /* =========================================================================
@@ -1315,31 +1182,127 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   }
 
   /* =========================================================================
-     포트폴리오
+     포트폴리오 — 태블릿 속 게임 선택 화면
+     위쪽 타일을 고르면 배경과 소개가 그 게임으로 바뀌고, 한 번 더 누르거나
+     '자세히 보기'를 누르면 소개 창이 열립니다. (키보드: ← → 선택, Enter 열기)
      ========================================================================= */
+  var gsIndex = 0;       /* 고른 게임 */
+  var gsTab = "games";   /* 위쪽 메뉴 */
+
+  function gsInfoHTML(i) {
+    var g = (D.portfolio || [])[i];
+    if (!g) { return ""; }
+    return '<h2 class="gs__title">' + esc(g.title) + '</h2>' +
+      '<p class="gs__desc"' + E("portfolio." + i + ".summary") + '>' + esc(g.summary) + '</p>' +
+      (has(g.detail)
+        ? '<button class="gs__start" type="button" data-project="portfolio.' + i + '">' +
+          '<span aria-hidden="true">▶</span> 자세히 보기</button>'
+        : '');
+  }
+
+  function gsSetBg(i) {
+    var bg = el("gsBg");
+    if (!bg) { return; }
+    var g = (D.portfolio || [])[i] || {};
+    var layer = document.createElement("div");
+    layer.className = "gs__bgimg";
+    if (g.cover) { layer.style.backgroundImage = 'url("' + g.cover + '")'; }
+    bg.appendChild(layer);
+    void layer.offsetWidth;
+    layer.classList.add("on");
+    /* 이전 배경은 새 배경이 다 나타난 뒤에 지웁니다 */
+    while (bg.children.length > 2) { bg.removeChild(bg.firstChild); }
+  }
+
+  function gsSelect(i) {
+    var list = D.portfolio || [];
+    if (!list.length) { return; }
+    gsIndex = (i + list.length) % list.length;
+    var tiles = document.querySelectorAll(".gs__tile");
+    Array.prototype.forEach.call(tiles, function (t, n) {
+      var on = n === gsIndex;
+      t.classList.toggle("is-on", on);
+      t.setAttribute("aria-pressed", on ? "true" : "false");
+      if (on) {
+        var row = t.parentNode;
+        row.scrollTo({ left: t.offsetLeft - row.clientWidth / 2 + 84, behavior: "smooth" });
+      }
+    });
+    el("gsInfo").innerHTML = gsInfoHTML(gsIndex);
+    gsSetBg(gsIndex);
+    if (editing) { markEditable(true); }
+  }
+
+  function gsSetTab(name) {
+    gsTab = name;
+    var gs = el("gs");
+    if (!gs) { return; }
+    gs.setAttribute("data-tab", name);
+    Array.prototype.forEach.call(gs.querySelectorAll(".gs__tab"), function (t) {
+      var on = t.getAttribute("data-gs-tab") === name;
+      t.classList.toggle("is-on", on);
+      t.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
   function renderPortfolio() {
     var list = has(D.portfolio) ? D.portfolio : [];
-    var html =
-      '<p class="eyebrow">Portfolio</p>' +
-      '<h2 class="h-section">포트폴리오</h2>' +
-      (D.portfolioIntro ? '<p class="lede"' + EL("portfolioIntro") + '>' +
-                          br(D.portfolioIntro) + '</p>' : '');
+    if (gsIndex >= list.length) { gsIndex = 0; }
 
+    var tours = (D.tournaments || []).map(function (t, i) { return { t: t, i: i }; })
+      .filter(function (o) { return editing || o.t.title; });
+
+    var tabs = [["games", "게임"]];
+    if (has(D.workSteps)) { tabs.push(["steps", "개발 단계"]); }
+    if (tours.length) { tabs.push(["tour", "대회 기록"]); }
+    if (D.contact) { tabs.push(["contact", "연락처"]); }
+    if (!tabs.some(function (t) { return t[0] === gsTab; })) { gsTab = "games"; }
+
+    var html = '<div class="gs" id="gs" data-tab="' + gsTab + '">' +
+      '<div class="gs__bg" id="gsBg" aria-hidden="true"></div>' +
+
+      '<div class="gs__head">' +
+        '<div class="gs__user"><img src="images/char/avatar.webp" alt="" onerror="this.remove()">' +
+          '<span>' + esc((D.site && D.site.name) || "") + '</span></div>' +
+        '<nav class="gs__tabs" aria-label="포트폴리오 메뉴">' + tabs.map(function (t) {
+          var on = t[0] === gsTab;
+          return '<button class="gs__tab' + (on ? " is-on" : "") + '" type="button" data-gs-tab="' + t[0] + '"' +
+                 ' aria-pressed="' + on + '">' + t[1] + '</button>';
+        }).join("") + '</nav>' +
+      '</div>';
+
+    /* 게임 */
+    html += '<section class="gs__panel gs__panel--games" aria-label="게임 목록">';
     if (list.length) {
-      html += '<div class="mproj">' + list.map(function (w, i) {
-        return blockBox(w, "portfolio." + i, "summary");
-      }).join("") + '</div>';
+      html += '<div class="gs__row">' + list.map(function (g, i) {
+        var on = i === gsIndex;
+        return '<button class="gs__tile' + (on ? " is-on" : "") + '" type="button" data-gs="' + i + '"' +
+          ' aria-pressed="' + on + '" aria-label="' + esc(g.title) + '">' +
+          (g.cover
+            ? '<img src="' + esc(g.cover) + '" alt="" loading="lazy">'
+            : '<span class="gs__tileph">' + esc(g.title) + '</span>') +
+        '</button>';
+      }).join("") + '</div>' +
+      '<div class="gs__info" id="gsInfo">' + gsInfoHTML(gsIndex) + '</div>' +
+      (D.portfolioIntro ? '<p class="gs__note"' + EL("portfolioIntro") + '>' + br(D.portfolioIntro) + '</p>' : '') +
+      '<div class="gs__hints" aria-hidden="true">' +
+        '<span><i>◀</i><i>▶</i> 선택</span><span><i>A</i> 열기</span>' +
+      '</div>';
     } else {
-      html +=
-        '<div class="empty"><b>준비 중입니다</b>' +
-        'data.js 아래쪽 <code>portfolio: [ ]</code> 안의 예시 블록에서 <code>//</code> 를 지우고 ' +
-        '내용을 채우면 카드가 바로 만들어집니다. 카드를 늘리려면 <code>{ … }</code> 블록을 ' +
-        '복사해 붙여넣으세요.</div>';
+      html += '<div class="empty"><b>준비 중입니다</b>' +
+        'data.js 아래쪽 <code>portfolio: [ ]</code> 안에 블록을 추가하면 게임 타일이 바로 만들어집니다.</div>';
     }
+    html += '</section>';
 
-    /* Work Step — 예전 메인 화면에 있던 내용 */
+    /* 인쇄 전용 목록 (화면에서는 보이지 않습니다) */
+    html += '<div class="gs__print"><h2 class="h-section">포트폴리오</h2>' + list.map(function (g) {
+      return '<p><b>' + esc(g.title) + '</b> — ' + esc(g.summary) + '</p>';
+    }).join("") + '</div>';
+
+    /* 개발 단계 */
     if (has(D.workSteps)) {
-      html += section("Work Step", "나의 게임 개발 단계",
+      html += '<section class="gs__panel gs__panel--steps" aria-label="개발 단계">' +
+        '<h2 class="gs__heading">나의 게임 개발 단계</h2>' +
         '<div class="steps">' + D.workSteps.map(function (s, i) {
           return '<article class="step">' +
             '<p class="step__no"' + E("workSteps." + i + ".no") + '>' + esc(s.no) + '</p>' +
@@ -1347,43 +1310,56 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
             (s.desc ? '<p class="step__desc"' + E("workSteps." + i + ".desc") + '>' +
                       esc(s.desc) + '</p>' : '') +
           '</article>';
-        }).join("") + '</div>', null, true);
+        }).join("") + '</div></section>';
     }
 
-    /* Game Tournament — 예전 메인 화면에 있던 내용 (제목이 빈 칸은 건너뜁니다) */
-    var tours = (D.tournaments || []).map(function (t, i) { return { t: t, i: i }; })
-      .filter(function (o) { return editing || o.t.title; });
+    /* 대회 기록 (제목이 빈 칸은 건너뜁니다) */
     if (tours.length) {
-      html += section("Game Tournament", "게임 대회 이력",
+      html += '<section class="gs__panel gs__panel--tour" aria-label="대회 기록">' +
+        '<h2 class="gs__heading">게임 대회 이력</h2>' +
         '<div class="tour">' + tours.map(function (o) {
           var t = o.t, i = o.i;
           return '<div class="tour__row">' +
-            '<div class="tour__period"' + E("tournaments." + i + ".period") + '>' +
-              esc(t.period) + '</div>' +
-            '<div class="tour__title"' + E("tournaments." + i + ".title") + '>' +
-              esc(t.title) + '</div>' +
-            '<div class="tour__result"' + E("tournaments." + i + ".result") + '>' +
-              esc(t.result) + '</div>' +
+            '<div class="tour__period"' + E("tournaments." + i + ".period") + '>' + esc(t.period) + '</div>' +
+            '<div class="tour__title"' + E("tournaments." + i + ".title") + '>' + esc(t.title) + '</div>' +
+            '<div class="tour__result"' + E("tournaments." + i + ".result") + '>' + esc(t.result) + '</div>' +
           '</div>';
-        }).join("") + '</div>', null, true);
+        }).join("") + '</div></section>';
     }
 
-    html += cta();
-    el("page-portfolio").innerHTML = html;
+    /* 연락처 */
+    if (D.contact) {
+      html += '<section class="gs__panel gs__panel--contact" aria-label="연락처">' + cta() + '</section>';
+    }
 
-    /* 아이콘 PNG 가 있으면 그걸 쓰고, 없으면 코드로 그린 그림을 씁니다 */
-    var imgs = el("page-portfolio").querySelectorAll(".sec-ico img");
-    Array.prototype.forEach.call(imgs, function (im) {
-      function ok() { im.parentNode.className = "sec-ico has-img"; }
-      function fail() { if (im.parentNode) { im.parentNode.removeChild(im); } }
-      if (im.complete) {
-        if (im.naturalWidth) { ok(); } else { fail(); }
-      } else {
-        im.onload = ok;
-        im.onerror = fail;
-      }
-    });
+    html += '</div>';
+    el("page-portfolio").innerHTML = html;
+    gsSetBg(gsIndex);
   }
+
+  /* 타일 · 메뉴 누르기 */
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest) { return; }
+    var tab = e.target.closest("[data-gs-tab]");
+    if (tab) { gsSetTab(tab.getAttribute("data-gs-tab")); return; }
+    var tile = e.target.closest("[data-gs]");
+    if (tile) {
+      var i = parseInt(tile.getAttribute("data-gs"), 10) || 0;
+      if (i === gsIndex) { pjOpen("portfolio." + i); } else { gsSelect(i); }
+    }
+  });
+
+  /* 키보드: ← → 선택, Enter 열기 */
+  document.addEventListener("keydown", function (e) {
+    if (editing || pjBase || currentDoc !== "portfolio" || gsTab !== "games") { return; }
+    if (Interview.state() !== "desk" || !el("loginModal").hidden) { return; }
+    if (e.key === "ArrowRight") { e.preventDefault(); gsSelect(gsIndex + 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); gsSelect(gsIndex - 1); }
+    else if (e.key === "Enter" && !(e.target.closest && e.target.closest("button, a"))) {
+      e.preventDefault();
+      pjOpen("portfolio." + gsIndex);
+    }
+  });
 
   /* =========================================================================
      하단 연락 배너

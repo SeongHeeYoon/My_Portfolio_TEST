@@ -433,7 +433,7 @@ const DATA = {
     {
       title: "CityRush",
       summary: "AI를 활용한 3D 자동차 추적 · 도망 레이싱 게임",
-      cover: "",
+      cover: "images/covers/cityrush.webp",
       detail: [
         {
           title: "작품 소개",
@@ -452,7 +452,7 @@ const DATA = {
     {
       title: "BladeSteal",
       summary: "AI를 활용한 2D 도트 액션 플랫포머",
-      cover: "",
+      cover: "images/covers/bladesteal.webp",
       detail: [
         {
           title: "작품 소개",
@@ -471,7 +471,7 @@ const DATA = {
     {
       title: "MapleFly",
       summary: "Vers8 MSU Space 공모전 출품 — 비행 슈팅 게임",
-      cover: "",
+      cover: "images/covers/maplefly.webp",
       detail: [
         {
           title: "작품 소개",
@@ -490,7 +490,7 @@ const DATA = {
     {
       title: "메이플피아 아카데미",
       summary: "메이플월드 공모전 출품 — AI를 활용한 JRPG 턴제 게임",
-      cover: "",
+      cover: "images/covers/academy.webp",
       detail: [
         {
           title: "작품 소개",

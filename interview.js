@@ -4,7 +4,7 @@
  *
  *  문구는 data.js 의 intro 에서 바꿉니다.
  *  연출 순서와 시간은 아래 play() 함수 한 곳에 모여 있습니다.
- *  캐릭터는 그림 파일이 아니라 코드로 그린 SVG 입니다. (관절을 움직이기 위해)
+ *  캐릭터는 images/char 의 그림을 프레임처럼 바꿔 가며 움직입니다.
  * ========================================================================== */
 (function () {
   "use strict";
@@ -14,7 +14,7 @@
      --------------------------------------------------------------------- */
   const FLOOR = 700;      /* 바닥 높이 */
   const DOOR_X = 560;     /* 문 가운데 */
-  const BESIDE_X = 765;   /* 의자 옆에 서는 자리 */
+  const BESIDE_X = 760;   /* 의자 옆에 서는 자리 */
   const CHAIR_X = 915;    /* 의자 가운데 */
 
   const $ = function (id) { return document.getElementById(id); };
@@ -23,213 +23,49 @@
   };
 
   /* ---------------------------------------------------------------------
-     캐릭터 그림
-     사진에서 가져온 특징: 숱 많은 검은 머리 + 일자 앞머리, 투명 뿔테 안경,
-     작고 차분한 눈, 또렷한 코와 입술, 살짝 드러난 귀, 짙은 남색 정장
+     캐릭터 프레임
+     h 는 방 안에서의 키입니다. 그림을 바꿀 때 이 값으로 크기를 맞춥니다.
      --------------------------------------------------------------------- */
-  const SKIN = "#f4d4bb", SKIN_D = "#e6b89a", HAIR = "#17151b", HAIR_L = "#37333e";
-  const SUIT = "#1f2b47", SUIT_D = "#172036", SUIT_L = "#2d3b5e", SHOE = "#231f1f";
-
-  const leg = function (id) {
-    return '<g id="c-leg' + id + '">' +
-      '<g id="c-thigh' + id + '"><path d="M-18,-6 L18,-6 L15,66 L-15,66 Z" fill="' + SUIT + '"/>' +
-        '<path d="M6,-2 L6,64" stroke="' + SUIT_D + '" stroke-width="2" opacity=".55"/></g>' +
-      '<g id="c-knee' + id + '">' +
-        '<path d="M-15,-3 L15,-3 L13,60 L-13,60 Z" fill="' + SUIT + '"/>' +
-        '<path d="M6,0 L5,58" stroke="' + SUIT_D + '" stroke-width="2" opacity=".55"/>' +
-        '<g id="c-shoe' + id + '">' +
-          '<path d="M-15,58 C-17,70 -17,76 -13,76 L14,76 C18,76 18,70 15,58 Z" fill="' + SHOE + '"/>' +
-          '<path d="M-9,64 C-4,61 4,61 9,64" stroke="#57504c" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
-        '</g>' +
-      '</g>' +
-    '</g>';
+  const FRAMES = {
+    stand: 400, smile: 400, bow: 392, sit: 340,
+    walk_side1: 400, walk_side2: 400, walk_side3: 400, walk_side4: 400,
+    walk_front1: 400, walk_front2: 400
+  };
+  const WALKS = {
+    side: { frames: ["walk_side1", "walk_side2", "walk_side3", "walk_side4"], ms: 135 },
+    front: { frames: ["walk_front1", "walk_front2"], ms: 210 }
   };
 
-  const arm = function (id) {
-    return '<g id="c-arm' + id + '">' +
-      '<path d="M-13,-8 C-13,-14 13,-14 13,-8 L11,50 L-11,50 Z" fill="' + SUIT + '"/>' +
-      '<g id="c-elbow' + id + '">' +
-        '<path d="M-11,-3 L11,-3 L9,42 L-9,42 Z" fill="' + SUIT + '"/>' +
-        '<rect x="-8" y="39" width="16" height="6" rx="2" fill="#fbfaf7"/>' +
-        '<ellipse cx="0" cy="52" rx="9.5" ry="11" fill="' + SKIN + '"/>' +
-      '</g>' +
-    '</g>';
-  };
-
-  const characterSVG =
-    '<svg class="char__svg" width="1" height="1" aria-hidden="true" focusable="false">' +
-      '<ellipse id="c-shadow" cx="0" cy="-2" rx="62" ry="11" fill="rgba(90,74,56,.22)"/>' +
-      '<g id="c-pelvis">' +
-        leg("R") + leg("L") + arm("R") +
-        /* 상체 (골반 기준, 위쪽이 음수) */
-        '<g id="c-torso">' +
-          '<path d="M-37,16 L-43,-66 C-43,-81 -24,-87 -14,-90 L14,-90 C24,-87 43,-81 43,-66 L37,16 Z" fill="' + SUIT + '"/>' +
-          '<g id="c-chest">' +
-            '<path d="M-20,-92 L0,-34 L20,-92 Z" fill="#fbfaf7"/>' +
-            '<path d="M-5.5,-76 L5.5,-76 L3.5,-66 L8,-42 L0,-33 L-8,-42 L-3.5,-66 Z" fill="#b5553f"/>' +
-            '<path d="M-5.5,-76 L5.5,-76 L3.5,-66 L-3.5,-66 Z" fill="#94432f"/>' +
-            '<path d="M-19,-90 L-30,-60 L-16,-56 L0,-30 L-9,-60 Z" fill="' + SUIT_L + '"/>' +
-            '<path d="M19,-90 L30,-60 L16,-56 L0,-30 L9,-60 Z" fill="' + SUIT_L + '"/>' +
-            '<path d="M-20,-92 L-8,-64 L0,-75 L8,-64 L20,-92 L10,-98 L-10,-98 Z" fill="#ffffff" stroke="#dcd8d0" stroke-width="1"/>' +
-            '<path d="M0,-30 L0,16" stroke="' + SUIT_D + '" stroke-width="2"/>' +
-            '<circle cx="3.5" cy="-17" r="2.6" fill="#0f1729"/><circle cx="3.5" cy="-1" r="2.6" fill="#0f1729"/>' +
-            '<path d="M24,-46 L37,-48" stroke="#f3efe7" stroke-width="3.4" stroke-linecap="round"/>' +
-          '</g>' +
-        '</g>' +
-        arm("L") +
-        /* 머리 (얼굴 가운데가 0,0) */
-        '<g id="c-head">' +
-          '<path d="M-15,44 L-15,62 L0,72 L15,62 L15,44 Z" fill="' + SKIN_D + '"/>' +
-          '<g id="c-hairBack">' +
-            '<path d="M-58,4 C-72,-20 -74,-52 -52,-72 C-30,-92 30,-92 52,-72 C74,-52 72,-20 58,4 C54,-2 50,-8 46,-10 L-46,-10 C-50,-8 -54,-2 -58,4 Z" fill="' + HAIR + '"/>' +
-          '</g>' +
-          '<g id="c-earL"><ellipse cx="-54" cy="11" rx="10" ry="16" fill="' + SKIN + '"/>' +
-            '<path d="M-59,3 C-63,10 -60,18 -55,20" stroke="' + SKIN_D + '" stroke-width="2.4" fill="none"/></g>' +
-          '<g id="c-earR"><ellipse cx="54" cy="11" rx="10" ry="16" fill="' + SKIN + '"/>' +
-            '<path d="M59,3 C63,10 60,18 55,20" stroke="' + SKIN_D + '" stroke-width="2.4" fill="none"/></g>' +
-          '<path d="M-51,-22 C-54,12 -49,38 -30,54 C-15,67 15,67 30,54 C49,38 54,12 51,-22 C49,-54 -49,-54 -51,-22 Z" fill="' + SKIN + '"/>' +
-          '<g id="c-features">' +
-            '<ellipse cx="-34" cy="30" rx="10" ry="6" fill="#efb7a0" opacity=".2"/>' +
-            '<ellipse cx="34" cy="30" rx="10" ry="6" fill="#efb7a0" opacity=".2"/>' +
-            /* 눈썹 */
-            '<path d="M-40,-10 C-32,-14 -21,-14 -12,-10" stroke="#2a2321" stroke-width="4.6" fill="none" stroke-linecap="round"/>' +
-            '<path d="M40,-10 C32,-14 21,-14 12,-10" stroke="#2a2321" stroke-width="4.6" fill="none" stroke-linecap="round"/>' +
-            /* 눈 */
-            '<g id="c-eyeL" transform="translate(-25,7)">' +
-              '<path d="M-11,0 C-6,-6 6,-6 11,1 C6,5 -6,5 -11,0 Z" fill="#fffdf9"/>' +
-              '<g id="c-pupilL"><circle cx="0" cy="-.4" r="5.6" fill="#2a1913"/><circle cx="1.9" cy="-2.3" r="1.6" fill="#fff"/></g>' +
-              '<path d="M-12,0 C-6,-7 6,-7 12,1" stroke="#231d1c" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
-            '</g>' +
-            '<g id="c-eyeR" transform="translate(25,7)">' +
-              '<path d="M11,0 C6,-6 -6,-6 -11,1 C-6,5 6,5 11,0 Z" fill="#fffdf9"/>' +
-              '<g id="c-pupilR"><circle cx="0" cy="-.4" r="5.6" fill="#2a1913"/><circle cx="1.9" cy="-2.3" r="1.6" fill="#fff"/></g>' +
-              '<path d="M12,0 C6,-7 -6,-7 -12,1" stroke="#231d1c" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
-            '</g>' +
-            /* 코 */
-            '<path d="M-8,30 C-6,34.5 -3,33.5 0,35 C3,33.5 6,34.5 8,30" stroke="#d3a086" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
-            /* 입: 평소 / 웃을 때 */
-            '<g id="c-mouthClosed">' +
-              '<path d="M-13,44.4 C-7,42.4 -3,42 0,44 C3,42 7,42.4 13,44.4 C7,46.6 -7,46.6 -13,44.4 Z" fill="#c58a80"/>' +
-              '<path d="M-13,44.4 C-7,46.6 7,46.6 13,44.4 C8,53 -8,53 -13,44.4 Z" fill="#dda797"/>' +
-            '</g>' +
-            '<g id="c-mouthSmile" opacity="0">' +
-              '<path d="M-18,43 C-8,47 8,47 18,43 C13,57 -13,57 -18,43 Z" fill="#b95f5a"/>' +
-              '<path d="M-15,44.6 C-7,47.4 7,47.4 15,44.6 L12,49 C5,50.6 -5,50.6 -12,49 Z" fill="#ffffff"/>' +
-            '</g>' +
-            /* 투명 뿔테 안경 */
-            '<g id="c-glasses">' +
-              '<path d="M-48,0 L-59,4 M48,0 L59,4" stroke="#cfa79a" stroke-width="3" stroke-linecap="round"/>' +
-              '<rect x="-46" y="-9" width="39" height="31" rx="11" fill="rgba(255,255,255,.15)" stroke="#d3ad9f" stroke-width="2.9"/>' +
-              '<rect x="7" y="-9" width="39" height="31" rx="11" fill="rgba(255,255,255,.15)" stroke="#d3ad9f" stroke-width="2.9"/>' +
-              '<path d="M-7,-1 C-3,-5 3,-5 7,-1" stroke="#d3ad9f" stroke-width="2.8" fill="none"/>' +
-              '<path d="M-40,-5 L-27,-6 M13,-5 L26,-6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".85"/>' +
-              '<rect x="-48" y="-8" width="5" height="4" rx="1" fill="#c8ccd2"/><rect x="43" y="-8" width="5" height="4" rx="1" fill="#c8ccd2"/>' +
-            '</g>' +
-            /* 눈 마주칠 때의 반짝임 */
-            '<g id="c-sparkR" opacity="0"><path d="M0,-11 C1,-3 3,-1 11,0 C3,1 1,3 0,11 C-1,3 -3,1 -11,0 C-3,-1 -1,-3 0,-11 Z" fill="#ffffff" stroke="#f0c869" stroke-width="1.2"/></g>' +
-            '<g id="c-sparkL" opacity="0"><path d="M0,-8 C.8,-2 2,-.8 8,0 C2,.8 .8,2 0,8 C-.8,2 -2,.8 -8,0 C-2,-.8 -.8,-2 0,-8 Z" fill="#ffffff" stroke="#f0c869" stroke-width="1"/></g>' +
-          '</g>' +
-          /* 일자 앞머리 */
-          '<g id="c-bangs">' +
-            '<path d="M-58,2 C-62,-36 -46,-68 -14,-76 C16,-82 48,-66 58,-30 C60,-18 60,-8 58,2 C55,-6 52,-12 48,-17 L43,-20 L36,-17 L29,-22 L22,-18 L15,-22 L8,-18 L1,-22 L-6,-18 L-13,-22 L-20,-18 L-27,-22 L-34,-17 L-41,-20 L-48,-17 C-52,-12 -55,-6 -58,2 Z" fill="' + HAIR + '"/>' +
-            '<path d="M-40,-30 C-34,-48 -20,-60 -4,-64" stroke="' + HAIR_L + '" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
-            '<path d="M-22,-24 C-18,-38 -8,-50 8,-56" stroke="' + HAIR_L + '" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
-            '<path d="M18,-24 C20,-36 26,-46 34,-50" stroke="' + HAIR_L + '" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
-          '</g>' +
-        '</g>' +
-      '</g>' +
-    '</svg>';
-
-  /* ---------------------------------------------------------------------
-     관절 포즈
-     --------------------------------------------------------------------- */
-  const STAND = {
-    x: DOOR_X, y: FLOOR - 42, s: 0.74, op: 0,
-    pelvisY: 0, thighS: 1, spread: 17,
-    armLA: 5, armRA: -5, elbowLA: -4, elbowRA: 4,
-    facing: 0, bow: 0, smile: 0, kneeSplay: 0,
-    gazeX: 0, gazeY: 0, eyeOpen: 1, spark: 0
-  };
+  const STAND = { x: DOOR_X, y: FLOOR - 42, s: 0.74, op: 0, squash: 1 };
   const pose = Object.assign({}, STAND);
-  const walk = { w: 0, phase: 0, mode: "side" };
-  let blink = 1, breath = 0;
-  let talkUntil = 0, nowMs = 0;   /* 말하는 동안 입을 움직입니다 */
+  const walk = { on: false, frames: [], ms: 150, start: 0 };
+  let breath = 0, talkUntil = 0, nowMs = 0;
+  let frameNow = "";
   const R = {};
 
-  function setT(el, value) { if (el) { el.setAttribute("transform", value); } }
+  function setFrame(name, fadeMs) {
+    if (name === frameNow) { return; }
+    const next = R.frames[name];
+    const prev = R.frames[frameNow];
+    const t = (fadeMs || 0) + "ms";
+    next.style.transitionDuration = t;
+    next.classList.add("on");
+    if (prev) { prev.style.transitionDuration = t; prev.classList.remove("on"); }
+    frameNow = name;
+  }
 
   function renderChar() {
-    const p = pose, f = p.facing, af = Math.abs(f), b = p.bow;
-    R.root.style.transform = "translate(" + p.x + "px," + p.y + "px) scale(" + p.s + ")";
-    R.root.style.opacity = p.op;
-
-    const sinP = Math.sin(walk.phase), cosP = Math.cos(walk.phase), w = walk.w;
-    const side = walk.mode === "side";
-    const bob = side ? (1 - Math.abs(sinP)) * 5 * w : Math.abs(sinP) * 5 * w;
-    const sway = side ? 0 : sinP * 3 * w;
-
-    const hip = -138 + p.pelvisY - bob + breath * 0.5;
-    setT(R.pelvis, "translate(0," + hip + ") rotate(" + sway * 0.5 + ")");
-
-    /* 다리 */
-    const spread = p.spread * (1 - 0.68 * af);
-    const lift = function (phase) { return side ? 0 : Math.max(0, Math.sin(phase)) * 0.24 * w; };
-    const swing = function (phase) { return side ? -Math.sin(phase) * 27 * w : 0; };
-    const bend = function (phase) { return side ? Math.max(0, Math.cos(phase)) * 42 * w : 0; };
-
-    [["L", walk.phase, -1], ["R", walk.phase + Math.PI, 1]].forEach(function (leg) {
-      const id = leg[0], ph = leg[1], dir = leg[2];
-      const ts = p.thighS - lift(ph);
-      setT(R["leg" + id], "translate(" + (dir * spread) + ",6) rotate(" + (swing(ph) + dir * p.kneeSplay) + ")");
-      setT(R["thigh" + id], "scale(1," + ts + ")");
-      setT(R["knee" + id], "translate(0," + (62 * ts) + ") rotate(" + (bend(ph) - dir * p.kneeSplay) + ")");
-      setT(R["shoe" + id], "translate(" + (f * 6) + ",0)");
-    });
-
-    /* 상체 */
-    const tsy = 1 - 0.13 * b + breath * 0.004;
-    const tsx = 1 - 0.14 * af;
-    setT(R.torso, "scale(" + tsx + "," + tsy + ")");
-    setT(R.chest, "translate(" + (f * 9) + ",0)");
-
-    /* 팔 */
-    const shX = 40 * tsx;
-    const armSw = side ? Math.sin(walk.phase) * 26 * w : sinP * 7 * w;
-    setT(R.armL, "translate(" + (-shX + f * 5) + "," + (-78 * tsy) + ") rotate(" + (p.armLA + armSw) + ")");
-    setT(R.armR, "translate(" + (shX + f * 2) + "," + (-78 * tsy) + ") rotate(" + (p.armRA - armSw) + ")");
-    setT(R.elbowL, "translate(0,48) rotate(" + (p.elbowLA - (side ? 14 * w : 0)) + ")");
-    setT(R.elbowR, "translate(0,48) rotate(" + (p.elbowRA - (side ? 14 * w : 0)) + ")");
-
-    /* 머리 */
-    const headY = -90 * tsy - 53 + b * 40;
-    const headS = 1 + 0.05 * b;
-    setT(R.head, "translate(" + (f * 4) + "," + headY + ") scale(" + headS + ")");
-    setT(R.hairBack, "translate(" + (-f * 5) + "," + (b * 1) + ")");
-    setT(R.features, "translate(" + (f * 9) + "," + (b * 12) + ") scale(1," + (1 - 0.14 * b) + ")");
-    setT(R.bangs, "translate(" + (f * 3) + "," + (b * 9) + ")");
-    setT(R.earL, "translate(" + (f > 0 ? f * 9 : f * 3) + ",0)");
-    setT(R.earR, "translate(" + (f > 0 ? f * 3 : f * 9) + ",0)");
-    R.earR.setAttribute("opacity", f > 0 ? 1 - f : 1);
-    R.earL.setAttribute("opacity", f < 0 ? 1 + f : 1);
-
-    /* 표정 */
-    const talk = nowMs < talkUntil ? Math.abs(Math.sin(nowMs / 95)) : 0;
-    const mouth = nowMs < talkUntil ? talk : p.smile;
-    R.mouthClosed.setAttribute("opacity", 1 - mouth);
-    R.mouthSmile.setAttribute("opacity", mouth);
-    const e = Math.max(0.08, blink * (1 - 0.18 * p.smile) * p.eyeOpen);
-    setT(R.pupilL, "translate(" + p.gazeX + "," + p.gazeY + ")");
-    setT(R.pupilR, "translate(" + p.gazeX + "," + p.gazeY + ")");
-    const sp = 0.4 + 0.6 * p.spark;
-    R.sparkR.setAttribute("opacity", p.spark);
-    R.sparkL.setAttribute("opacity", p.spark);
-    setT(R.sparkR, "translate(49,-13) scale(" + sp + ") rotate(" + (p.spark * 60) + ")");
-    setT(R.sparkL, "translate(-49,-15) scale(" + sp + ") rotate(" + (-p.spark * 60) + ")");
-    setT(R.eyeL, "translate(-25,7) scale(1," + e + ")");
-    setT(R.eyeR, "translate(25,7) scale(1," + e + ")");
-
-    /* 그림자 */
-    setT(R.shadow, "scale(" + (1 - 0.12 * (bob / 5)) + ",1)");
+    if (walk.on) {
+      const i = Math.floor((nowMs - walk.start) / walk.ms) % walk.frames.length;
+      setFrame(walk.frames[i], 0);
+    }
+    const stepPhase = walk.on ? (nowMs - walk.start) / walk.ms : 0;
+    const bob = walk.on ? Math.abs(Math.sin(stepPhase * Math.PI)) * 5 : 0;
+    const talk = nowMs < talkUntil ? Math.abs(Math.sin(nowMs / 150)) * 2 : 0;
+    R.root.style.transform = "translate(" + pose.x + "px," + pose.y + "px) scale(" + pose.s + ")";
+    R.root.style.opacity = pose.op;
+    R.charBody.style.transform =
+      "translateY(" + (-bob - talk) + "px) scale(1," + (pose.squash * (1 + breath * 0.004)) + ")";
   }
 
   /* ---------------------------------------------------------------------
@@ -249,12 +85,9 @@
   let rafOn = false;
 
   function loop(now) {
-    /* 숨쉬기 + 눈 깜빡임 */
+    /* 숨쉬기 */
     nowMs = now;
     breath = Math.sin(now / 900);
-    const cycle = now % 3800;
-    blink = cycle < 110 ? Math.abs(cycle - 55) / 55 : 1;
-    if (walk.w > 0) { walk.phase += walk.speed / 60; }
 
     active = active.filter(function (t) {
       if (t.token !== runToken) { t.reject(SKIPPED); return false; }
@@ -289,12 +122,15 @@
     });
   }
 
-  function walkOn(mode, speed) {
-    walk.mode = mode; walk.speed = speed; walk.phase = 0;
-    return tween(180, "out", function (t) { walk.w = t; });
+  function walkOn(mode) {
+    walk.frames = WALKS[mode].frames;
+    walk.ms = WALKS[mode].ms;
+    walk.start = nowMs;
+    walk.on = true;
   }
   function walkOff() {
-    return tween(200, "inOut", function (t) { walk.w = 1 - t; });
+    walk.on = false;
+    setFrame("stand", 90);
   }
 
   /* ---------------------------------------------------------------------
@@ -330,7 +166,7 @@
     /* 눈을 마주치는 얼굴 클로즈업 */
     face: function () {
       const z = Math.min(vh() / 400, vw() / 300, 2.7);
-      return { cx: CHAIR_X, cy: 470, z: z };
+      return { cx: CHAIR_X, cy: 430, z: z };
     },
     /* 말풍선을 화면 가운데 두고, 캐릭터는 그 옆(휴대폰은 아래)에 흐리게 */
     speech: function () {
@@ -341,7 +177,7 @@
         return { cx: CHAIR_X + (vw() / 2 - sx) / z, cy: 540 - (sy - vh() / 2) / z, z: z };
       }
       const z = Math.min(vh() / 900, vw() / 480, 1);
-      return { cx: CHAIR_X, cy: 470 - (vh() * 0.34) / z, z: z };
+      return { cx: CHAIR_X, cy: 430 - (vh() * 0.34) / z, z: z };
     },
     /* 이력서 뒤로 흐리게 보이는 화면: 앉아 있는 캐릭터가 왼쪽 빈 공간에 걸리게 */
     final: function () {
@@ -435,8 +271,11 @@
 
   function placeDoor() {
     Object.assign(pose, STAND);
-    walk.w = 0;
+    walk.on = false;
     talkUntil = 0;
+    setFrame("stand", 0);
+    bustOff();
+    R.chair.classList.remove("sat");
     setDoorGone(false);
     setDoorOpen(0);
     Object.assign(cam, SHOT.door(), { tilt: 0 });
@@ -449,13 +288,17 @@
     R.sheet.style.transform = "";
     R.tablet.style.transform = "";
     R.hint.classList.remove("off");
+    R.skip.classList.remove("off");
     hideBubbles();
   }
 
   function placeDesk() {
-    Object.assign(pose, STAND, seatedPose(), { x: CHAIR_X, y: FLOOR, s: 1, op: 1, facing: 0, bow: 0, smile: 0 });
-    walk.w = 0;
+    Object.assign(pose, STAND, { x: CHAIR_X, y: FLOOR, s: 1, op: 1 });
+    walk.on = false;
     talkUntil = 0;
+    setFrame("sit", 0);
+    bustOff();
+    R.chair.classList.add("sat");
     setDoorOpen(0);
     setDoorGone(true);
     Object.assign(cam, SHOT.final(), { tilt: 0 });
@@ -471,11 +314,8 @@
     R.tablet.style.transform = "";
   }
 
-  function seatedPose() {
-    return {
-      pelvisY: 46, thighS: 0.2, spread: 22, kneeSplay: 0,
-      armLA: 11, armRA: -11, elbowLA: -24, elbowRA: 24
-    };
+  function bustOff() {
+    R.bust.classList.remove("on", "contact");
   }
 
   /* 어떤 문서를 보여줄지 (이력서 / 자기소개서 는 종이, 포트폴리오는 태블릿) */
@@ -574,12 +414,9 @@
 
       /* 2) 캐릭터가 문 안쪽에서 앞으로 걸어 나옵니다 */
       pose.op = 1;
-      walkOn("front", 8);
-      await all(
-        poseTo({ y: FLOOR, s: 1 }, 1300, "linear"),
-        wait(0)
-      );
-      await walkOff();
+      walkOn("front");
+      await poseTo({ y: FLOOR, s: 1 }, 1300, "linear");
+      walkOff();
 
       /* 3) 문이 닫히며 사라지고, 앞에 의자가 생깁니다 */
       R.judge.classList.remove("on");
@@ -590,46 +427,43 @@
       await wait(520);
 
       /* 4) 옆으로 돌아 의자 옆까지 걸어갑니다 (카메라가 따라가 캐릭터는 늘 가운데) */
-      await poseTo({ facing: 1 }, 220);
-      walkOn("side", 8.4);
+      walkOn("side");
       await all(poseTo({ x: BESIDE_X }, 1150, "linear"), camTo({ cx: BESIDE_X }, 1150, "linear"));
-      await walkOff();
-      await poseTo({ facing: 0 }, 260);
-      await wait(180);
+      walkOff();
+      await wait(240);
 
       /* 5) 인사 + 말풍선 */
       R.greet.classList.add("on");
       R.greetText.textContent = "";
-      await all(
-        poseTo({ armLA: 13, armRA: -13, elbowLA: -24, elbowRA: 24 }, 260),
-        wait(0)
-      );
       const typing = typeText(R.greetText, intro.greeting || "", 1250);
-      await poseTo({ bow: 1 }, 520);
-      await wait(620);
-      await poseTo({ bow: 0, smile: 1, armLA: 5, armRA: -5, elbowLA: -4, elbowRA: 4 }, 560);
+      setFrame("bow", 150);
+      await wait(1150);
+      setFrame("smile", 170);
       await typing;
       await wait(1500);
 
       /* 6) 면접관(보는 사람)의 말: 앉으세요 */
       R.greet.classList.remove("on");
-      await poseTo({ smile: 0 }, 220);
+      setFrame("stand", 170);
       R.judgeText.textContent = intro.sitDown || "";
       R.judge.classList.add("on");
       await wait(850);
 
       /* 7) 의자 앞으로 가서 앉습니다 */
-      await poseTo({ facing: 1 }, 180);
-      walkOn("side", 8.4);
+      walkOn("side");
       await all(poseTo({ x: CHAIR_X }, 620, "linear"), camTo({ cx: CHAIR_X }, 620, "linear"));
-      await walkOff();
-      await poseTo({ facing: 0 }, 180);
-      await poseTo(seatedPose(), 620);
-      await wait(500);
+      walkOff();
+      await wait(120);
+      await poseTo({ squash: 0.95 }, 110);
+      setFrame("sit", 240);
+      R.chair.classList.add("sat");
+      await poseTo({ squash: 1 }, 240);
+      await wait(620);
       R.judge.classList.remove("on");
       await wait(240);
 
       /* 8) 카메라가 아래로 내려가 책상 위 이력서를 비춥니다 */
+      R.skip.classList.add("off");   /* 이력서가 놓이는 자리와 겹치지 않게 */
       R.viewer.classList.add("on");
       R.sheet.classList.add("is-flat");
       renderSheet(0);
@@ -677,12 +511,6 @@
 
   function setSceneBlur(from, to) {
     return tween(800, "inOut", function (t) { setWorld(from + (to - from) * t); });
-  }
-
-  function paraCountBefore(sec) {
-    let n = 0;
-    for (let i = 0; i < sec; i++) { n += cv.data[i].paras.length; }
-    return n;
   }
 
   function coverMeta() {
@@ -778,7 +606,7 @@
   function coverStage() {
     R.viewer.classList.remove("on");
     R.judge.classList.remove("on");
-    Object.assign(pose, { gazeX: 0, gazeY: 0, eyeOpen: 1, spark: 0, bow: 0, smile: 0 });
+    bustOff();
     R.speech.classList.add("on");
     R.sceneBtns.classList.add("on");
     if (reduced()) {
@@ -816,7 +644,6 @@
     try {
       /* 서류가 내려가고 캐릭터를 비춥니다 */
       playAnim(out, [{ transform: "none" }, { transform: AWAY }], 420, "cubic-bezier(.5,0,.8,.5)");
-      Object.assign(pose, { gazeX: -3, gazeY: 2.6, smile: 0 });
       await all(
         camTo("seat", 800),
         setSceneBlur(7, 0),
@@ -829,15 +656,12 @@
       R.judge.classList.add("on");
       await wait(800);
 
-      /* 고개를 들어 눈을 마주칩니다 */
-      await camTo("face", 700);
-      await poseTo({ eyeOpen: 0.1 }, 90);
-      Object.assign(pose, { gazeX: 0, gazeY: 0 });
-      await poseTo({ eyeOpen: 1.18, spark: 1, smile: 0.35 }, 240, "back");
-      await wait(620);
-      await poseTo({ spark: 0, eyeOpen: 1, smile: 0 }, 260);
-      await poseTo({ bow: 0.3 }, 200);
-      await poseTo({ bow: 0 }, 240);
+      /* 얼굴을 크게 비추고, 시선을 들어 눈을 마주칩니다 */
+      camTo("face", 620);
+      R.bust.classList.add("on");
+      await wait(900);
+      R.bust.classList.add("contact");
+      await wait(1150);
 
       cv.phase = "stage";
       coverStage();
@@ -881,7 +705,6 @@
       return;
     }
     clearAnims(inn);
-    Object.assign(pose, { gazeX: 0, gazeY: 0, eyeOpen: 1, spark: 0, bow: 0, smile: 0 });
     R.notes.classList.add("on");
     setState("desk");
     opts.onReady && opts.onReady();
@@ -950,6 +773,7 @@
     R.greet = $("iv-greet");
     R.greetText = $("iv-greetText");
     R.judgeText = $("iv-judgeText");
+    R.skip = $("iv-skip");
     R.speech = $("iv-speech");
     R.speechNo = $("iv-speechNo");
     R.speechDots = $("iv-speechDots");
@@ -960,17 +784,27 @@
     R.sceneBtns = $("iv-sceneBtns");
     R.tap = $("iv-tap");
 
+    R.bust = $("iv-bust");
     R.root = $("iv-char");
-    R.root.innerHTML = characterSVG;
-    ["pelvis", "torso", "chest", "head", "hairBack", "features", "bangs", "earL", "earR", "mouthClosed",
-     "mouthSmile", "eyeL", "eyeR", "shadow", "legL", "legR", "thighL", "thighR", "kneeL", "kneeR",
-     "shoeL", "shoeR", "armL", "armR", "elbowL", "elbowR", "pupilL", "pupilR", "sparkL", "sparkR"].forEach(function (k) { R[k] = $("c-" + k); });
+    R.root.innerHTML = '<div class="char__shadow"></div><div class="char__body" id="iv-charBody"></div>';
+    R.charBody = $("iv-charBody");
+    R.frames = {};
+    Object.keys(FRAMES).forEach(function (name) {
+      const img = new Image();
+      img.alt = "";
+      img.decoding = "sync";
+      img.className = "char__f";
+      img.style.height = FRAMES[name] + "px";
+      img.src = "images/char/" + name + ".webp";
+      R.charBody.appendChild(img);
+      R.frames[name] = img;
+    });
 
     $("iv-hintText").textContent = intro.doorHint || "문을 클릭하세요!";
     R.door.setAttribute("aria-label", intro.doorHint || "문을 클릭하세요!");
     R.door.addEventListener("click", play);
 
-    $("iv-skip").addEventListener("click", function () { finish("resume"); });
+    R.skip.addEventListener("click", function () { finish("resume"); });
     $("iv-again").addEventListener("click", function () { opts.onDoor && opts.onDoor(); });
 
     Array.prototype.forEach.call(document.querySelectorAll(".note"), function (b) {
