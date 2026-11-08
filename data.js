@@ -506,6 +506,25 @@ const DATA = {
         },
       ],
     },
+    {
+      title: "ZeroGate",
+      summary: "",
+      cover: "images/covers/zerogate.webp",
+      detail: [
+        {
+          title: "작품 소개",
+          body: "",
+        },
+        {
+          title: "담당 작업",
+          body: "",
+        },
+        {
+          title: "결과 · 회고",
+          body: "",
+        },
+      ],
+    },
   ],
 
   /* ======================================================================
