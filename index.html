@@ -1279,7 +1279,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
         return '<button class="gs__tile' + (on ? " is-on" : "") + '" type="button" data-gs="' + i + '"' +
           ' aria-pressed="' + on + '" aria-label="' + esc(g.title) + '">' +
           (g.cover
-            ? '<img src="' + esc(g.cover) + '" alt="" loading="lazy">'
+            ? '<img src="' + esc(g.cover) + '" alt="" loading="lazy"' +
+              (g.coverPos ? ' style="object-position:' + esc(g.coverPos) + '"' : '') + '>'
             : '<span class="gs__tileph">' + esc(g.title) + '</span>') +
         '</button>';
       }).join("") + '</div>' +

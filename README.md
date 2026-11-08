@@ -30,7 +30,7 @@
 | 캐릭터 그림 | `images/char/*.webp` (크기는 `interview.js` 의 `FRAMES`) |
 | 문 · 책상 · 펜 그림 | `images/door.webp`, `images/desk.webp`, `images/pen.webp` |
 | 방 · 종이 · 태블릿 · 포스트잇 모양 | `interview.css` |
-| 게임 표지 | `images/covers/*.webp` (`data.js` 의 `portfolio` → `cover`) |
+| 게임 표지 | `images/covers/*.webp` (`data.js` 의 `portfolio` → `cover`, 타일에 보일 부분은 `coverPos`, 예: `"right center"`) |
 
 ## 디자인
 
@@ -50,6 +50,7 @@
 |---|---|---|
 | `images/char/` | 캐릭터 프레임 · 의자 · 클로즈업 · 프로필 아이콘 (Codex 로 생성) | WebP |
 | `images/covers/` | CityRush · BladeSteal · MapleFly · 메이플피아 표지 (Codex 로 생성한 임시 그림) | 1400×788 |
+| `images/covers/zerogate.webp` | ZeroGate 표지 (본인 제공) | 1408×1117 |
 | `images/hero-character.png` | (지금은 쓰지 않음) 예전 메인 화면 캐릭터 | 480×499 |
 | `images/leaf-icon.png` | 작은 라벨(WORK STEP 등) 앞 아이콘 | 80×80 (20px 로 표시) |
 | `images/highnum-cover.png` | HighNum 표지 | 1000×800 |

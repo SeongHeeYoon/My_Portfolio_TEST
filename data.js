@@ -510,6 +510,8 @@ const DATA = {
       title: "ZeroGate",
       summary: "",
       cover: "images/covers/zerogate.webp",
+      // 정사각형 타일에서 보일 부분 (가로 세로, 예: "right center"). 로고가 오른쪽에 있어 오른쪽에 맞춥니다
+      coverPos: "right center",
       detail: [
         {
           title: "작품 소개",
