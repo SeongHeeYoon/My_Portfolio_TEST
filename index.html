@@ -527,12 +527,6 @@ body{
   background:linear-gradient(transparent 58%, rgba(230,164,110,.42) 58%);
   padding:0 2px; border-radius:2px;
 }
-.pjseek{
-  display:inline-flex; align-items:center; gap:4px; margin:0 2px; padding:2px 10px; vertical-align:1px;
-  border:1px solid var(--mist); border-radius:var(--r-pill); background:var(--ash);
-  color:var(--abyssal); font-size:13px; font-weight:700; line-height:1.5; cursor:pointer;
-}
-.pjseek span{font-size:9px;}
 .pjpage__empty{
   border:2px dashed var(--vapor); border-radius:var(--r-card);
   padding:var(--sp-48) var(--sp-32); color:var(--graphite); font-size:15px; line-height:1.7;
@@ -772,6 +766,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     <div class="speech__meta">
       <span class="speech__no" id="iv-speechNo"></span>
       <span class="speech__dots" id="iv-speechDots" aria-hidden="true"></span>
+      <button class="speech__full" id="iv-coverFull" type="button">전체 문서 보기</button>
     </div>
     <h2 class="speech__title" id="iv-speechTitle"></h2>
     <div class="speech__body" id="iv-speechBody" aria-live="polite"></div>
@@ -899,14 +894,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   var br = function (s) { return esc(s).replace(/\n/g, "<br>"); };
   /* data.js 에서 **문장** 으로 감싼 부분을 굵게 + 형광펜 처리합니다 */
   var HL_RE = new RegExp("\\*\\*([^*]+)\\*\\*", "g");
-  /* [0:03] 처럼 쓰면 → 누르면 위쪽 영상의 그 시간으로 이동하는 버튼 */
-  var SEEK_RE = /\[(\d{1,2}):(\d{2})\]/g;
   var mark = function (s) {
-    return br(s).replace(HL_RE, '<strong class="hl">$1</strong>')
-      .replace(SEEK_RE, function (all, m, sec) {
-        return '<button class="pjseek" type="button" data-t="' + (Number(m) * 60 + Number(sec)) + '">' +
-               '<span aria-hidden="true">▶</span> ' + m + ':' + sec + '</button>';
-      });
+    return br(s).replace(HL_RE, '<strong class="hl">$1</strong>');
   };
 
   /* =========================================================================
@@ -1570,24 +1559,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
       pjTab = parseInt(tab.getAttribute("data-tab"), 10) || 0;
       pjRender();
     }
-  });
-
-  /* [0:03] 시간 버튼: 같은 창 안의 영상을 그 시간으로 옮겨 재생합니다 */
-  document.addEventListener("click", function (e) {
-    var b = e.target.closest ? e.target.closest(".pjseek") : null;
-    if (!b) { return; }
-    var v = (b.closest("#pjContent") || document).querySelector("video");
-    if (!v) { return; }
-    var t = Number(b.getAttribute("data-t")) || 0;
-    var go = function () {
-      v.currentTime = t;
-      var p = v.play();
-      if (p && p.catch) { p.catch(function () {}); }
-    };
-    /* 아직 영상 정보를 못 불러왔으면, 불러온 뒤에 그 시간으로 옮깁니다 */
-    if (v.readyState >= 1) { go(); }
-    else { v.preload = "auto"; v.addEventListener("loadedmetadata", go, { once: true }); }
-    v.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
   /* 소개 창의 영상 썸네일을 누르면 그때 영상을 불러옵니다 */

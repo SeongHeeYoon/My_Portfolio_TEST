@@ -753,6 +753,14 @@
     if (speech) { coverScene(); }
   }
 
+  /* '전체 문서 보기': 말풍선 대신 자기소개서 전체를 종이 문서로 보여줍니다.
+     (책상의 '자기소개서' 포스트잇을 누르면 다시 말풍선 자기소개로 돌아갑니다) */
+  function coverFull() {
+    if (state === "cover") { leaveCover("cover"); return; }
+    if (state === "desk") { swapDoc("cover"); return; }
+    finish("cover");
+  }
+
   /* 수정 모드: 글 전체를 고칠 수 있도록 자기소개서를 종이로 보여줍니다 */
   function editingChanged() {
     if (isEditing()) {
@@ -832,6 +840,10 @@
     R.speechPrev.addEventListener("click", function () {
       if (state !== "cover" || cv.phase === "intro") { return; }
       coverStep(-1);
+    });
+    $("iv-coverFull").addEventListener("click", function () {
+      if (state !== "cover" || cv.phase === "intro") { return; }
+      coverFull();
     });
     document.addEventListener("keydown", function (e) {
       if (state !== "cover" || e.defaultPrevented) { return; }
