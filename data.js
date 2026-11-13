@@ -267,7 +267,7 @@ const DATA = {
         "Unity",
         "기획 · 개발",
       ],
-      summary: "AI를 활용한 3D 자동차 추적 / 도망 레이싱 게임",
+      summary: "3D 자동차 추적 / 도망 레이싱 게임",
       points: [
         "Real Car Controller (실제 차량 휠) 구현",
         "AI Navigation 을 활용한 추적 차량 구현",
