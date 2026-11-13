@@ -656,10 +656,10 @@
       R.judge.classList.add("on");
       await wait(800);
 
-      /* 얼굴을 크게 비추고, 시선을 들어 눈을 마주칩니다 */
+      /* 얼굴을 크게 비추고, 눈이 반짝입니다 */
       camTo("face", 620);
       R.bust.classList.add("on");
-      await wait(900);
+      await wait(350);
       R.bust.classList.add("contact");
       await wait(1150);
 
