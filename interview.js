@@ -522,7 +522,7 @@
     }).join("");
     R.speechPrev.hidden = cv.s === 0 && cv.p === 0;
     const last = cv.s === cv.data.length - 1 && cv.p === sec.paras.length - 1;
-    R.speechHint.textContent = last ? "자기소개가 끝났습니다" : "클릭하면 다음 문단";
+    R.speechHint.textContent = last ? "자기소개가 끝났습니다" : "다음 문단";
     R.speech.classList.toggle("is-last", last);
   }
 
