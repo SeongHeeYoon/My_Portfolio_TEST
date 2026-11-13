@@ -803,9 +803,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
                 <nav class="pjmodal__toc" id="pjToc" aria-label="프로젝트 목차"></nav>
                 <div class="pjmodal__content" id="pjContent"></div>
               </div>
-              <div class="pjmodal__hints" aria-hidden="true">
-                <span><i>▲</i><i>▼</i> 메뉴</span><span><i>B</i> 닫기</span>
-              </div>
             </div>
           </div>
           </div>
@@ -1292,10 +1289,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
         '</button>';
       }).join("") + '</div>' +
       '<div class="gs__info" id="gsInfo">' + gsInfoHTML(gsIndex) + '</div>' +
-      (D.portfolioIntro ? '<p class="gs__note"' + EL("portfolioIntro") + '>' + br(D.portfolioIntro) + '</p>' : '') +
-      '<div class="gs__hints" aria-hidden="true">' +
-        '<span><i>◀</i><i>▶</i> 선택</span><span><i>A</i> 열기</span>' +
-      '</div>';
+      (D.portfolioIntro ? '<p class="gs__note"' + EL("portfolioIntro") + '>' + br(D.portfolioIntro) + '</p>' : '');
     } else {
       html += '<div class="empty"><b>준비 중입니다</b>' +
         'data.js 아래쪽 <code>portfolio: [ ]</code> 안에 블록을 추가하면 게임 타일이 바로 만들어집니다.</div>';
@@ -1356,6 +1350,71 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
       if (i === gsIndex) { pjOpen("portfolio." + i); } else { gsSelect(i); }
     }
   });
+
+  /* 마우스로 타일 줄을 잡고 좌우로 끌어서 넘기기
+     (손가락 터치는 원래대로 밀어서 넘어갑니다) */
+  var gsDrag = null;
+  var gsDragged = false;   /* 방금 끌었으면 그 클릭은 타일 선택으로 치지 않습니다 */
+
+  document.addEventListener("pointerdown", function (e) {
+    if (e.pointerType !== "mouse" || e.button !== 0 || editing) { return; }
+    var row = e.target.closest ? e.target.closest(".gs__row") : null;
+    if (!row) { return; }
+    if (row.gsGlide) { cancelAnimationFrame(row.gsGlide); row.gsGlide = 0; }
+    gsDrag = { row: row, id: e.pointerId, x: e.clientX, left: row.scrollLeft,
+               moved: false, lastX: e.clientX, lastT: performance.now(), v: 0 };
+  });
+
+  document.addEventListener("pointermove", function (e) {
+    if (!gsDrag || e.pointerId !== gsDrag.id) { return; }
+    var dx = e.clientX - gsDrag.x;
+    if (!gsDrag.moved) {
+      if (Math.abs(dx) < 6) { return; }   /* 살짝 흔들린 건 클릭으로 봅니다 */
+      gsDrag.moved = true;
+      gsDrag.row.classList.add("is-dragging");
+      try { gsDrag.row.setPointerCapture(e.pointerId); } catch (err) { /* 무시 */ }
+    }
+    e.preventDefault();
+    gsDrag.row.scrollLeft = gsDrag.left - dx;
+    /* 손을 뗄 때 미끄러지듯 이어지도록 속도를 기억합니다 */
+    var now = performance.now(), dt = Math.max(1, now - gsDrag.lastT);
+    gsDrag.v = 0.8 * ((e.clientX - gsDrag.lastX) / dt) + 0.2 * gsDrag.v;
+    gsDrag.lastX = e.clientX; gsDrag.lastT = now;
+  });
+
+  function gsDragEnd(e) {
+    if (!gsDrag || e.pointerId !== gsDrag.id) { return; }
+    var d = gsDrag;
+    gsDrag = null;
+    if (!d.moved) { return; }
+    d.row.classList.remove("is-dragging");
+    gsDragged = true;
+    setTimeout(function () { gsDragged = false; }, 0);
+    /* 관성: 놓은 속도로 조금 더 미끄러지다 멈춥니다 */
+    var v = performance.now() - d.lastT > 80 ? 0 : -d.v * 16;   /* px / 프레임 */
+    if (reducedMotion()) { v = 0; }
+    (function glide() {
+      if (Math.abs(v) < 0.4) { d.row.gsGlide = 0; return; }
+      d.row.scrollLeft += v;
+      v *= 0.92;
+      d.row.gsGlide = requestAnimationFrame(glide);
+    })();
+  }
+  document.addEventListener("pointerup", gsDragEnd);
+  document.addEventListener("pointercancel", gsDragEnd);
+
+  /* 끈 직후의 클릭은 막습니다 (타일이 선택되거나 열리지 않게) */
+  document.addEventListener("click", function (e) {
+    if (gsDragged) { e.preventDefault(); e.stopPropagation(); gsDragged = false; }
+  }, true);
+  /* 표지 그림이 '그림 끌기'로 잡히지 않게 */
+  document.addEventListener("dragstart", function (e) {
+    if (e.target.closest && e.target.closest(".gs__row")) { e.preventDefault(); }
+  });
+
+  function reducedMotion() {
+    return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
 
   /* 키보드: ← → 선택, Enter 열기 */
   document.addEventListener("keydown", function (e) {
