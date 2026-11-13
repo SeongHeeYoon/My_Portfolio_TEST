@@ -459,11 +459,11 @@ const DATA = {
       detail: [
         {
           title: "작품 소개",
-          body: "",
+          body: "**3D 자동차 추적 · 도망 레이싱 게임**\n\n· 기간: 2026/06 ~ 2026/07\n· 인원: 3명\n· 사용 기술: Unity\n· 역할: 기획 · 개발",
         },
         {
           title: "담당 작업",
-          body: "",
+          body: "**Project CityRush**\n\nCityRush 에서 아래 작업을 담당하였습니다.\n\n· Real Car Controller (실제 차량 휠) 구현\n· AI Navigation 을 활용한 추적 차량 구현\n· 3D 무료 자동차 에셋을 활용한 코드 적용\n· 탈출을 위한 아이템 및 상호작용 구현\n· 자동차 엑셀 / 브레이크 · 추적 차량 사이렌 사운드 적용\n· 게임 UI 적용, QA 및 버그 수정 등 유지보수",
         },
         {
           title: "결과 · 회고",
@@ -478,11 +478,11 @@ const DATA = {
       detail: [
         {
           title: "작품 소개",
-          body: "",
+          body: "**AI를 활용한 2D 도트 액션 플랫포머**\n\n· 기간: 2026/08 ~ 2026/09\n· 인원: 1명 (개인 프로젝트)\n· 사용 기술: Unity\n· 역할: 기획 · 개발",
         },
         {
           title: "담당 작업",
-          body: "",
+          body: "**Project BladeSteal**\n\nBladeSteal 에서 아래 작업을 담당하였습니다.\n\n· 2D 도트 액션 플랫포머 게임 기획\n· 강탈 시스템 및 무기 강화 시스템 기획\n· AI를 활용한 리소스 제작 및 애니메이션 스프라이트 시트 제작\n· Claude 를 활용한 Unity 게임 구현",
         },
         {
           title: "결과 · 회고",
@@ -497,15 +497,15 @@ const DATA = {
       detail: [
         {
           title: "작품 소개",
-          body: "",
+          body: "**메이플스토리 리소스를 활용한 비행 슈팅 게임**\n\nVers8 MSU Space 공모전 출품작\n\n· 기간: 2026/06\n· 인원: 4명\n· 구분: 공모전\n· 역할: 기획 · 개발",
         },
         {
           title: "담당 작업",
-          body: "",
+          body: "**Project MapleFly**\n\nMapleFly 에서 아래 작업을 담당하였습니다.\n\n· 메이플스토리 리소스를 활용한 비행 슈팅 게임 기획\n· 스테이지 2 페리온 스테이지 기획 — 일반 몬스터 기믹 / 배치, 보스 몬스터 기믹 / 배치",
         },
         {
           title: "결과 · 회고",
-          body: "",
+          body: "**Vers8 MSU Space 공모전 출품**",
         },
       ],
     },
@@ -516,15 +516,15 @@ const DATA = {
       detail: [
         {
           title: "작품 소개",
-          body: "",
+          body: "**AI를 활용한 JRPG 턴제 게임**\n\n메이플월드 공모전 출품작\n\n· 기간: 2026/07 ~ 2026/09\n· 인원: 5명\n· 구분: 공모전\n· 역할: 기획 · 개발",
         },
         {
           title: "담당 작업",
-          body: "",
+          body: "**Project 메이플피아 아카데미**\n\n메이플피아 아카데미 에서 아래 작업을 담당하였습니다.\n\n· 메이플피아 아카데미 JRPG 턴제 게임 기획\n· 전투 시스템 기획\n· 맵 구성 기획",
         },
         {
           title: "결과 · 회고",
-          body: "",
+          body: "**메이플월드 공모전 출품**",
         },
       ],
     },
@@ -537,11 +537,11 @@ const DATA = {
       detail: [
         {
           title: "작품 소개",
-          body: "",
+          body: "**Project ZeroGate**\n\n· 기간: 2026/09 ~ 2026/11\n· 인원: 5명\n· 사용 기술: Unity\n· 역할: 기획 · 개발",
         },
         {
           title: "담당 작업",
-          body: "",
+          body: "**Project ZeroGate**\n\nZeroGate 에서 아래 작업을 담당하였습니다.\n\n· 서포트 캐릭터 컷인 연출\n· 전체 캐릭터 모션 담당\n· 궁극기 연출\n· 연출 담당\n· 최종 보스전 전체 담당\n· 설원맵 몬스터 / 보스몬스터 / 기믹 담당\n· 백화린 캐릭터 생성\n· 배경음악 담당",
         },
         {
           title: "결과 · 회고",
