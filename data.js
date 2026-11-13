@@ -235,7 +235,7 @@ const DATA = {
       tags: [
         "2023/02 ~ 2023/03",
         "인원 5명",
-        "AI",
+        "YOLO AI",
       ],
       summary: "전동킥보드 헬멧 착용 여부에 따른 결제 시스템 개발",
       points: [
@@ -249,7 +249,7 @@ const DATA = {
       tags: [
         "2023/03 ~ 2023/04",
         "인원 6명",
-        "AI",
+        "YOLO AI",
       ],
       summary: "Object Detection 을 이용한 지하철 인파관리 시스템 개발",
       points: [
