@@ -501,7 +501,7 @@ const DATA = {
         },
         {
           title: "담당 작업",
-          body: "**Project MapleFly**\n\nMapleFly 에서 아래 작업을 담당하였습니다.\n\n· 메이플스토리 리소스를 활용한 비행 슈팅 게임 기획\n· 스테이지 2 페리온 스테이지 기획 — 일반 몬스터 기믹 / 배치, 보스 몬스터 기믹 / 배치\n\n**스테이지 2 · 페리온 맵 플레이 영상**\n\n@video videos/maplefly-perion.mp4\n\n@link https://www.youtube.com/watch?v=WCXLTeefNG4 | 전체 플레이 영상 (유튜브)",
+          body: "**Project MapleFly**\n\nMapleFly 에서 아래 작업을 담당하였습니다.\n\n· 메이플스토리 리소스를 활용한 비행 슈팅 게임 기획\n· 스테이지 2 페리온 스테이지 기획 — 일반 몬스터 기믹 / 배치, 보스 몬스터 기믹 / 배치\n\n**스테이지 2 · 페리온 맵 플레이 영상**\n\n@video videos/maplefly-perion.mp4\n\n@link https://www.youtube.com/watch?v=WCXLTeefNG4 | 전체 플레이 영상 (유튜브)\n\n**페리온 스테이지 몬스터 배치 기획**\n\n초기 스테이지 기획서에서 페리온 배경 위에 몬스터를 단계별로 배치했습니다. 단계가 오를수록 몬스터의 종류와 수가 늘어나도록 구성했으며, 각 단계 옆의 시간 버튼을 누르면 위 영상의 해당 장면으로 이동합니다.\n\n**배경 · 등장 몬스터**\n\n@image images/maplefly/perion-bg.webp\n\n@image images/maplefly/perion-monsters.webp\n\n페리온의 바위 절벽을 배경으로, 스텀프 · 와일드 보어 · 파이어 보어 · 우드 마스크 4종을 등장 몬스터로 정했습니다.\n\n**1단계 — 스텀프** [0:03]\n\n@image images/maplefly/perion-wave1.webp\n\n스텀프 6마리를 화면 위쪽부터 좌우 대칭으로 배치해 스테이지를 시작합니다.\n\n**2단계 — 와일드 보어** [0:09]\n\n@image images/maplefly/perion-wave2.webp\n\n와일드 보어 5마리를 대각선으로 이어 배치했습니다. 2단계_1 은 왼쪽 아래에서 오른쪽 위로, 2단계_2 는 왼쪽 위에서 오른쪽 아래로 방향을 바꿔 두 번 이어집니다.\n\n**3단계 — 파이어 보어** [0:11]\n\n@image images/maplefly/perion-wave3.webp\n\n파이어 보어 4마리씩 2×2 로 묶어 화면 위쪽 양옆에 배치해, 한 번에 많은 적이 몰려오는 구간을 만들었습니다.\n\n**4단계 — 혼합 배치** [0:25]\n\n@image images/maplefly/perion-wave4.webp\n\n우드 마스크 · 파이어 보어 · 와일드 보어 · 스텀프를 좌우 대칭으로 함께 배치한 마지막 단계입니다. 이후 [0:30] 에 보스 등장 경고가 나오고, [0:35] 부터 보스 스텀피와의 전투가 이어집니다.",
         },
         {
           title: "결과 · 회고",

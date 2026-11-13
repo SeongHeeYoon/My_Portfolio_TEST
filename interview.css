@@ -502,6 +502,9 @@ html, body{height:100%; overflow:hidden;}
 }
 .tablet .pjlink:hover{transform:scale(1.04); box-shadow:0 8px 24px rgba(0,0,0,.5);}
 .tablet .pjlink:active{transform:scale(.98); box-shadow:0 4px 12px rgba(0,0,0,.4);}
+.tablet .pjseek{background:rgba(25,227,255,.14); border-color:rgba(25,227,255,.45); color:#8ff3ff; transition:background .14s ease, color .14s ease;}
+.tablet .pjseek:hover{background:#19e3ff; color:#06101f;}
+.tablet .pjseek:focus-visible{outline:2px solid #19e3ff; outline-offset:2px;}
 .tablet .pjpage__empty{border-color:rgba(255,255,255,.22); color:rgba(238,241,250,.7);}
 .tablet .pjpage__empty b{color:#fff;}
 .tablet .pjpage__empty code{background:rgba(255,255,255,.1); color:#fff;}
