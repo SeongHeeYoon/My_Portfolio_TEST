@@ -471,6 +471,9 @@ body{
 }
 @supports not (aspect-ratio:1/1){ .pjvideo{height:0; padding-bottom:56.25%;} }
 .pjvideo iframe{position:absolute; top:0; left:0; width:100%; height:100%; border:0;}
+/* 영상 파일은 원래 화면비 그대로 */
+.pjvideo.pjvideo--file{aspect-ratio:auto; height:auto; padding-bottom:0;}
+.pjvideo--file video{display:block; width:100%; height:auto; background:#000;}
 /* 썸네일 + 재생 버튼 */
 .pjvideo__play{
   position:absolute; top:0; left:0; width:100%; height:100%;
@@ -898,6 +901,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
      프로젝트 소개 창의 본문 렌더러 — 글 + 영상 + 이미지 + 링크
      본문 한 줄(문단)이 아래 표시로 시작하면 특별 블록이 됩니다.
        @video <유튜브 주소>          → 영상 재생 창
+       @video <영상 파일 경로>       → 저장소에 넣은 mp4 / webm 을 직접 재생
+                                      (같은 이름의 .webp 가 있으면 첫 화면으로 씁니다)
        @image <이미지 경로>          → 그림
        @link  <주소> | <버튼 글자>   → 눌러서 이동하는 버튼 (여러 줄 나열 가능)
      나머지는 일반 문단이며 **문장** 으로 감싸면 강조됩니다.
@@ -908,6 +913,15 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     return /^[\w-]{11}$/.test(String(u).trim()) ? String(u).trim() : "";
   }
   function videoBlock(u) {
+    /* 저장소에 들어 있는 영상 파일 */
+    if (/\.(mp4|webm)(\?.*)?$/i.test(u)) {
+      var poster = u.replace(/\.(mp4|webm)(\?.*)?$/i, ".webp");
+      return '<div class="pjvideo pjvideo--file">' +
+          '<video controls playsinline preload="metadata" poster="' + esc(poster) + '">' +
+            '<source src="' + esc(u) + '" type="video/' + (/\.webm/i.test(u) ? "webm" : "mp4") + '">' +
+          '</video>' +
+        '</div>';
+    }
     var id = ytId(u);
     if (!id) { return '<p>' + esc(u) + '</p>'; }
     var watch = "https://www.youtube.com/watch?v=" + id;

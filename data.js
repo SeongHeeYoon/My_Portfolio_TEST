@@ -501,7 +501,7 @@ const DATA = {
         },
         {
           title: "담당 작업",
-          body: "**Project MapleFly**\n\nMapleFly 에서 아래 작업을 담당하였습니다.\n\n· 메이플스토리 리소스를 활용한 비행 슈팅 게임 기획\n· 스테이지 2 페리온 스테이지 기획 — 일반 몬스터 기믹 / 배치, 보스 몬스터 기믹 / 배치",
+          body: "**Project MapleFly**\n\nMapleFly 에서 아래 작업을 담당하였습니다.\n\n· 메이플스토리 리소스를 활용한 비행 슈팅 게임 기획\n· 스테이지 2 페리온 스테이지 기획 — 일반 몬스터 기믹 / 배치, 보스 몬스터 기믹 / 배치\n\n**스테이지 2 · 페리온 플레이 영상**\n\n직접 기획한 페리온 스테이지 부분만 따로 잘라 1080p 로 다듬은 영상입니다.\n\n@video videos/maplefly-perion.mp4\n\n@link https://www.youtube.com/watch?v=WCXLTeefNG4 | 전체 플레이 영상 (유튜브)",
         },
         {
           title: "결과 · 회고",
