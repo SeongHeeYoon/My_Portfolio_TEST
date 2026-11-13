@@ -454,7 +454,7 @@ const DATA = {
     },
     {
       title: "CityRush",
-      summary: "AI를 활용한 3D 자동차 추적 · 도망 레이싱 게임",
+      summary: "3D 자동차 추적 · 도망 레이싱 게임",
       cover: "images/covers/cityrush.webp",
       detail: [
         {

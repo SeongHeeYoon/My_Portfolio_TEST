@@ -639,7 +639,12 @@ html, body{height:100%; overflow:hidden;}
 }
 .speech__prev:hover{color:var(--obsidian);}
 .speech__prev[hidden]{visibility:hidden; display:block;}
-.speech__hint{font-size:14px; font-weight:500; color:var(--slate); opacity:0; transition:opacity .2s ease;}
+.speech__hint{
+  font-size:14px; font-weight:500; color:var(--slate); opacity:0; transition:opacity .2s ease, color .16s ease;
+  cursor:pointer; -webkit-user-select:none; user-select:none;
+}
+.speech__hint:hover{color:var(--abyssal);}
+.speech.is-last .speech__hint{cursor:default;}
 .speech__hint::after{content:" ▼"; display:inline-block; margin-left:4px; font-size:11px; color:var(--leaf);}
 .speech.is-idle .speech__hint{opacity:1;}
 .speech.is-idle:not(.is-last) .speech__hint::after{animation:hintNext 1s ease-in-out infinite;}

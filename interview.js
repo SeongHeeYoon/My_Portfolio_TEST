@@ -813,10 +813,20 @@
 
     /* 자기소개 장면: 화면이나 말풍선을 누르면 진행, 이전 버튼으로 되돌아가기 */
     R.tap.addEventListener("click", coverTap);
+    let downX = 0, downY = 0;
+    R.speech.addEventListener("mousedown", function (e) {
+      downX = e.clientX; downY = e.clientY;
+      /* 빠르게 연달아 누를 때 더블클릭으로 단어가 선택되지 않게 합니다 */
+      if (e.detail > 1) { e.preventDefault(); }
+    });
     R.speech.addEventListener("click", function (e) {
       if (e.target.closest("button, a")) { return; }
       const sel = window.getSelection && window.getSelection();
-      if (sel && String(sel).length) { return; }   /* 글자를 드래그해 고르는 중이면 넘기지 않습니다 */
+      const picked = sel && String(sel).length;
+      const dragged = Math.abs(e.clientX - downX) > 5 || Math.abs(e.clientY - downY) > 5;
+      /* 마우스를 끌어서 글자를 고른 경우에만 넘기지 않습니다 */
+      if (picked && dragged) { return; }
+      if (picked && sel.removeAllRanges) { sel.removeAllRanges(); }
       coverTap();
     });
     R.speechPrev.addEventListener("click", function () {
