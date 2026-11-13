@@ -786,20 +786,28 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
           </div>
           <div class="tablet__scroll" id="iv-tabletScroll" tabindex="-1">
             <section class="page" id="page-portfolio" aria-label="포트폴리오" hidden></section>
-          </div>
 
-          <!-- ======================= 프로젝트 소개 창 (태블릿 화면 안에서 열립니다) ======================= -->
+          <!-- ======================= 프로젝트 소개 창 (태블릿 화면 안, 시계 줄 아래에서 열립니다) ======================= -->
           <div class="pjmodal" id="pjModal" hidden role="dialog" aria-modal="true" aria-labelledby="pjTitle">
+            <!-- 게임 선택 화면처럼, 고른 게임의 표지를 흐리게 깔아 둡니다 -->
+            <div class="pjmodal__bg" id="pjBg" aria-hidden="true"></div>
             <div class="pjmodal__box">
               <div class="pjmodal__bar">
+                <button class="pjmodal__close" id="pjClose" type="button" aria-label="닫기">
+                  <span aria-hidden="true">◀</span> 돌아가기
+                </button>
+                <img class="pjmodal__thumb" id="pjThumb" alt="" hidden>
                 <h2 class="pjmodal__title" id="pjTitle"></h2>
-                <button class="pjmodal__close" id="pjClose" type="button" aria-label="닫기">✕</button>
               </div>
               <div class="pjmodal__main">
                 <nav class="pjmodal__toc" id="pjToc" aria-label="프로젝트 목차"></nav>
                 <div class="pjmodal__content" id="pjContent"></div>
               </div>
+              <div class="pjmodal__hints" aria-hidden="true">
+                <span><i>▲</i><i>▼</i> 메뉴</span><span><i>B</i> 닫기</span>
+              </div>
             </div>
+          </div>
           </div>
         </div>
       </article>
@@ -1439,6 +1447,14 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     pjBase = base; pjTab = 0;
     pjLastFocus = document.activeElement;
     el("pjTitle").textContent = item.title || "";
+    /* 배경과 제목 옆 작은 표지 */
+    el("pjBg").style.backgroundImage = item.cover ? 'url("' + item.cover + '")' : "";
+    var thumb = el("pjThumb");
+    thumb.hidden = !item.cover;
+    if (item.cover) {
+      thumb.src = item.cover;
+      thumb.style.objectPosition = item.coverPos || "";
+    }
     pjRender();
     el("pjModal").hidden = false;
     document.body.classList.add("pj-open");
@@ -1491,7 +1507,21 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     if (e.target === el("pjModal")) { pjClose(); }
   });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && !el("pjModal").hidden) { pjClose(); }
+    if (el("pjModal").hidden) { return; }
+    if (e.key === "Escape") { pjClose(); return; }
+    /* 편집 중이거나 글자를 고치는 중이면 방향키·백스페이스는 그대로 둡니다 */
+    if (editing || (e.target.closest && e.target.closest("input, textarea, [contenteditable='true']"))) { return; }
+    if (e.key === "Backspace") { e.preventDefault(); pjClose(); return; }
+    if (e.key !== "ArrowUp" && e.key !== "ArrowDown") { return; }
+    /* 본문 안에서는 방향키로 스크롤합니다 */
+    if (e.target.closest && e.target.closest("#pjContent")) { return; }
+    var pages = (getByPath(D, pjBase) || {}).detail || [];
+    if (pages.length < 2) { return; }
+    e.preventDefault();
+    pjTab = (pjTab + (e.key === "ArrowDown" ? 1 : -1) + pages.length) % pages.length;
+    pjRender();
+    var on = el("pjToc").querySelector('[data-tab="' + pjTab + '"]');
+    if (on) { on.focus(); }
   });
 
   /* =========================================================================
