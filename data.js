@@ -537,7 +537,7 @@ const DATA = {
       detail: [
         {
           title: "작품 소개",
-          body: "**Project ZeroGate**\n\n· 기간: 2026/09 ~ 2026/11\n· 인원: 5명\n· 사용 기술: Unity\n· 역할: 기획 · 개발",
+          body: "@video videos/zerogate-pv.mp4\n\n**Project ZeroGate**\n\n· 기간: 2026/09 ~ 2026/11\n· 인원: 5명\n· 사용 기술: Unity\n· 역할: 기획 · 개발",
         },
         {
           title: "담당 작업",
