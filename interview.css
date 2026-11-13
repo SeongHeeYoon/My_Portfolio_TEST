@@ -624,7 +624,7 @@ html, body{height:100%; overflow:hidden;}
   background:linear-gradient(transparent 58%, rgba(230,164,110,.42) 58%);
   padding:0 2px; border-radius:2px;
 }
-.speech__body.sweep{animation:sweep .42s cubic-bezier(.25,.7,.2,1) both;}
+.speech__body.sweep{animation:sweep .24s cubic-bezier(.25,.7,.2,1) both;}
 @keyframes sweep{
   from{clip-path:inset(0 100% 0 0); opacity:.35;}
   to{clip-path:inset(0 0 0 0); opacity:1;}

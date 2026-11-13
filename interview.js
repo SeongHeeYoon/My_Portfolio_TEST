@@ -507,7 +507,7 @@
      문단은 한 번에. 누를 때마다 '연출 건너뛰기 → 다음 문단' 순서로 진행합니다.
      --------------------------------------------------------------------- */
   const cv = { data: [], s: 0, p: 0, phase: "", seq: 0, skipIntro: false };
-  const SWEEP_MS = 420, TITLE_CHAR_MS = 75;
+  const SWEEP_MS = 240, TITLE_CHAR_MS = 40;
 
   function setSceneBlur(from, to) {
     return tween(800, "inOut", function (t) { setWorld(from + (to - from) * t); });
@@ -592,8 +592,8 @@
       runToken++;
       return;
     }
-    if (cv.phase === "title" || cv.phase === "body") {
-      /* 연출 건너뛰기: 제목과 문단을 바로 다 보여줍니다 */
+    if (cv.phase === "title") {
+      /* 제목이 한 글자씩 나오는 중이면: 제목과 문단을 바로 다 보여줍니다 */
       const seq = ++cv.seq;
       R.speechTitle.textContent = cv.data[cv.s].title || "";
       coverReveal(seq, false);
