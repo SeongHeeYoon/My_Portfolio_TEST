@@ -344,6 +344,8 @@ const DATA = {
       no: "Project 08",
       title: "ZeroGate",
       tags: [
+        "2026/09 ~ 2026/11",
+        "인원 5명",
         "기획 · 개발",
       ],
       summary: "",
