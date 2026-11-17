@@ -1534,6 +1534,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     if (item.cover) {
       thumb.src = item.cover;
       thumb.style.objectPosition = item.coverPos || "";
+      thumb.style.objectFit = item.coverFit || "";
+      thumb.style.background = item.coverFit ? "#000" : "";
     }
     pjRender();
     el("pjModal").hidden = false;
