@@ -1227,6 +1227,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
     var layer = document.createElement("div");
     layer.className = "gs__bgimg";
     if (g.cover) { layer.style.backgroundImage = 'url("' + g.cover + '")'; }
+    /* 로고처럼 잘리면 안 되는 그림은 통째로 줄여 검은 바탕 가운데에 둡니다 */
+    if (g.coverFit === "contain") { layer.style.backgroundSize = "contain"; layer.style.backgroundRepeat = "no-repeat"; layer.style.backgroundColor = "#000"; }
     bg.appendChild(layer);
     void layer.offsetWidth;
     layer.classList.add("on");
@@ -1300,7 +1302,10 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
           ' aria-pressed="' + on + '" aria-label="' + esc(g.title) + '">' +
           (g.cover
             ? '<img src="' + esc(g.cover) + '" alt="" loading="lazy"' +
-              (g.coverPos ? ' style="object-position:' + esc(g.coverPos) + '"' : '') + '>'
+              (g.coverPos || g.coverFit
+                ? ' style="' + (g.coverPos ? 'object-position:' + esc(g.coverPos) + ';' : '') +
+                  (g.coverFit ? 'object-fit:' + esc(g.coverFit) + ';background:#000;' : '') + '"'
+                : '') + '>'
             : '<span class="gs__tileph">' + esc(g.title) + '</span>') +
         '</button>';
       }).join("") + '</div>' +
