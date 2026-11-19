@@ -244,7 +244,7 @@ h1,h2,h3,h4,p{margin:0;}
   position:relative; padding-left:16px; font-size:15px; line-height:1.65; color:var(--abyssal);
 }
 .card__points li + li{margin-top:8px;}
-/* 썸네일이 있는 카드: 왼쪽에 정사각형 그림, 오른쪽에 번호·제목·요약·태그 */
+/* 썸네일이 있는 카드: 왼쪽에 번호·제목·요약·태그, 오른쪽에 정사각형 그림 */
 .card--thumb .card__head{display:flex; gap:var(--sp-24); align-items:flex-start;}
 .card__headtext{flex:1; min-width:0;}
 .card__thumb{
@@ -1175,14 +1175,6 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
           var th = projectThumb(pr);
           return '<article class="card' + (th ? ' card--thumb' : '') + '">' +
             '<div class="card__head">' +
-            (th
-              ? '<div class="card__thumb"><img src="' + esc(th.src) + '" alt="' + esc(pr.title) + ' 이미지" loading="lazy"' +
-                (th.pos || th.fit
-                  ? ' style="' + (th.pos ? 'object-position:' + esc(th.pos) + ';' : '') +
-                    (th.fit ? 'object-fit:' + esc(th.fit) + ';background:#000;' : '') + '"'
-                  : '') +
-                ' onerror="this.parentNode.remove()"></div>'
-              : '') +
             '<div class="card__headtext">' +
             '<p class="card__no"' + E("projects." + i + ".no") + '>' + esc(pr.no) + '</p>' +
             '<h3 class="card__title"' + E("projects." + i + ".title") + '>' + esc(pr.title) + '</h3>' +
@@ -1191,7 +1183,16 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
             (has(pr.tags) ? '<div class="card__tags">' + pr.tags.map(function (t, j) {
               return '<span class="badge"' + E("projects." + i + ".tags." + j) + '>' +
                      esc(t) + '</span>'; }).join("") + '</div>' : '') +
-            '</div></div>' +
+            '</div>' +
+            (th
+              ? '<div class="card__thumb"><img src="' + esc(th.src) + '" alt="' + esc(pr.title) + ' 이미지" loading="lazy"' +
+                (th.pos || th.fit
+                  ? ' style="' + (th.pos ? 'object-position:' + esc(th.pos) + ';' : '') +
+                    (th.fit ? 'object-fit:' + esc(th.fit) + ';background:#000;' : '') + '"'
+                  : '') +
+                ' onerror="this.parentNode.remove()"></div>'
+              : '') +
+            '</div>' +
             (has(pr.points) ? '<ul class="card__points">' + pr.points.map(function (t, j) {
               return '<li' + E("projects." + i + ".points." + j) + '>' + esc(t) + '</li>';
             }).join("") + '</ul>' : '') +
