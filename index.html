@@ -244,6 +244,15 @@ h1,h2,h3,h4,p{margin:0;}
   position:relative; padding-left:16px; font-size:15px; line-height:1.65; color:var(--abyssal);
 }
 .card__points li + li{margin-top:8px;}
+/* 썸네일이 있는 카드: 왼쪽에 정사각형 그림, 오른쪽에 번호·제목·요약·태그 */
+.card--thumb .card__head{display:flex; gap:var(--sp-24); align-items:flex-start;}
+.card__headtext{flex:1; min-width:0;}
+.card__thumb{
+  flex:0 0 132px; width:132px; aspect-ratio:1/1;
+  border-radius:16px; overflow:hidden;
+  border:2px solid var(--mist); background:var(--bone);
+}
+.card__thumb img{display:block; width:100%; height:100%; object-fit:cover;}
 .card__points li::before{
   content:""; position:absolute; left:0; top:.62em;
   width:5px; height:5px; border-radius:50%; background:var(--pebble);
@@ -677,6 +686,8 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
   .row dt{font-size:13px;}
   .card{padding:var(--sp-32) var(--sp-24);}
   .card__title{font-size:21px;}
+  .card--thumb .card__head{gap:var(--sp-16);}
+  .card__thumb{flex-basis:92px; width:92px; border-radius:12px;}
   .extra{padding:var(--sp-32) var(--sp-24);}
   .cert, .rescol .cert{grid-template-columns:1fr; gap:4px;}   /* 2단용 규칙보다 뒤에 와야 이깁니다 */
   .cert__issuer{text-align:left;}
@@ -1144,11 +1155,35 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
         }).join("") + '</div>');
     }
 
+    /* 프로젝트 카드의 썸네일
+       1) 프로젝트에 image: "images/..." 를 직접 적으면 그 그림을 씁니다
+       2) 없으면 포트폴리오(portfolio)에서 제목이 같은 게임의 표지(cover)를 가져옵니다
+       3) 둘 다 없으면 그림 없이 글만 보입니다 */
+    function projectThumb(pr) {
+      if (pr.image) { return { src: pr.image, pos: pr.imagePos, fit: pr.imageFit }; }
+      var key = String(pr.title || "").replace(/\s+/g, "").toLowerCase();
+      var g = (D.portfolio || []).filter(function (p) {
+        return p.cover && String(p.title || "").replace(/\s+/g, "").toLowerCase() === key;
+      })[0];
+      return g ? { src: g.cover, pos: g.coverPos, fit: g.coverFit } : null;
+    }
+
     /* 프로젝트 — 우측 */
     if (has(D.projects)) {
       right += section("Projects", "프로젝트",
         '<div class="cards">' + D.projects.map(function (pr, i) {
-          return '<article class="card">' +
+          var th = projectThumb(pr);
+          return '<article class="card' + (th ? ' card--thumb' : '') + '">' +
+            '<div class="card__head">' +
+            (th
+              ? '<div class="card__thumb"><img src="' + esc(th.src) + '" alt="' + esc(pr.title) + ' 이미지" loading="lazy"' +
+                (th.pos || th.fit
+                  ? ' style="' + (th.pos ? 'object-position:' + esc(th.pos) + ';' : '') +
+                    (th.fit ? 'object-fit:' + esc(th.fit) + ';background:#000;' : '') + '"'
+                  : '') +
+                ' onerror="this.parentNode.remove()"></div>'
+              : '') +
+            '<div class="card__headtext">' +
             '<p class="card__no"' + E("projects." + i + ".no") + '>' + esc(pr.no) + '</p>' +
             '<h3 class="card__title"' + E("projects." + i + ".title") + '>' + esc(pr.title) + '</h3>' +
             (pr.summary ? '<p class="card__summary"' + EL("projects." + i + ".summary") + '>' +
@@ -1156,6 +1191,7 @@ body.editing [data-edit]:focus{outline:2px solid var(--leaf); background:rgba(21
             (has(pr.tags) ? '<div class="card__tags">' + pr.tags.map(function (t, j) {
               return '<span class="badge"' + E("projects." + i + ".tags." + j) + '>' +
                      esc(t) + '</span>'; }).join("") + '</div>' : '') +
+            '</div></div>' +
             (has(pr.points) ? '<ul class="card__points">' + pr.points.map(function (t, j) {
               return '<li' + E("projects." + i + ".points." + j) + '>' + esc(t) + '</li>';
             }).join("") + '</ul>' : '') +
